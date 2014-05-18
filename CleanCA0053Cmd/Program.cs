@@ -16,7 +16,7 @@ namespace CleanCA0053Cmd
             Console.WriteLine("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
             Console.WriteLine("RemoveOldNugetRestore: Converts all projects in a directory tree to remove nuget.target files and converts all csproj files.");
             Console.WriteLine("by Terje Sandstrom, Inmeta Consulting, 2014");
-            Console.WriteLine("For instructions see blogpost at http://geekswithblogs.net/Terje/How to fix the CA0053 error in Code Analysis in Visual Studio 2012");
+            Console.WriteLine("For instructions see blogpost at");
             Console.WriteLine();
             var ca = new RemoveOldNugetRestore();
             ca.Execute();
@@ -43,32 +43,60 @@ namespace CleanCA0053Cmd
 
             string[] filePaths = Directory.GetFiles(here, "*.csproj",
                                          SearchOption.AllDirectories);
-            var carsd = new SearchTerms("<CodeAnalysisRuleSetDirectories>", "</CodeAnalysisRuleSetDirectories>", @"$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\Rule Sets");
-            var card = new SearchTerms("<CodeAnalysisRuleDirectories>", "</CodeAnalysisRuleDirectories>", @"$(DevEnvDir)\..\..\Team Tools\Static Analysis Tools\FxCop\Rules");
             foreach (var file in filePaths)
             {
-                changed = false;
-                var data = XElement.Load(file);
 
-                var imports = data.Descendants().Where(x=>x.Name=="Import");
-                foreach (var import in imports)
+                var lines = File.ReadAllLines(file);
+                var output = new List<string>();
+
+                changed = false;
+                foreach (var line in lines)
                 {
-                    var attributes =
-                        import.Attributes().Where(y => y.Name.ToString() == "Project" && y.Value.Contains(".nuget"));
-                    if (attributes.Any())
+                    if (!(line.Contains(@"<Import Project") && line.Contains("NuGet.targets")))
                     {
-                        
+                        output.Add(line);
+                    }
+                    else
+                    {
+                        changed = true;
+                    }
+
+                }
+
+                var output2 = new List<string>();
+                bool foundTarget = false;
+                foreach (var line in output)
+                {
+                    if (line.Contains("<Target Name=") && line.Contains("EnsureNuGetPackageBuildImports"))
+                    {
+                        foundTarget = true;
+                    }
+                    else
+                    {
+                        if (foundTarget)
+                        {
+                            if (line.Contains("</Target>"))
+                                foundTarget = false;
+                        }
+                        else
+                        {
+                            output2.Add(line);
+                        }
                     }
                 }
-                text = this.Change2(text, carsd);
-                text = this.Change2(text, card);
+
+
+
+
+
+
 
                 try
                 {
 
                     if (changed)
                     {
-                        File.WriteAllText(file, text);
+                        File.WriteAllLines(file, output2);
                         Console.WriteLine("Fixed   :" + file);
                         fixedup++;
                     }
@@ -87,7 +115,7 @@ namespace CleanCA0053Cmd
             }
             Console.WriteLine("Fixed : " + fixedup);
             Console.WriteLine("Skipped : " + skipped);
-            if (nowrite>0)
+            if (nowrite > 0)
                 Console.WriteLine("Unable to write :" + nowrite);
             int total = fixedup + skipped;
             Console.WriteLine("Total files checked : " + total);
