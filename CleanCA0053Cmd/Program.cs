@@ -37,10 +37,10 @@ namespace CleanCA0053Cmd
 
             string here = Directory.GetCurrentDirectory();
 
-
+            RemoveAllNugetTargetFiles(here);
             FixSolutionFiles(here);
 
-
+            Console.WriteLine("Fixing csproj files");
             string[] filePaths = Directory.GetFiles(here, "*.csproj",
                                          SearchOption.AllDirectories);
             foreach (var file in filePaths)
@@ -114,11 +114,29 @@ namespace CleanCA0053Cmd
                 Console.WriteLine("Unable to write :" + nowrite);
             int total = fixedup + skipped;
             Console.WriteLine("Total files checked : " + total);
+            Console.WriteLine("Finished fixing csproj files");
+        }
+
+        /// <summary>
+        /// Delete all the nuget.target files found.  Optionally copy the relevant info on external nuget repositories to the nuget.config file.  
+        /// </summary>
+        /// <param name="here"></param>
+        private void RemoveAllNugetTargetFiles(string here)
+        {
+            string[] filePaths = Directory.GetFiles(here, "nuget.targets",
+                                         SearchOption.AllDirectories);
+            foreach (var file in filePaths)
+            {
+                File.Delete(file);
+                Console.WriteLine(string.Format("Deleted file: {0}",file));
+            }
         }
 
         private static void FixSolutionFiles(string here)
         {
-            string[] slnFilePaths = Directory.GetFiles(here, "*.sln");
+            Console.WriteLine("Fixing solution files");
+            int count = 0;
+            string[] slnFilePaths = Directory.GetFiles(here, "*.sln", SearchOption.AllDirectories);
             foreach (var file in slnFilePaths)
             {
                 var text = File.ReadAllLines(file);
@@ -133,40 +151,18 @@ namespace CleanCA0053Cmd
                         found = true;
                     }
                 }
-#if !DEBUG
-                File.WriteAllLines(file);
-#endif
+//#if !DEBUG
+                File.WriteAllLines(file,outlines);
+//#endif
+                if (found)
+                    count++;
                 string msg = string.Format("{0} checked. {1}", file, found ? "Nuget.target removed" : "Nothing found");
                 Console.WriteLine(msg);
             }
+            Console.WriteLine("Fixing {0} solution files finished");
         }
 
-        private string Change2(string text, SearchTerms terms)
-        {
-            const int NotFound = -1;
-            int index = 0;
-            do
-            {
-                index = text.IndexOf(terms.Start, index, StringComparison.CurrentCultureIgnoreCase);
-                if (index != NotFound)
-                {
-                    int indexend = text.IndexOf(terms.Stop, index, StringComparison.CurrentCultureIgnoreCase);
-                    string tobechecked = text.Substring(index, indexend - index);
-                    if (tobechecked.IndexOf(@"Microsoft Visual Studio 10.0", StringComparison.CurrentCultureIgnoreCase) != NotFound)
-                    {
-                        int start = index + terms.Start.Length;
-                        int length = indexend - start;
-                        text = text.Remove(start, length);
-                        text = text.Insert(start, terms.Content);
-                        index = indexend;
-                        changed = true;
-                    }
-                    else
-                        index = indexend;
-                }
-            } while (index != NotFound);
-            return text;
-        }
+        
     }
 
 
