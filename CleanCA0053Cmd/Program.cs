@@ -18,8 +18,8 @@ namespace CleanCA0053Cmd
             Console.WriteLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             Console.WriteLine("For instructions see blogpost at");
             Console.WriteLine();
-            var ca = new RemoveOldNugetRestore();
-            ca.Execute();
+            var oldNugetRestore = new RemoveOldNugetRestore();
+            oldNugetRestore.Execute();
         }
 
 
@@ -52,7 +52,7 @@ namespace CleanCA0053Cmd
                 changed = false;
                 foreach (var line in lines)
                 {
-                    if (!(line.Contains(@"<Import Project") && line.Contains("NuGet.targets")))
+                    if (!((line.Contains(@"<Import Project") && line.Contains("NuGet.targets")) || line.Contains("<RestorePackages>true</RestorePackages>")))
                     {
                         output.Add(line);
                     }
@@ -84,11 +84,6 @@ namespace CleanCA0053Cmd
                         }
                     }
                 }
-
-
-
-
-
 
 
                 try
