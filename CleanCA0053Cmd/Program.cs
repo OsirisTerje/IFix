@@ -153,7 +153,6 @@ namespace CleanCA0053Cmd
         {
             var lines = File.ReadAllLines(file);
             var nugetpaths = new List<string>();
-            string previousline="";
             bool comment = false;
             foreach (var line in lines)
             {
@@ -167,6 +166,7 @@ namespace CleanCA0053Cmd
                 }
                 comment = IsCommentLine(line);  // Extract comment if previous line is a starting comment line with no ending comment
             }
+            // Copy nuget paths into the nuget.config file.
         }
 
         public string ExtractUrl(string line)
