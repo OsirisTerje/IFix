@@ -36,12 +36,22 @@ namespace CleanCA0053Cmd
             string here = Directory.GetCurrentDirectory();
 
             RemoveAllNugetTargetFiles(here);
+            RemoveAllNugetExeFiles(here);
             FixSolutionFiles(here);
 
             FixingCsprojFiles(here);
         }
 
-        private void FixingCsprojFiles(string here)
+        public void RemoveAllNugetExeFiles(string here)
+        {
+            var filePaths = Directory.GetFiles(here, "nuget.exe",SearchOption.AllDirectories).Where(item=>item.Contains("..nuget"));
+            foreach (var file in filePaths)
+            {
+                File.Delete(file);
+            }
+        }
+
+        public void FixingCsprojFiles(string here)
         {
             int skipped = 0;
             int fixedup = 0;
@@ -137,7 +147,7 @@ namespace CleanCA0053Cmd
         /// Delete all the nuget.target files found.  Optionally copy the relevant info on external nuget repositories to the nuget.config file.  
         /// </summary>
         /// <param name="here"></param>
-        private void RemoveAllNugetTargetFiles(string here)
+        public void RemoveAllNugetTargetFiles(string here)
         {
             string[] filePaths = Directory.GetFiles(here, "nuget.targets",
                                          SearchOption.AllDirectories);
