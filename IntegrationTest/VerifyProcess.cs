@@ -17,7 +17,7 @@ namespace IntegrationTest
         [Test]
         public void CheckDeletingNugetExe()
         {
-            var v = new RemoveOldNugetRestore();
+            var v = new RemoveOldNugetRestore.RemoveOldNugetRestore();
             string path = Directory.GetCurrentDirectory() + subpath ;
             string fileisat = path + "/.nuget/nuget.exe";
             bool exist = File.Exists(fileisat);
