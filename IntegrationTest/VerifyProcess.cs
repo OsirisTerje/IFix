@@ -11,7 +11,7 @@ using RemoveOldNugetRestore;
 
 namespace IntegrationTest
 {
-    [TestFixture]
+    [TestFixture, PathDependent]
     public class VerifyProcess
     {
         
@@ -90,5 +90,8 @@ namespace IntegrationTest
 
 
     public class IntegrationAttribute : CategoryAttribute
+    { }
+
+    public class PathDependentAttribute : CategoryAttribute
     { }
 }
