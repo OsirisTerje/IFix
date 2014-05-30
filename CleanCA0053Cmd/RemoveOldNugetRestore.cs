@@ -135,7 +135,10 @@ namespace RemoveOldNugetRestore
                 SearchOption.AllDirectories);
             foreach (var file in filePaths)
             {
-                CheckAndCopyNugetPaths(file);
+                if (file.Contains(".nuget")) // Means we have found the file in a known location
+                {
+                    CheckAndCopyNugetPaths(file);
+                }
                 File.Delete(file);
                 Console.WriteLine("Deleted file: {0}", file);
             }
@@ -157,6 +160,13 @@ namespace RemoveOldNugetRestore
                     }
                 }
                 comment = IsCommentLine(line);  // Extract comment if previous line is a starting comment line with no ending comment
+            }
+            // Does there exist a nuget.config file ?
+            var pathconfig = Path.GetDirectoryName(file);
+            var configname = pathconfig + "/nuget.config";
+            if (File.Exists(configname))
+            {
+                
             }
             // Copy nuget paths into the nuget.config file.
         }

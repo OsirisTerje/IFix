@@ -13,8 +13,10 @@ namespace IntegrationTest
     [TestFixture]
     public class VerifyProcess
     {
+        
         private const string subpath = "/../../../TestProject/TestProject";
-        [Test]
+
+        [Test, Integration]
         public void CheckDeletingNugetExe()
         {
             var v = new RemoveOldNugetRestore.RemoveOldNugetRestore();
@@ -36,4 +38,8 @@ namespace IntegrationTest
         }
 
     }
+
+
+    public class IntegrationAttribute : CategoryAttribute
+    { }
 }
