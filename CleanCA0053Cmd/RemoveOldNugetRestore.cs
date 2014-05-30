@@ -25,12 +25,13 @@ namespace RemoveOldNugetRestore
         {
             Console.WriteLine("Removing Nuget.exe which is under a .nuget folder");
             var filePaths = Directory.GetFiles(here, "nuget.exe",SearchOption.AllDirectories).Where(item=>item.Contains(".nuget"));
-            foreach (var file in filePaths)
+            var enumerable = filePaths as IList<string> ?? filePaths.ToList();
+            foreach (var file in enumerable)
             {
                 File.Delete(file);
                 Console.WriteLine("Deleting "+file);
             }
-            Console.WriteLine("Removed "+filePaths.Count()+" files");
+            Console.WriteLine("Removed "+enumerable.Count()+" files");
         }
 
         public void FixingCsprojFiles(string here)
@@ -75,7 +76,7 @@ namespace RemoveOldNugetRestore
             Console.WriteLine("Finished fixing csproj files");
         }
 
-        private IEnumerable<string> FixImportAndRestorePackagesInCsproj(IEnumerable<string> lines, string file)
+        public IEnumerable<string> FixImportAndRestorePackagesInCsproj(IEnumerable<string> lines, string file)
         {
             var output = new List<string>();
 
@@ -99,7 +100,7 @@ namespace RemoveOldNugetRestore
             return output;
         }
 
-        private static IEnumerable<string> FixTargetInCsproj(IEnumerable<string> output)
+        public IEnumerable<string> FixTargetInCsproj(IEnumerable<string> output)
         {
             var output2 = new List<string>();
             bool foundTarget = false;
@@ -137,14 +138,21 @@ namespace RemoveOldNugetRestore
             {
                 if (file.Contains(".nuget")) // Means we have found the file in a known location
                 {
-                    CheckAndCopyNugetPaths(file);
+                    var cf = CheckAndCopyNugetPaths(file);
+                    if (cf != null)
+                    {
+                        File.WriteAllLines(cf.Name, cf.Lines);
+                        Console.WriteLine("Copied info from target file {0} to config file {1})",file,cf.Name);
+                    }
                 }
                 File.Delete(file);
                 Console.WriteLine("Deleted file: {0}", file);
             }
         }
 
-        private void CheckAndCopyNugetPaths(string file)
+        
+
+        public ConfigFile CheckAndCopyNugetPaths(string file)
         {
             var lines = File.ReadAllLines(file);
             var nugetpaths = new List<string>();
@@ -156,7 +164,8 @@ namespace RemoveOldNugetRestore
                     if (!comment)
                     {
                         var url = ExtractUrl(line);
-                        nugetpaths.Add(url);
+                        if (url.Length>0)
+                            nugetpaths.Add(url);
                     }
                 }
                 comment = IsCommentLine(line);  // Extract comment if previous line is a starting comment line with no ending comment
@@ -164,18 +173,73 @@ namespace RemoveOldNugetRestore
             // Does there exist a nuget.config file ?
             var pathconfig = Path.GetDirectoryName(file);
             var configname = pathconfig + "/nuget.config";
-            if (File.Exists(configname))
+            if (File.Exists(configname) && nugetpaths.Any())
             {
-                
+                var configlines = new List<string>(File.ReadAllLines(configname));
+                var packageSourceExistAtLine = ContainsPackageSource(configlines);
+                bool needToAddPackagSourcesTag = packageSourceExistAtLine==-1;
+                bool haveItAdded = false;
+                foreach (var nugetpath in nugetpaths)
+                {
+                    if (!NugetPathAlreadyThere(configlines, nugetpath))
+                    {
+                        var lineno = packageSourceExistAtLine;
+                        if (packageSourceExistAtLine == -1) // Not there, insert at line 2
+                        {
+                            if (!haveItAdded)
+                            {
+                                configlines.Insert(2, "   <packageSources>");
+                                haveItAdded = true;
+                            }
+                            lineno = 2;
+                        }
+                        var key = ExtractKey(nugetpath);
+                        string line = string.Format("        <add key=\"{0}\" value=\"{1}\"/>",key,nugetpath);
+                        configlines.Insert(lineno+1,line);
+                    }
+                }
+                if (needToAddPackagSourcesTag)
+                {
+                    int lineno = 2 + nugetpaths.Count() + 1;
+                    configlines.Insert(lineno, "    </packageSources>");
+                }
+                return new ConfigFile(configlines,configname);
             }
-            // Copy nuget paths into the nuget.config file.
+            return null;
+        }
+
+        private string ExtractKey(string nugetpath)
+        {
+            var array = nugetpath.Split('.');
+            if (array.Count() < 2)
+                return "Don't know";
+            return array[1];
+        }
+
+        private bool NugetPathAlreadyThere(IEnumerable<string> configlines, string nugetpath)
+        {
+            return ALineContains(configlines, nugetpath);
+        }
+
+        
+
+        private int ContainsPackageSource(IEnumerable<string> configlines)
+        {
+            int i = 0;
+            foreach (var configline in configlines)
+            {
+                if (configline.Contains("<packageSources"))
+                    return i;
+                i++;
+            }
+            return -1;
         }
 
         public string ExtractUrl(string line)
         {
             if (line.Contains("PackageSource"))
             {
-                int index = line.IndexOf("http", System.StringComparison.Ordinal);
+                int index = line.IndexOf("http", StringComparison.Ordinal);
                 if (index < 0)
                     return "";
                 var path = line.Substring(index);
@@ -222,6 +286,20 @@ namespace RemoveOldNugetRestore
             Console.WriteLine("Fixing {0} solution files finished", count);
         }
 
+        static public bool ALineContains(IEnumerable<string> lines, string pattern1, string pattern2 = "")
+        {
+            return lines.Any(line => line.Contains(pattern1) && line.Contains(pattern2));
+        }
+    }
 
+    public class ConfigFile
+    {
+        public ConfigFile(IEnumerable<string> lines,string name )
+        {
+            Lines = lines;
+            Name = name;
+        }
+        public IEnumerable<string> Lines { get; private set; }
+        public string Name { get; private set; }
     }
 }

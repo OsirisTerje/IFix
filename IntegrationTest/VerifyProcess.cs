@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanCA0053Cmd;
 using NUnit.Framework;
+using RemoveOldNugetRestore;
 
 namespace IntegrationTest
 {
@@ -36,6 +37,54 @@ namespace IntegrationTest
             var exist = File.Exists(path + "/TestProject.csproj");
             Assert.IsTrue(exist);
         }
+
+
+        [Test]
+        public void VerifyReadingCsproj()
+        {
+            string path = Directory.GetCurrentDirectory() + subpath;
+            var lines = File.ReadAllLines(path + "/TestProject.csproj");
+
+            var sut = new RemoveOldNugetRestore.RemoveOldNugetRestore();
+            var outlines = sut.FixImportAndRestorePackagesInCsproj(lines, path + "/TestProject.csproj");
+            
+            Assert.IsTrue(outlines.Count()<lines.Count());
+            Assert.IsTrue(RemoveOldNugetRestore.RemoveOldNugetRestore.ALineContains(lines, "RestorePackages"), "1");
+            Assert.IsFalse(RemoveOldNugetRestore.RemoveOldNugetRestore.ALineContains(outlines, "RestorePackages"), "2");
+            Assert.IsTrue(RemoveOldNugetRestore.RemoveOldNugetRestore.ALineContains(lines, "Import Project", "NuGet.targets"), "3");
+            Assert.IsFalse(RemoveOldNugetRestore.RemoveOldNugetRestore.ALineContains(outlines, "Import Project", "NuGet.targets"), "4");
+        }
+
+
+        [Test]
+        public void VerifyReadingTargetsInCsproj()
+        {
+            string path = Directory.GetCurrentDirectory() + subpath;
+            var lines = File.ReadAllLines(path + "/TestProject.csproj");
+
+            var sut = new RemoveOldNugetRestore.RemoveOldNugetRestore();
+            var outlines = sut.FixTargetInCsproj(lines);
+            Assert.IsTrue(lines.Count()==outlines.Count()+6);
+
+        }
+
+        [Test]
+        public void VerifyCopyingTargetPathsToConfig()
+        {
+
+            string path = Directory.GetCurrentDirectory() + subpath;
+            string file = path + "/.nuget/nuget.targets";
+            Assert.IsTrue(File.Exists(file),"Target file doesnt exist");
+            var sut = new RemoveOldNugetRestore.RemoveOldNugetRestore();
+            var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
+            var outlines = sut.CheckAndCopyNugetPaths(file);
+            Assert.IsNotNull(outlines,"Didnt find anything");
+            Assert.IsTrue(outlines.Lines.Count()==configlinesBefore.Count()+4,"Number of new lines incorrect");
+
+        }
+
+
+        
 
     }
 
