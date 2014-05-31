@@ -80,7 +80,8 @@ namespace RemoveOldNugetRestore
                     {
                         skipped++;
                     }
-                    Console.WriteLine("{0} : {1}", (changed) ? fixOrCheck : "Skipped", file);
+                    if (changed || this.Options.Verbose)
+                        Console.WriteLine("{0} : {1}", (changed) ? fixOrCheck : "Skipped", file);
                 }
                 catch
                 {
@@ -112,8 +113,8 @@ namespace RemoveOldNugetRestore
                 }
                 else
                 {
-                    var msg = string.Format("Removed {0} in {1}",
-                        line.Contains("Import") ? "Import Project line" : "RestorePackages line", file);
+                    var msg = string.Format("{2} {0} in {1}",
+                        line.Contains("Import") ? "Import Project line" : "RestorePackages line", file,this.Options.Execute?"Removed ":"To be removed ");
                     Console.WriteLine(msg);
                     changed = true;
                 }
@@ -153,6 +154,7 @@ namespace RemoveOldNugetRestore
         /// <param name="here"></param>
         public void RemoveAllNugetTargetFiles(string here)
         {
+            Console.WriteLine("Checking for nuget.target files");
             string[] filePaths = Directory.GetFiles(here, "nuget.targets",
                 SearchOption.AllDirectories);
             foreach (var file in filePaths)
@@ -171,6 +173,8 @@ namespace RemoveOldNugetRestore
                     File.Delete(file);
                 Console.WriteLine("{1} file: {0}", file,this.Options.Execute?"Deleted":"Found to delete");
             }
+            if (!filePaths.Any())
+                Console.WriteLine("No nuget.target files found");
         }
 
         
@@ -304,8 +308,12 @@ namespace RemoveOldNugetRestore
                         File.WriteAllLines(file, outlines);
                     count++;
                 }
-                string msg = string.Format("{0} checked. {1}", file, found ? "Nuget.target removed" : "Skipped, nothing found");
-                Console.WriteLine(msg);
+                if (found || this.Options.Verbose)
+                {
+                    string msg = string.Format("{0} checked. {1}", file,
+                        found ? "Nuget.target removed" : "Skipped, nothing found");
+                    Console.WriteLine(msg);
+                }
             }
             Console.WriteLine("{1} {0} solution files finished", count,this.Options.Execute?"Fixing ":"Checked positive ");
         }
