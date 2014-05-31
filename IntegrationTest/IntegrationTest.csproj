@@ -53,8 +53,8 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CleanCA0053Cmd\RemoveOldNugetRestore.csproj">
-      <Project>{22ada2ba-033a-47e0-ad83-8399775db135}</Project>
+    <ProjectReference Include="..\RemoveOldNugetRestore\RemoveOldNugetRestore.csproj">
+      <Project>{22ADA2BA-033A-47E0-AD83-8399775DB135}</Project>
       <Name>RemoveOldNugetRestore</Name>
     </ProjectReference>
   </ItemGroup>
