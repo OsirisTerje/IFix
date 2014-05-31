@@ -285,7 +285,8 @@ namespace RemoveOldNugetRestore
 
         private void FixSolutionFiles(string here)
         {
-            Console.WriteLine("Fixing solution files");
+            
+            Console.WriteLine("{0} solution files",this.Options.Execute?"Fixing":"Checking");
             int count = 0;
             string[] slnFilePaths = Directory.GetFiles(here, "*.sln", SearchOption.AllDirectories);
             foreach (var file in slnFilePaths)
@@ -315,7 +316,7 @@ namespace RemoveOldNugetRestore
                     Console.WriteLine(msg);
                 }
             }
-            Console.WriteLine("{1} {0} solution files finished", count,this.Options.Execute?"Fixing ":"Checked positive ");
+            Console.WriteLine("{1} {0} solution files finished, out of {2}", count, this.Options.Execute ? "Fixing " : "Checked positive ", slnFilePaths.Length);
         }
 
         static public bool ALineContains(IEnumerable<string> lines, string pattern1, string pattern2 = "")
