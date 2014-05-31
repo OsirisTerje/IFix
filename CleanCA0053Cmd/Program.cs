@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
-namespace CleanCA0053Cmd
+namespace RemoveOldNugetRestore
 {
     using System.Reflection;
 
@@ -15,7 +13,7 @@ namespace CleanCA0053Cmd
             Console.WriteLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             Console.WriteLine("For instructions see blogpost at");
             Console.WriteLine();
-            var oldNugetRestore = new RemoveOldNugetRestore.RemoveOldNugetRestore();
+            var oldNugetRestore = new RemoveOldNugetRestore();
             oldNugetRestore.Execute();
         }
 
