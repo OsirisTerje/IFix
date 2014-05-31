@@ -6,15 +6,18 @@ namespace RemoveOldNugetRestore
 
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            Console.WriteLine("Version: " + Assembly.GetExecutingAssembly().GetName().Version);
-            Console.WriteLine("RemoveOldNugetRestore: Converts all projects in a directory tree to remove nuget.target files and converts all csproj files.");
-            Console.WriteLine("by Terje Sandstrom, Inmeta Consulting, 2014");
-            Console.WriteLine("For instructions see blogpost at");
-            Console.WriteLine();
-            var oldNugetRestore = new RemoveOldNugetRestore();
-            oldNugetRestore.Execute();
+            var options = new Options();
+            if (CommandLine.Parser.Default.ParseArguments(args, options) && (options.Execute || options.Check))
+            {
+                var oldNugetRestore = new RemoveOldNugetRestore(options);
+                oldNugetRestore.Execute();
+            }
+            else
+            {
+                Console.WriteLine(options.GetUsage());
+            }
         }
 
 

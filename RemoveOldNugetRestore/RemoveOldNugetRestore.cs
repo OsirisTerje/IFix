@@ -8,6 +8,22 @@ namespace RemoveOldNugetRestore
     public class RemoveOldNugetRestore
     {
         private bool changed;
+
+        Options Options { get; set; }
+
+        public RemoveOldNugetRestore(Options options)
+        {
+            Options = options;
+        }
+
+        /// <summary>
+        /// For testing
+        /// </summary>
+        public RemoveOldNugetRestore()
+        {
+            Options = new Options();
+        }
+
         public void Execute()
         {
 
@@ -23,15 +39,18 @@ namespace RemoveOldNugetRestore
 
         public void RemoveAllNugetExeFiles(string here)
         {
-            Console.WriteLine("Removing Nuget.exe which is under a .nuget folder");
+            Console.WriteLine("Checking Nuget.exe which is under a .nuget folder");
             var filePaths = Directory.GetFiles(here, "nuget.exe",SearchOption.AllDirectories).Where(item=>item.Contains(".nuget"));
             var enumerable = filePaths as IList<string> ?? filePaths.ToList();
             foreach (var file in enumerable)
             {
-                File.Delete(file);
+                
+                if (Options.Execute)
+                    File.Delete(file);
                 Console.WriteLine("Deleting "+file);
             }
-            Console.WriteLine("Removed "+enumerable.Count()+" files");
+            string msg = (this.Options.Execute) ? "Files removed :" : "Files to be removed :";
+            Console.WriteLine(msg+enumerable.Count());
         }
 
         public void FixingCsprojFiles(string here)
@@ -39,6 +58,7 @@ namespace RemoveOldNugetRestore
             int skipped = 0;
             int fixedup = 0;
             int nowrite = 0;
+            string fixOrCheck = (this.Options.Execute) ? "fixed" : "checked";
             Console.WriteLine("Fixing csproj files");
             var filePaths = Directory.GetFiles(here, "*.csproj",
                 SearchOption.AllDirectories);
@@ -52,14 +72,15 @@ namespace RemoveOldNugetRestore
                 {
                     if (changed)
                     {
-                        File.WriteAllLines(file, output2);
+                        if (this.Options.Execute)
+                            File.WriteAllLines(file, output2);
                         fixedup++;
                     }
                     else
                     {
                         skipped++;
                     }
-                    Console.WriteLine("{0} : {1}", (changed) ? "Fixed" : "Skipped", file);
+                    Console.WriteLine("{0} : {1}", (changed) ? fixOrCheck : "Skipped", file);
                 }
                 catch
                 {
@@ -67,13 +88,13 @@ namespace RemoveOldNugetRestore
                     nowrite++;
                 }
             }
-            Console.WriteLine("Fixed : " + fixedup);
+            Console.WriteLine(fixOrCheck+" : " + fixedup);
             Console.WriteLine("Skipped : " + skipped);
             if (nowrite > 0)
                 Console.WriteLine("Unable to write :" + nowrite);
             int total = fixedup + skipped;
             Console.WriteLine("Total files checked : " + total);
-            Console.WriteLine("Finished fixing csproj files");
+            Console.WriteLine("Finished {0} csproj files", this.Options.Execute?"fixing":"checking");
         }
 
         public IEnumerable<string> FixImportAndRestorePackagesInCsproj(IEnumerable<string> lines, string file)
@@ -141,12 +162,14 @@ namespace RemoveOldNugetRestore
                     var cf = CheckAndCopyNugetPaths(file);
                     if (cf != null)
                     {
-                        File.WriteAllLines(cf.Name, cf.Lines);
-                        Console.WriteLine("Copied info from target file {0} to config file {1})",file,cf.Name);
+                        if (this.Options.Execute)
+                            File.WriteAllLines(cf.Name, cf.Lines);
+                        Console.WriteLine("{2} info from target file {0} to config file {1})",file,cf.Name,this.Options.Execute?"Copied":"Found to copy");
                     }
                 }
-                File.Delete(file);
-                Console.WriteLine("Deleted file: {0}", file);
+                if (this.Options.Execute)
+                    File.Delete(file);
+                Console.WriteLine("{1} file: {0}", file,this.Options.Execute?"Deleted":"Found to delete");
             }
         }
 
@@ -256,7 +279,7 @@ namespace RemoveOldNugetRestore
             return line2.StartsWith("<!--") && !line2.EndsWith("-->");
         }
 
-        private static void FixSolutionFiles(string here)
+        private void FixSolutionFiles(string here)
         {
             Console.WriteLine("Fixing solution files");
             int count = 0;
@@ -277,13 +300,14 @@ namespace RemoveOldNugetRestore
                 }
                 if (found)
                 {
-                    File.WriteAllLines(file, outlines);
+                    if (this.Options.Execute)
+                        File.WriteAllLines(file, outlines);
                     count++;
                 }
                 string msg = string.Format("{0} checked. {1}", file, found ? "Nuget.target removed" : "Skipped, nothing found");
                 Console.WriteLine(msg);
             }
-            Console.WriteLine("Fixing {0} solution files finished", count);
+            Console.WriteLine("{1} {0} solution files finished", count,this.Options.Execute?"Fixing ":"Checked positive ");
         }
 
         static public bool ALineContains(IEnumerable<string> lines, string pattern1, string pattern2 = "")
