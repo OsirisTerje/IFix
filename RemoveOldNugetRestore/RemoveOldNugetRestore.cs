@@ -334,7 +334,10 @@ namespace RemoveOldNugetRestore
                 }
             }
             Console.ForegroundColor = count > 0 ? ConsoleColor.Red : ConsoleColor.Green;
-            Console.WriteLine("{0} {1} solution file(s), out of {2}", Options.Fix ? "Fixed : " : "Found : ",count, slnFilePaths.Length);
+            string msg2 = string.Format("{0} {1} solution file(s), out of {2}", Options.Fix ? "Fixed : " : "Found : ",count, slnFilePaths.Length);
+            if (count == 0)
+                msg2 = string.Format("No issues found in {0} solution file(s) ", slnFilePaths.Length);
+            Console.WriteLine(msg2);
             Console.ResetColor();
         }
 
