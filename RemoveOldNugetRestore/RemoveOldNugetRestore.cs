@@ -211,7 +211,7 @@ namespace RemoveOldNugetRestore
                             nugetpaths.Add(url);
                     }
                 }
-                comment = IsCommentLine(line);  // Extract comment if previous line is a starting comment line with no ending comment
+                comment = IsCommentLine(line,comment);  // Extract comment if previous line is a starting comment line with no ending comment
             }
             // Does there exist a nuget.config file ?
             var pathconfig = Path.GetDirectoryName(file);
@@ -248,6 +248,7 @@ namespace RemoveOldNugetRestore
                 }
                 return new ConfigFile(configlines, configname);
             }
+            Console.WriteLine("No paths to copy in nuget.target file");
             return null;
         }
 
@@ -292,11 +293,21 @@ namespace RemoveOldNugetRestore
             }
             return "";
         }
-
-        public bool IsCommentLine(string line)
+        /// <summary>
+        /// True if we are in comment state after the line
+        /// </summary>
+        public bool IsCommentLine(string line,bool comment)
         {
             var line2 = line.Trim();
-            return line2.StartsWith("<!--") && !line2.EndsWith("-->");
+            if (comment)
+            {
+                comment = !line2.EndsWith("-->");
+            }
+            else
+            {
+                comment = line2.StartsWith("<!--") &&  !line2.EndsWith("-->");
+            }
+            return comment;
         }
 
         private void FixSolutionFiles(string here)

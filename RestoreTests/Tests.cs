@@ -20,7 +20,7 @@ namespace RestoreTests
 
             var sut = new RemoveOldNugetRestore.RemoveOldNugetRestore();
 
-            var result = sut.IsCommentLine(line);
+            var result = sut.IsCommentLine(line,false);
             Assert.AreEqual(expected,result,"Fails "+line);
         }
 

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using CommandLine;
 
 namespace RemoveOldNugetRestore
@@ -26,10 +22,10 @@ namespace RemoveOldNugetRestore
             var usage = new StringBuilder();
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             usage.AppendLine("RemoveOldNugetRestore  "+version);
-            usage.AppendLine("RemoveOldNugetRestore: Converts all projects in a directory tree to remove nuget.target files and converts all csproj files.");
+            usage.AppendLine("RemoveOldNugetRestore: Converts all projects in a directory tree to remove old nuget restore, by removing nuget.target and exe files and converts all csproj and sln files.");
             usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
-            usage.AppendLine("Usage: RemoveOldNugetRestore [-c](Check only) [-x](Perform correction)");
-            usage.AppendLine("For more instructions and information see blogpost at");
+            usage.AppendLine("Usage: RemoveOldNugetRestore [-c](Check only) [-f](Fix)  [-v](Verbose mode");
+            usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/Terje");
             return usage.ToString();
         }
     }

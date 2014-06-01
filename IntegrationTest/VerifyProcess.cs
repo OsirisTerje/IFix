@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using RemoveOldNugetRestore;
 
 namespace IntegrationTest
 {
@@ -75,6 +76,21 @@ namespace IntegrationTest
             Assert.IsTrue(outlines.Lines.Count()==configlinesBefore.Count()+4,"Number of new lines incorrect");
 
         }
+
+        [Test]
+        public void VerifyNotCopyingTargetPathsToConfigWhenOnlyComments()
+        {
+
+            string path = Directory.GetCurrentDirectory() + subpath;
+            string file = path + "/.nuget/nuget2.targets";
+            Assert.IsTrue(File.Exists(file), "Target file doesnt exist");
+            var options = new RemoveOldNugetRestore.Options {Check = true};
+            var sut = new RemoveOldNugetRestore.RemoveOldNugetRestore();
+            var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
+            var outlines = sut.CheckAndCopyNugetPaths(file);
+            Assert.IsNull(outlines);
+        }
+
 
 
         
