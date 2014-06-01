@@ -14,8 +14,8 @@ namespace RemoveOldNugetRestore
         public bool Check { get; set; }
 
 
-        [Option('x',"execute",HelpText="Execute and correct all files with issues")]
-        public bool Execute { get; set; }
+        [Option('f',"fix",HelpText="Fix all files with issues")]
+        public bool Fix { get; set; }
 
         [Option('v',"verbose",HelpText="More verbose output")]
         public bool Verbose { get; set; }
