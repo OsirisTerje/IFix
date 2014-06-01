@@ -188,7 +188,7 @@ namespace RemoveOldNugetRestore
             Console.ForegroundColor = filePaths.Any() ? ConsoleColor.Red : ConsoleColor.Green;
             string msg = "No nuget.target files found";
             if (filePaths.Any())
-                msg = string.Format("Found : {0} nuget.targets file(s)", filePaths.Count());
+                msg = string.Format("{1} : {0} nuget.targets file(s)", filePaths.Count(),Options.Fix?"Fixed":"Found");
             Console.WriteLine(msg);
             Console.ResetColor();
         }
@@ -334,7 +334,7 @@ namespace RemoveOldNugetRestore
                 }
             }
             Console.ForegroundColor = count > 0 ? ConsoleColor.Red : ConsoleColor.Green;
-            Console.WriteLine("{0} {1} solution file(s), out of {2}", Options.Fix ? "Fixing : " : "Found : ",count, slnFilePaths.Length);
+            Console.WriteLine("{0} {1} solution file(s), out of {2}", Options.Fix ? "Fixed : " : "Found : ",count, slnFilePaths.Length);
             Console.ResetColor();
         }
 
