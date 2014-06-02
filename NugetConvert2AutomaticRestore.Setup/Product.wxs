@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include def.wxi?>
+  
+	<Product Id="*" Name="!(loc.ProductName)" 
+					 Language="!(loc.LANG)" 
+					 Version="$(var.Version)" 
+					 Manufacturer="!(loc.CompanyName)" 
+					 UpgradeCode="$(var.UpgradeCode)">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" 
+						 Languages="!(loc.LANG)"
+             Manufacturer="!(loc.CompanyName)" Comments="!(loc.Comments)" 
+             Description="!(loc.Description)" Keywords="!(loc.Keywords)"/>
+    
+    <?include Settings.wxi ?> <!-- Apply our settings -->
+		<?include Conditions.wxi ?> <!-- Perform conditional checks -->		
+    
+    <MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="!(loc.ProductName)" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="Wix.Generated_Project" />
+      <ComponentRef Id="Component1" />
+		</Feature>
+
+    <UIRef Id="WixUI_InstallDir_Inmeta" />
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+        <Directory Id="ProgramFolder" Name="!(loc.ProgramFolder)">
+          <Directory Id="INSTALLDIR" Name="!(loc.ProductName)">
+            <Component Id="Component1"
+                     Guid="{1781A625-8ACB-45E7-A8BA-219D81760B2E}">
+              <CreateFolder />
+              <Environment Id="PATH"
+                           Action="set"
+                           Part="last"
+                           Name="PATH"
+                           Permanent="yes"
+                           System="yes"
+                           Value="[INSTALLDIR]" />
+            </Component>
+          </Directory>
+        </Directory>
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLDIR" />
+   </Fragment>
+
+ 
+</Wix>

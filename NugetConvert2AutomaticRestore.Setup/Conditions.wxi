@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+
+	<!-- Check that we have elevated permissions if installing -->
+	<Property Id="MSIUSEREALADMINDETECTION" Value="0" />
+	<Condition Message="!(loc.Administrator)">Installed OR (Privileged AND AdminUser)</Condition>
+
+</Include>

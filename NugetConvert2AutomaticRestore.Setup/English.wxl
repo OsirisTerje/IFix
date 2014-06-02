@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+	<String Id="LANG">1033</String>
+	<String Id="Comments">RemoveOldNugetRestore Comments</String>
+	<String Id="Description">RemoveOldNugetRestore tool for removing old nuget restore targets and its sideeffects</String>
+	<String Id="Keywords">RemoveOldNugetRestore</String>
+	<String Id="ProductName">RemoveOldNugetRestore</String>
+	<String Id="CompanyName">Inmeta Consulting AS</String>
+  <String Id="ProgramFolder">Inmeta</String>
+	<String Id="DowngradeErrorMessage">A later version is already installed. Setup will now exit.</String>
+	<String Id="Administrator">Need to be admin to run this</String>
+	<String Id="DotNet4">Need .Net 4 or later</String>
+	<String Id="Info1"></String>
+	<String Id="Info2"></String>
+</WixLocalization>
