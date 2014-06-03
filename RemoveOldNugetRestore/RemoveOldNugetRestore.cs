@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using IFix;
 
-namespace RemoveOldNugetRestore
+namespace NuGet
 {
     public class RemoveOldNugetRestore
     {
         private bool changed;
 
-        Options Options { get; set; }
+        NuGetRestoreOptions Options { get; set; }
 
-        public RemoveOldNugetRestore(Options options)
+        public RemoveOldNugetRestore(NuGetRestoreOptions options)
         {
             Options = options;
         }
@@ -21,7 +22,7 @@ namespace RemoveOldNugetRestore
         /// </summary>
         public RemoveOldNugetRestore()
         {
-            Options = new Options();
+            Options = new NuGetRestoreOptions();
         }
 
         public void Execute()

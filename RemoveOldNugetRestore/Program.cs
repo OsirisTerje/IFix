@@ -1,6 +1,7 @@
 ﻿using System;
+using NuGet;
 
-namespace RemoveOldNugetRestore
+namespace IFix
 {
     using System.Reflection;
 
@@ -9,10 +10,34 @@ namespace RemoveOldNugetRestore
         static void Main(string[] args)
         {
             var options = new Options();
-            if (CommandLine.Parser.Default.ParseArguments(args, options) && (options.Fix || options.Check))
+            string invokedverb="";
+            CommonOptions invokedverbinstance=null;
+            if (args == null || args.Length == 0)
             {
-                var oldNugetRestore = new RemoveOldNugetRestore(options);
-                oldNugetRestore.Execute();
+                Console.WriteLine(options.GetUsage());
+                return;
+            }
+                
+            if (CommandLine.Parser.Default.ParseArguments(args, options,(verb,subOptions)=>
+            {
+                invokedverb = verb;
+                invokedverbinstance = (CommonOptions)subOptions;
+            }) )
+            {
+                if (invokedverb == "nugetrestore")
+                {
+                    var nugetoptions = invokedverbinstance as NuGetRestoreOptions;
+                    if (nugetoptions.Fix || nugetoptions.Check)
+                    {
+                        var oldNugetRestore = new RemoveOldNugetRestore(nugetoptions);
+                        oldNugetRestore.Execute();
+                    }
+                    else
+                    {
+                        var msg = nugetoptions.Help();
+                        Console.WriteLine(msg);
+                    }
+                }
             }
             else
             {

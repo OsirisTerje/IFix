@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RemoveOldNugetRestore")]
+[assembly: AssemblyTitle("IFix")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RemoveOldNugetRestore")]
+[assembly: AssemblyProduct("IFix")]
 [assembly: AssemblyCopyright("Copyright ©Inmeta Consulting, Terje Sandstrom  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

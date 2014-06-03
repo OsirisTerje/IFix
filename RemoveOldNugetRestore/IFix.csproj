@@ -7,8 +7,8 @@
     <ProjectGuid>{22ADA2BA-033A-47E0-AD83-8399775DB135}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RemoveOldNugetRestore</RootNamespace>
-    <AssemblyName>RemoveOldNugetRestore</AssemblyName>
+    <RootNamespace>IFix</RootNamespace>
+    <AssemblyName>IFix</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -49,7 +49,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine">
