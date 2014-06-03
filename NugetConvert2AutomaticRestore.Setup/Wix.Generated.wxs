@@ -14,6 +14,15 @@
             <Component Id="cmp91128CC3741BC7E93BE977481D145A4F" Guid="*">
                 <File Id="fil0AED30B2734B9C4819987DB9EC11AD01" KeyPath="yes" Source="$(var.AppProjectDir)\RemoveOldNugetRestore.exe.config" />
             </Component>
+            <Component Id="cmp1293D2E851C1DB6EB950498B6D2E9140" Guid="*">
+                <File Id="fil3854D46CC79C7B4D33227EEDB3773EEB" KeyPath="yes" Source="$(var.AppProjectDir)\RemoveOldNugetRestore.pdb" />
+            </Component>
+            <Component Id="cmp15B4F3ABC339B9B3CD96EE42D4CDD94C" Guid="*">
+                <File Id="filEAA9F8E0D29B9614C23476C25121B558" KeyPath="yes" Source="$(var.AppProjectDir)\RemoveOldNugetRestore.vshost.exe" />
+            </Component>
+            <Component Id="cmpDA8F32E9771E20DF84F9F3EE8E8176B1" Guid="*">
+                <File Id="filA8E60B6C926676D6B9D4AA67C0BB00B1" KeyPath="yes" Source="$(var.AppProjectDir)\RemoveOldNugetRestore.vshost.exe.config" />
+            </Component>
         </DirectoryRef>
     </Fragment>
     <Fragment>
@@ -22,6 +31,9 @@
             <ComponentRef Id="cmp5E3D3348D828484657D3F25D74F6957D" />
             <ComponentRef Id="cmp5AC3245B893E12B66F26E543E68A5AB5" />
             <ComponentRef Id="cmp91128CC3741BC7E93BE977481D145A4F" />
+            <ComponentRef Id="cmp1293D2E851C1DB6EB950498B6D2E9140" />
+            <ComponentRef Id="cmp15B4F3ABC339B9B3CD96EE42D4CDD94C" />
+            <ComponentRef Id="cmpDA8F32E9771E20DF84F9F3EE8E8176B1" />
         </ComponentGroup>
     </Fragment>
 </Wix>
