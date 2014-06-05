@@ -44,6 +44,9 @@ namespace IFix
         [VerbOption("ca0053")]
         public FixCA0053Options FixCa0053Options { get; set; }
 
+        [VerbOption("gitignore")]
+        public GitIgnoreOptions GitIgnoreOptions { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {
@@ -53,7 +56,7 @@ namespace IFix
             usage.AppendLine("IFix: Fixes common solution and project file issues");
             usage.AppendLine("Verbs:  NuGetRestore: Converts all projects in a directory tree to remove old nuget restore, by removing nuget.target and exe files and converts all csproj and sln files.");
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053");
+            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore");
             usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/Terje");
             usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             
@@ -75,6 +78,23 @@ namespace IFix
         public override void Execute()
         {
             var fixer = new FixCA0053();
+            fixer.Execute(this);
+        }
+    }
+
+    public class GitIgnoreOptions : CommonOptions
+    {
+        [Option('l', "latest", HelpText = "Get information from the latest public gitnore file")]
+        public bool Latest { get; set; }
+
+        [Option('r', "replace", HelpText = "Replace the existing instead of merging in the latest")]
+        public bool Replace { get; set; }
+
+        
+
+        public override void Execute()
+        {
+            var fixer = new GitIgnore();
             fixer.Execute(this);
         }
     }
