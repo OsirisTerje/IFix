@@ -85,7 +85,7 @@ namespace IntegrationTest
             string path = Directory.GetCurrentDirectory() + subpath;
             string file = path + "/.nuget/nuget2.targets";
             Assert.IsTrue(File.Exists(file), "Target file doesnt exist");
-            var options = new Options {Fix = true};
+            var options = new NuGetRestoreOptions {Fix  = true};
             var sut = new RemoveOldNugetRestore();
             var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
             var outlines = sut.CheckAndCopyNugetPaths(file);
