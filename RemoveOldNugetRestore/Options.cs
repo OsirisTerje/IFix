@@ -1,6 +1,8 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Text;
 using CommandLine;
+using NuGet;
 
 namespace IFix
 {
@@ -28,6 +30,8 @@ namespace IFix
                 "Use option -v or --verbose in addition to get more information.  Default for this is false.");
             return usage.ToString();
         }
+
+        public abstract void Execute();
     }
 
     public class Options
@@ -59,9 +63,19 @@ namespace IFix
 
     public class NuGetRestoreOptions : CommonOptions
     {
+        public override void Execute()
+        {
+            var fixer = new RemoveOldNugetRestore();
+            fixer.Execute(this);
+        }
     }
 
     public class FixCA0053Options : CommonOptions
     {
+        public override void Execute()
+        {
+            var fixer = new FixCA0053();
+            fixer.Execute(this);
+        }
     }
 }

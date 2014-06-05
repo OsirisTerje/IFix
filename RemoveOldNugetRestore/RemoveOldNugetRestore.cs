@@ -12,22 +12,9 @@ namespace NuGet
 
         NuGetRestoreOptions Options { get; set; }
 
-        public RemoveOldNugetRestore(NuGetRestoreOptions options)
+        public void Execute(NuGetRestoreOptions options)
         {
             Options = options;
-        }
-
-        /// <summary>
-        /// For testing
-        /// </summary>
-        public RemoveOldNugetRestore()
-        {
-            Options = new NuGetRestoreOptions();
-        }
-
-        public void Execute()
-        {
-
 
             string here = Directory.GetCurrentDirectory();
 

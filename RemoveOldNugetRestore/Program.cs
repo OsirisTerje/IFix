@@ -1,10 +1,7 @@
 ﻿using System;
-using NuGet;
 
 namespace IFix
 {
-    using System.Reflection;
-
     class Program
     {
         static void Main(string[] args)
@@ -24,37 +21,21 @@ namespace IFix
                 invokedverbinstance = (CommonOptions)subOptions;
             }) )
             {
-                if (invokedverb == "nugetrestore")
+                if (invokedverbinstance != null)
                 {
-                    var nugetoptions = invokedverbinstance as NuGetRestoreOptions;
-                    if (nugetoptions!=null && (nugetoptions.Fix || nugetoptions.Check))
+                    if (invokedverbinstance.Fix || invokedverbinstance.Check)
                     {
-                        var oldNugetRestore = new RemoveOldNugetRestore(nugetoptions);
-                        oldNugetRestore.Execute();
+                        invokedverbinstance.Execute();
                     }
                     else
                     {
-                        var msg = nugetoptions.Help();
-                        Console.WriteLine(msg);
-                    }
-                }
-                else if (invokedverb == "ca0053")
-                {
-                    var coptions = invokedverbinstance as FixCA0053Options;
-                    if (coptions!=null && (coptions.Fix || coptions.Check))
-                    {
-                        var fixer = new FixCA0053();
-                        fixer.Execute(coptions);
-                    }
-                    else
-                    {
-                        var msg = options.GetUsage();
+                        var msg = invokedverbinstance.Help();
                         Console.WriteLine(msg);
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Unknown command");
+                    Console.WriteLine("Unknown command : " + invokedverb);
                 }
             }
             else
