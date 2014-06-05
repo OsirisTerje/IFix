@@ -29,11 +29,13 @@ namespace IFix
                 try
                 {
                     
-                    if (changed && options.Fix)
+                    if (changed)
                     {
                         if (fix)
                             File.WriteAllText(file, text);
-                        Console.WriteLine((fix)?"Fixed   :":"Checked   :" + file);
+                        Console.ForegroundColor=ConsoleColor.Red;
+                        Console.WriteLine((fix)?"Fixed   :":"Found in   :" + file);
+                        Console.ResetColor();
                         fixedup++;
                     }
                     else
@@ -49,7 +51,7 @@ namespace IFix
                 }
 
             }
-            Console.WriteLine((fix) ? "Fixed   :" : "Checked   :" + fixedup);
+            Console.WriteLine((fix) ? "Fixed   :" : "Found   :" + fixedup);
             Console.WriteLine("Skipped : " + skipped);
             if (nowrite > 0)
                 Console.WriteLine("Unable to write :" + nowrite);

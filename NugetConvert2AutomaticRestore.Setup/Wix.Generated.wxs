@@ -17,9 +17,6 @@
             <Component Id="cmp0B5CF81FFC431E8F8C8061D95CD90F32" Guid="*">
                 <File Id="fil1919D012D9726452EC0172083991370E" KeyPath="yes" Source="$(var.AppProjectDir)\IFix.pdb" />
             </Component>
-            <Component Id="cmpB2264C61EB06A2B7C056E1B0C6EC0746" Guid="*">
-                <File Id="fil372BBABA30F3A671BA85CA8E88C921E5" KeyPath="yes" Source="$(var.AppProjectDir)\IFix.vshost.exe" />
-            </Component>
             <Component Id="cmp294999D218C6A6FF32C3D2A3781417EA" Guid="*">
                 <File Id="filB96B0D1614ACDA4CB34370437B4F691E" KeyPath="yes" Source="$(var.AppProjectDir)\IFix.vshost.exe.config" />
             </Component>
@@ -50,7 +47,6 @@
             <ComponentRef Id="cmp9C10E065CAA211E29C3F463220F708D7" />
             <ComponentRef Id="cmp9721F1F9E58B3B5A13113D4FFDDC760A" />
             <ComponentRef Id="cmp0B5CF81FFC431E8F8C8061D95CD90F32" />
-            <ComponentRef Id="cmpB2264C61EB06A2B7C056E1B0C6EC0746" />
             <ComponentRef Id="cmp294999D218C6A6FF32C3D2A3781417EA" />
             <ComponentRef Id="cmpB8AD0F8170F3A441FCD08F0B36A1ACA3" />
             <ComponentRef Id="cmp5AC3245B893E12B66F26E543E68A5AB5" />

@@ -48,9 +48,13 @@ namespace IFix
                     }
                     else
                     {
-                        var msg = coptions.Help();
+                        var msg = options.GetUsage();
                         Console.WriteLine(msg);
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Unknown command");
                 }
             }
             else

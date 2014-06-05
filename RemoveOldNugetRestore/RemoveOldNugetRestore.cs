@@ -48,7 +48,7 @@ namespace NuGet
 
                 if (Options.Fix)
                     File.Delete(file);
-                Console.WriteLine("Deleting " + file);
+                Console.WriteLine((Options.Fix)?"Deleting ":"Found in " + file);
             }
             int count = enumerable.Count();
             string msg = ((Options.Fix) ? "Removed :" : "Found :") + count+" nuget.exe file(s)";
