@@ -27,7 +27,7 @@ namespace IFix
                 if (invokedverb == "nugetrestore")
                 {
                     var nugetoptions = invokedverbinstance as NuGetRestoreOptions;
-                    if (nugetoptions.Fix || nugetoptions.Check)
+                    if (nugetoptions!=null && (nugetoptions.Fix || nugetoptions.Check))
                     {
                         var oldNugetRestore = new RemoveOldNugetRestore(nugetoptions);
                         oldNugetRestore.Execute();
@@ -35,6 +35,20 @@ namespace IFix
                     else
                     {
                         var msg = nugetoptions.Help();
+                        Console.WriteLine(msg);
+                    }
+                }
+                else if (invokedverb == "ca0053")
+                {
+                    var coptions = invokedverbinstance as FixCA0053Options;
+                    if (coptions!=null && (coptions.Fix || coptions.Check))
+                    {
+                        var fixer = new FixCA0053();
+                        fixer.Execute(coptions);
+                    }
+                    else
+                    {
+                        var msg = coptions.Help();
                         Console.WriteLine(msg);
                     }
                 }

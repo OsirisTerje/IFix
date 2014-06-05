@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FixCA0053.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />

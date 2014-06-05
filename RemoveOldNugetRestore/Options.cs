@@ -34,8 +34,11 @@ namespace IFix
     {
        
 
-        [VerbOption("NuGetRestore")]
+        [VerbOption("nugetrestore")]
         public NuGetRestoreOptions NuGetRestore { get; set; }
+
+        [VerbOption("ca0053")]
+        public FixCA0053Options FixCa0053Options { get; set; }
 
         [HelpOption]
         public string GetUsage()
@@ -45,7 +48,8 @@ namespace IFix
             usage.AppendLine("IFix  "+version);
             usage.AppendLine("IFix: Fixes common solution and project file issues");
             usage.AppendLine("Verbs:  NuGetRestore: Converts all projects in a directory tree to remove old nuget restore, by removing nuget.target and exe files and converts all csproj and sln files.");
-            usage.AppendLine("Usage: IFix  NuGetRestore [-c](Check only) [-f](Fix)  [-v](Verbose mode");
+            usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
+            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053");
             usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/Terje");
             usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             
@@ -54,6 +58,10 @@ namespace IFix
     }
 
     public class NuGetRestoreOptions : CommonOptions
+    {
+    }
+
+    public class FixCA0053Options : CommonOptions
     {
     }
 }
