@@ -64,11 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FixCA0053.cs" />
+    <Compile Include="gitignore.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveOldNugetRestore.cs" />
+    <Compile Include="Write.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
