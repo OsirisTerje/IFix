@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RemoveOldNugetRestore;
+using IFix;
+using NuGet;
 using NUnit.Framework;
 
 namespace RestoreTests
@@ -18,7 +19,7 @@ namespace RestoreTests
         public void LineHasComment(string line,bool expected)
         {
 
-            var sut = new RemoveOldNugetRestore.RemoveOldNugetRestore();
+            var sut = new RemoveOldNugetRestore();
 
             var result = sut.IsCommentLine(line,false);
             Assert.AreEqual(expected,result,"Fails "+line);
@@ -30,7 +31,7 @@ namespace RestoreTests
         [TestCase("            <PackageSource Include=\"https://www.nuget.org/api/v2/\" />","https://www.nuget.org/api/v2/")]
         public void LineHasExtractableUrl(string line, string expected)
         {
-            var sut = new RemoveOldNugetRestore.RemoveOldNugetRestore();
+            var sut = new RemoveOldNugetRestore();
 
             var result = sut.ExtractUrl(line);
             Assert.AreEqual(expected,result,"Failed: "+line);
