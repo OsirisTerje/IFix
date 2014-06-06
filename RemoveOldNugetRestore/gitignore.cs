@@ -10,17 +10,21 @@ namespace IFix
 {
     public class GitIgnore
     {
-        private CommonOptions Options { get; set; }
+        private GitIgnoreOptions Options { get; set; }
 
-        public void Execute(CommonOptions options)
+        public void Execute(GitIgnoreOptions options)
         {
             Options = options;
             string here = Directory.GetCurrentDirectory();
+            var temp = Path.GetTempPath();
+            var tempgitignore = temp + "/VisualStudio.gitignore";
+            DownloadGitIgnore(tempgitignore);
+            var stdGitIgnore = File.ReadAllLines(tempgitignore);
             string[] repositories = Directory.GetDirectories(here, ".git", SearchOption.AllDirectories);
             foreach (var repository in repositories)
             {
-                var foldertocheck = repository + "/..";
-                var filetocheck = foldertocheck + "/.gitgnore";
+                var dir = Directory.GetParent(repository);
+                var filetocheck = dir + @"/.gitignore";
                 if (File.Exists(filetocheck))
                 {
                     var lines = File.ReadAllLines(filetocheck).ToList();
@@ -29,9 +33,7 @@ namespace IFix
                         Writer.WriteRed("Missing packages in ignorelist");
                         if (Options.Fix)
                         {
-                            lines.Add(@"# NuGet Packages");
-                            lines.Add(@"packages/*");
-                            lines.Add(@"*.nupkg");
+                            AddMissingInfo(lines);
                             File.WriteAllLines(filetocheck, lines);
                             Writer.Write("Fixed " + filetocheck);
                         }
@@ -56,6 +58,13 @@ namespace IFix
                 }
             }
 
+        }
+
+        private void AddMissingInfo(ICollection<string> lines)
+        {
+            lines.Add(@"# NuGet Packages");
+            lines.Add(@"packages/*");
+            lines.Add(@"*.nupkg");
         }
 
         private bool CheckIfPackages(IEnumerable<string> lines)
