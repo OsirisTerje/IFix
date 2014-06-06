@@ -84,7 +84,10 @@ namespace IFix
 
     public class GitIgnoreOptions : CommonOptions
     {
-        [Option('l', "latest", HelpText = "Get information from the latest public gitnore file")]
+        [Option('a', "add", HelpText = "Only add latest standard public .gitignore when missing")]
+        public bool Add { get; set; }
+
+        [Option('l', "latest", HelpText = "Get information from the latest standard public gitnore file")]
         public bool Latest { get; set; }
 
         [Option('r', "replace", HelpText = "Replace the existing instead of merging in the latest")]

@@ -30,7 +30,7 @@ namespace IFix
                     var lines = File.ReadAllLines(filetocheck).ToList();
                     if (!CheckIfPackages(lines))
                     {
-                        Writer.WriteRed("Missing packages in ignorelist");
+                        Writer.WriteRed("Missing 'packages/' in ignorelist for " + filetocheck);
                         if (Options.Fix)
                         {
                             AddMissingInfo(lines);
