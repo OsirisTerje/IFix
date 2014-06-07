@@ -25,60 +25,107 @@ namespace IFix
             {
                 var dir = Directory.GetParent(repository);
                 var filetocheck = dir + @"/.gitignore";
-                if (File.Exists(filetocheck))
+                if (Command.Check || Command.Fix || Command.Add)
                 {
-                    var lines = File.ReadAllLines(filetocheck).ToList();
-                    if (!CheckIfPackages(lines))
+                    if (File.Exists(filetocheck))
                     {
-                        Writer.WriteRed("Missing 'packages/' in ignorelist for " + filetocheck);
-                        if (Command.Fix && !Command.Add)
+                        var lines = File.ReadAllLines(filetocheck).ToList();
+                        if (!CheckIfPackages(lines))
                         {
-                            AddMissingInfo(lines);
-                            File.WriteAllLines(filetocheck, lines);
-                            Writer.Write("Fixed " + filetocheck);
-                        }
+                            Writer.WriteRed("Missing 'packages/' in ignorelist for " + filetocheck);
+                            if (Command.Fix && !Command.Add)
+                            {
+                                AddMissingInfo(lines);
+                                File.WriteAllLines(filetocheck, lines);
+                                Writer.Write("Fixed " + filetocheck);
+                            }
 
+                        }
+                        else
+                        {
+                            if (Command.Verbose)
+                            {
+                                Writer.WriteGreen("Ok : " + filetocheck);
+                            }
+                        }
                     }
                     else
                     {
-                        if (Command.Verbose)
+                        Writer.WriteRed("No .gitignore in " + repository);
+                        if (Command.Fix || Command.Add)
                         {
-                            Writer.WriteGreen("Ok : " + filetocheck);
+                            File.WriteAllLines(filetocheck, stdGitIgnore);
+                            Writer.Write("Added " + filetocheck);
                         }
                     }
                 }
-                else
+                else // Commands replace or latest
                 {
-                    Writer.WriteRed("No .gitignore in " + repository);
-                    if (Command.Fix)
+                    if (Command.Replace)
                     {
-                        File.WriteAllLines(filetocheck,stdGitIgnore);
-                        Writer.Write("Added " + filetocheck);
+                        File.WriteAllLines(filetocheck, stdGitIgnore);
+                        Writer.Write("Replaced gitignore with standard for " + dir);
+                    }
+                    else
+                    {
+                        if (File.Exists(filetocheck))
+                        {
+                            var lines = File.ReadAllLines(filetocheck).ToList();
+                            var missing = CheckIfOurContainsStd(lines, stdGitIgnore).ToList();
+                            if (missing.Any())
+                            {
+                                lines.AddRange(missing);
+                                File.WriteAllLines(filetocheck, lines);
+                                Writer.Write("Added "+missing.Count()+" lines to .gitignore for "+dir);
+                            }
+                            else 
+                                Writer.Write("No change needed for "+dir);
+                        }
+                        else
+                        {
+                            File.WriteAllLines(filetocheck, stdGitIgnore);
+                            Writer.Write("Added gitignore for "+dir);
+                        }
                     }
                 }
             }
 
         }
 
-        private void AddMissingInfo(ICollection<string> lines)
+        public void AddMissingInfo(ICollection<string> lines)
         {
             lines.Add(@"# NuGet Packages");
             lines.Add(@"packages/*");
             lines.Add(@"*.nupkg");
+            lines.Add(@"!packages/build/");
         }
 
-        private bool CheckIfPackages(IEnumerable<string> lines)
+        public bool CheckIfPackages(IEnumerable<string> lines)
         {
-            return lines.Any(line => line.Trim() == "packages/");
+            return lines.Any(line => line.Trim()=="packages/" || line.Trim()=="packages/*");
         }
 
-        private void DownloadGitIgnore(string path)
+        public void DownloadGitIgnore(string path)
         {
             using (var client = new WebClient())
             {
-                client.DownloadFile("https://github.com/github/gitignore/blob/master/VisualStudio.gitignore",
+                client.DownloadFile("https://github.com/github/gitignore/raw/master/VisualStudio.gitignore",
                     path);
             }
         }
+
+        public bool CheckIfNotEqual(IEnumerable<string> ourGitIgnore, IEnumerable<string> stdGitIgnore)
+        {
+            if (ourGitIgnore.Count() != stdGitIgnore.Count())
+                return false;
+            return true;
+        }
+
+        public IEnumerable<string> CheckIfOurContainsStd(IEnumerable<string> ourGitIgnore, IEnumerable<string> stdGitIgnore)
+        {
+            return stdGitIgnore.Where(line => !ourGitIgnore.Contains(line)).ToList();
+        }
+
+        
     }
 }

@@ -68,8 +68,8 @@ namespace IFix
     {
         public override void Execute()
         {
-            var fixer = new RemoveOldNugetRestore();
-            fixer.Execute(this);
+            var fixer = new RemoveOldNugetRestore(this);
+            fixer.Execute();
         }
     }
 
@@ -87,8 +87,8 @@ namespace IFix
         [Option('a', "add", HelpText = "Only add latest standard public .gitignore when missing, don't fix up the others.")]
         public bool Add { get; set; }
 
-        [Option('l', "latest", HelpText = "Get and merge information from the latest standard public gitnore file")]
-        public bool Latest { get; set; }
+        [Option('m', "merge", HelpText = "Get and merge information from the  standard public gitnore file")]
+        public bool Merge { get; set; }
 
         [Option('r', "replace", HelpText = "Replace the existing instead of merging in the latest, applies to all gitignore files")]
         public bool Replace { get; set; }

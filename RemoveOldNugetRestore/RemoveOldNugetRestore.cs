@@ -12,9 +12,14 @@ namespace NuGet
 
         NuGetRestoreCommand Command { get; set; }
 
-        public void Execute(NuGetRestoreCommand command)
+        public RemoveOldNugetRestore(NuGetRestoreCommand command)
         {
             Command = command;
+        }
+
+        public void Execute()
+        {
+            
 
             string here = Directory.GetCurrentDirectory();
 

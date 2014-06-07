@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30219.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestoreTests", "RestoreTests\RestoreTests.csproj", "{892BB4F7-4BC7-438F-A6B9-A22D5F64228B}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFix", "RemoveOldNugetRestore\IFix.csproj", "{22ADA2BA-033A-47E0-AD83-8399775DB135}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "IFix.Setup", "NugetConvert2AutomaticRestore.Setup\IFix.Setup.wixproj", "{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitIgnoreTests", "GitIgnoreTests\GitIgnoreTests.csproj", "{EFC21748-5504-4B97-92F0-4B7F537FD5F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,12 +60,22 @@ Global
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|x86.ActiveCfg = Debug|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|x86.Build.0 = Debug|x86
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Any CPU.ActiveCfg = Release|x86
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|x86.ActiveCfg = Release|x86
 		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|x86.Build.0 = Release|x86
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EFC21748-5504-4B97-92F0-4B7F537FD5F7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

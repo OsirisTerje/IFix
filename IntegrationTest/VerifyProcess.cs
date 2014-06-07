@@ -9,13 +9,25 @@ namespace IntegrationTest
     [TestFixture, PathDependent]
     public class VerifyProcess
     {
-        
+
+
+        NuGetRestoreCommand Command { get; set; }
+
         private const string subpath = "/../../../TestProject/TestProject";
+
+
+        [SetUp]
+        public void Init()
+        {
+            Command = new NuGetRestoreCommand();
+            Command.Check = true;
+        }
+
 
         [Test, Integration]
         public void CheckDeletingNugetExe()
         {
-            var v = new RemoveOldNugetRestore();
+            var v = new RemoveOldNugetRestore(Command);
             string path = Directory.GetCurrentDirectory() + subpath ;
             string fileisat = path + "/.nuget/nuget.exe";
             bool exist = File.Exists(fileisat);
@@ -39,8 +51,7 @@ namespace IntegrationTest
         {
             string path = Directory.GetCurrentDirectory() + subpath;
             var lines = File.ReadAllLines(path + "/TestProject.csproj");
-
-            var sut = new RemoveOldNugetRestore();
+            var sut = new RemoveOldNugetRestore(Command);
             var outlines = sut.FixImportAndRestorePackagesInCsproj(lines, path + "/TestProject.csproj");
             
             Assert.IsTrue(outlines.Count()<lines.Count());
@@ -57,7 +68,7 @@ namespace IntegrationTest
             string path = Directory.GetCurrentDirectory() + subpath;
             var lines = File.ReadAllLines(path + "/TestProject.csproj");
 
-            var sut = new RemoveOldNugetRestore();
+            var sut = new RemoveOldNugetRestore(Command);
             var outlines = sut.FixTargetInCsproj(lines);
             Assert.IsTrue(lines.Count()==outlines.Count()+6);
 
@@ -70,7 +81,7 @@ namespace IntegrationTest
             string path = Directory.GetCurrentDirectory() + subpath;
             string file = path + "/.nuget/nuget.targets";
             Assert.IsTrue(File.Exists(file),"Target file doesnt exist");
-            var sut = new RemoveOldNugetRestore();
+            var sut = new RemoveOldNugetRestore(Command);
             var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
             var outlines = sut.CheckAndCopyNugetPaths(file);
             Assert.IsNotNull(outlines,"Didnt find anything");
@@ -85,8 +96,8 @@ namespace IntegrationTest
             string path = Directory.GetCurrentDirectory() + subpath;
             string file = path + "/.nuget/nuget2.targets";
             Assert.IsTrue(File.Exists(file), "Target file doesnt exist");
-            var options = new NuGetRestoreCommand {Fix  = true};
-            var sut = new RemoveOldNugetRestore();
+            Command.Fix = true;
+            var sut = new RemoveOldNugetRestore(Command);
             var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
             var outlines = sut.CheckAndCopyNugetPaths(file);
             Assert.IsNull(outlines);
