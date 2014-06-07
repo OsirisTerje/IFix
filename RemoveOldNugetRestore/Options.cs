@@ -39,13 +39,13 @@ namespace IFix
        
 
         [VerbOption("nugetrestore")]
-        public NuGetRestoreOptions NuGetRestore { get; set; }
+        public NuGetRestoreCommand NuGetRestore { get; set; }
 
         [VerbOption("ca0053")]
-        public FixCA0053Options FixCa0053Options { get; set; }
+        public FixCA0053Command FixCa0053Command { get; set; }
 
         [VerbOption("gitignore")]
-        public GitIgnoreOptions GitIgnoreOptions { get; set; }
+        public GitIgnoreCommand GitIgnoreCommand { get; set; }
 
         [HelpOption]
         public string GetUsage()
@@ -64,7 +64,7 @@ namespace IFix
         }
     }
 
-    public class NuGetRestoreOptions : CommonOptions
+    public class NuGetRestoreCommand : CommonOptions
     {
         public override void Execute()
         {
@@ -73,7 +73,7 @@ namespace IFix
         }
     }
 
-    public class FixCA0053Options : CommonOptions
+    public class FixCA0053Command : CommonOptions
     {
         public override void Execute()
         {
@@ -82,15 +82,15 @@ namespace IFix
         }
     }
 
-    public class GitIgnoreOptions : CommonOptions
+    public class GitIgnoreCommand : CommonOptions
     {
-        [Option('a', "add", HelpText = "Only add latest standard public .gitignore when missing")]
+        [Option('a', "add", HelpText = "Only add latest standard public .gitignore when missing, don't fix up the others.")]
         public bool Add { get; set; }
 
-        [Option('l', "latest", HelpText = "Get information from the latest standard public gitnore file")]
+        [Option('l', "latest", HelpText = "Get and merge information from the latest standard public gitnore file")]
         public bool Latest { get; set; }
 
-        [Option('r', "replace", HelpText = "Replace the existing instead of merging in the latest")]
+        [Option('r', "replace", HelpText = "Replace the existing instead of merging in the latest, applies to all gitignore files")]
         public bool Replace { get; set; }
 
         

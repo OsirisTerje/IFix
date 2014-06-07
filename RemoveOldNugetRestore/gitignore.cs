@@ -10,11 +10,11 @@ namespace IFix
 {
     public class GitIgnore
     {
-        private GitIgnoreOptions Options { get; set; }
+        private GitIgnoreCommand Command { get; set; }
 
-        public void Execute(GitIgnoreOptions options)
+        public void Execute(GitIgnoreCommand command)
         {
-            Options = options;
+            Command = command;
             string here = Directory.GetCurrentDirectory();
             var temp = Path.GetTempPath();
             var tempgitignore = temp + "/VisualStudio.gitignore";
@@ -31,7 +31,7 @@ namespace IFix
                     if (!CheckIfPackages(lines))
                     {
                         Writer.WriteRed("Missing 'packages/' in ignorelist for " + filetocheck);
-                        if (Options.Fix)
+                        if (Command.Fix && !Command.Add)
                         {
                             AddMissingInfo(lines);
                             File.WriteAllLines(filetocheck, lines);
@@ -41,7 +41,7 @@ namespace IFix
                     }
                     else
                     {
-                        if (Options.Verbose)
+                        if (Command.Verbose)
                         {
                             Writer.WriteGreen("Ok : " + filetocheck);
                         }
@@ -50,9 +50,9 @@ namespace IFix
                 else
                 {
                     Writer.WriteRed("No .gitignore in " + repository);
-                    if (Options.Fix)
+                    if (Command.Fix)
                     {
-                        DownloadGitIgnore(filetocheck);
+                        File.WriteAllLines(filetocheck,stdGitIgnore);
                         Writer.Write("Added " + filetocheck);
                     }
                 }

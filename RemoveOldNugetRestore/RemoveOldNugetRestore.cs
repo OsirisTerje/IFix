@@ -10,11 +10,11 @@ namespace NuGet
     {
         private bool changed;
 
-        NuGetRestoreOptions Options { get; set; }
+        NuGetRestoreCommand Command { get; set; }
 
-        public void Execute(NuGetRestoreOptions options)
+        public void Execute(NuGetRestoreCommand command)
         {
-            Options = options;
+            Command = command;
 
             string here = Directory.GetCurrentDirectory();
 
@@ -33,12 +33,12 @@ namespace NuGet
             foreach (var file in enumerable)
             {
 
-                if (Options.Fix)
+                if (Command.Fix)
                     File.Delete(file);
-                Console.WriteLine((Options.Fix)?"Deleting ":"Found in " + file);
+                Console.WriteLine((Command.Fix)?"Deleting ":"Found in " + file);
             }
             int count = enumerable.Count();
-            string msg = ((Options.Fix) ? "Removed :" : "Found :") + count+" nuget.exe file(s)";
+            string msg = ((Command.Fix) ? "Removed :" : "Found :") + count+" nuget.exe file(s)";
             if (count == 0)
                 msg = "No nuget.exe files found";
             Console.ForegroundColor = (count > 0) ? ConsoleColor.Red : ConsoleColor.Green;
@@ -52,8 +52,8 @@ namespace NuGet
             int skipped = 0;
             int fixedup = 0;
             int nowrite = 0;
-            string fixOrCheck = (Options.Fix) ? "Fixed" : "Found";
-            Console.WriteLine("{0} csproj files", Options.Fix ? "Fixing" : "Checking");
+            string fixOrCheck = (Command.Fix) ? "Fixed" : "Found";
+            Console.WriteLine("{0} csproj files", Command.Fix ? "Fixing" : "Checking");
             var filePaths = Directory.GetFiles(here, "*.csproj",
                 SearchOption.AllDirectories);
             foreach (var file in filePaths)
@@ -66,7 +66,7 @@ namespace NuGet
                 {
                     if (changed)
                     {
-                        if (Options.Fix)
+                        if (Command.Fix)
                             File.WriteAllLines(file, output2);
                         fixedup++;
                     }
@@ -74,7 +74,7 @@ namespace NuGet
                     {
                         skipped++;
                     }
-                    if (changed || Options.Verbose)
+                    if (changed || Command.Verbose)
                         Console.WriteLine("{0} : {1}", (changed) ? fixOrCheck : "Skipped", file);
                 }
                 catch
@@ -94,7 +94,7 @@ namespace NuGet
                 Console.WriteLine("Unable to write :" + nowrite);
             int total = fixedup + skipped;
             Console.WriteLine("Total files checked : " + total);
-            Console.WriteLine("Finished {0} csproj files", Options.Fix ? "fixing" : "checking");
+            Console.WriteLine("Finished {0} csproj files", Command.Fix ? "fixing" : "checking");
         }
 
         public IEnumerable<string> FixImportAndRestorePackagesInCsproj(IEnumerable<string> lines, string file)
@@ -113,7 +113,7 @@ namespace NuGet
                 else
                 {
                     var msg = string.Format("{2} {0} in {1}",
-                        line.Contains("Import") ? "Import Project line" : "RestorePackages line", file, Options.Fix ? "Removed " : "To be removed ");
+                        line.Contains("Import") ? "Import Project line" : "RestorePackages line", file, Command.Fix ? "Removed " : "To be removed ");
                     Console.WriteLine(msg);
                     changed = true;
                 }
@@ -164,19 +164,19 @@ namespace NuGet
                     var cf = CheckAndCopyNugetPaths(file);
                     if (cf != null)
                     {
-                        if (Options.Fix)
+                        if (Command.Fix)
                             File.WriteAllLines(cf.Name, cf.Lines);
-                        Console.WriteLine("{2} info from target file {0} to config file {1})", file, cf.Name, Options.Fix ? "Copied" : "Found to copy");
+                        Console.WriteLine("{2} info from target file {0} to config file {1})", file, cf.Name, Command.Fix ? "Copied" : "Found to copy");
                     }
                 }
-                if (Options.Fix)
+                if (Command.Fix)
                     File.Delete(file);
-                Console.WriteLine("{1} file: {0}", file, Options.Fix ? "Deleted" : "Found to delete");
+                Console.WriteLine("{1} file: {0}", file, Command.Fix ? "Deleted" : "Found to delete");
             }
             Console.ForegroundColor = filePaths.Any() ? ConsoleColor.Red : ConsoleColor.Green;
             string msg = "No nuget.target files found";
             if (filePaths.Any())
-                msg = string.Format("{1} : {0} nuget.targets file(s)", filePaths.Count(),Options.Fix?"Fixed":"Found");
+                msg = string.Format("{1} : {0} nuget.targets file(s)", filePaths.Count(),Command.Fix?"Fixed":"Found");
             Console.WriteLine(msg);
             Console.ResetColor();
         }
@@ -301,7 +301,7 @@ namespace NuGet
         private void FixSolutionFiles(string here)
         {
 
-            Console.WriteLine("{0} solution files", Options.Fix ? "Fixing" : "Checking");
+            Console.WriteLine("{0} solution files", Command.Fix ? "Fixing" : "Checking");
             int count = 0;
             string[] slnFilePaths = Directory.GetFiles(here, "*.sln", SearchOption.AllDirectories);
             foreach (var file in slnFilePaths)
@@ -321,19 +321,19 @@ namespace NuGet
                 }
                 if (found)
                 {
-                    if (Options.Fix)
+                    if (Command.Fix)
                         File.WriteAllLines(file, outlines);
                     count++;
                 }
-                if ((found && Options.Fix)|| Options.Verbose)
+                if ((found && Command.Fix)|| Command.Verbose)
                 {
                     string msg = string.Format("{0} checked. {1}", file,
-                        found ? "Nuget.target" + (Options.Fix ? " removed" : " found") : "Skipped, nothing found");
+                        found ? "Nuget.target" + (Command.Fix ? " removed" : " found") : "Skipped, nothing found");
                     Console.WriteLine(msg);
                 }
             }
             Console.ForegroundColor = count > 0 ? ConsoleColor.Red : ConsoleColor.Green;
-            string msg2 = string.Format("{0} {1} solution file(s), out of {2}", Options.Fix ? "Fixed : " : "Found : ",count, slnFilePaths.Length);
+            string msg2 = string.Format("{0} {1} solution file(s), out of {2}", Command.Fix ? "Fixed : " : "Found : ",count, slnFilePaths.Length);
             if (count == 0)
                 msg2 = string.Format("No issues found in {0} solution file(s) ", slnFilePaths.Length);
             Console.WriteLine(msg2);
