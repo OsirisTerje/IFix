@@ -16,10 +16,7 @@ namespace IFix
         {
             Command = command;
             string here = Directory.GetCurrentDirectory();
-            var temp = Path.GetTempPath();
-            var tempgitignore = temp + "/VisualStudio.gitignore";
-            DownloadGitIgnore(tempgitignore);
-            var stdGitIgnore = File.ReadAllLines(tempgitignore);
+            var stdGitIgnore = RetrieveStdGitIgnore().ToList();
             string[] repositories = Directory.GetDirectories(here, ".git", SearchOption.AllDirectories);
             foreach (var repository in repositories)
             {
@@ -59,7 +56,7 @@ namespace IFix
                         }
                     }
                 }
-                else // Commands replace or latest
+                else // Commands replace or merge
                 {
                     if (Command.Replace)
                     {
@@ -90,6 +87,15 @@ namespace IFix
                 }
             }
 
+        }
+
+        private IEnumerable<string> RetrieveStdGitIgnore()
+        {
+            var temp = Path.GetTempPath();
+            var tempgitignore = temp + "/VisualStudio.gitignore";
+            DownloadGitIgnore(tempgitignore);
+            var stdGitIgnore = File.ReadAllLines(tempgitignore);
+            return stdGitIgnore;
         }
 
         public void AddMissingInfo(ICollection<string> lines)
