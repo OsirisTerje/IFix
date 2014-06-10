@@ -31,7 +31,7 @@ namespace IFix
             return usage.ToString();
         }
 
-        public abstract void Execute();
+        public abstract int Execute();
     }
 
     public class Options
@@ -66,19 +66,19 @@ namespace IFix
 
     public class NuGetRestoreCommand : CommonOptions
     {
-        public override void Execute()
+        public override int Execute()
         {
             var fixer = new RemoveOldNugetRestore(this);
-            fixer.Execute();
+            return fixer.Execute();
         }
     }
 
     public class FixCA0053Command : CommonOptions
     {
-        public override void Execute()
+        public override int Execute()
         {
             var fixer = new FixCA0053();
-            fixer.Execute(this);
+            return fixer.Execute(this);
         }
     }
 
@@ -95,10 +95,10 @@ namespace IFix
 
         
 
-        public override void Execute()
+        public override int Execute()
         {
             var fixer = new GitIgnore();
-            fixer.Execute(this);
+            return fixer.Execute(this);
         }
     }
 }

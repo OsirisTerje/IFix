@@ -17,20 +17,21 @@ namespace NuGet
             Command = command;
         }
 
-        public void Execute()
+        public int Execute()
         {
             
 
             string here = Directory.GetCurrentDirectory();
+            int status = 0;
+            status += RemoveAllNugetTargetFiles(here);
+            status += RemoveAllNugetExeFiles(here);
+            status += FixSolutionFiles(here);
 
-            RemoveAllNugetTargetFiles(here);
-            RemoveAllNugetExeFiles(here);
-            FixSolutionFiles(here);
-
-            FixingCsprojFiles(here);
+            status += FixingCsprojFiles(here);
+            return status;
         }
 
-        public void RemoveAllNugetExeFiles(string here)
+        public int RemoveAllNugetExeFiles(string here)
         {
             Console.WriteLine("Checking Nuget.exe which is under a .nuget folder");
             var filePaths = Directory.GetFiles(here, "nuget.exe", SearchOption.AllDirectories).Where(item => item.Contains(".nuget"));
@@ -49,10 +50,10 @@ namespace NuGet
             Console.ForegroundColor = (count > 0) ? ConsoleColor.Red : ConsoleColor.Green;
             Console.WriteLine(msg);
             Console.ResetColor();
-
+            return count;
         }
 
-        public void FixingCsprojFiles(string here)
+        public int FixingCsprojFiles(string here)
         {
             int skipped = 0;
             int fixedup = 0;
@@ -100,6 +101,7 @@ namespace NuGet
             int total = fixedup + skipped;
             Console.WriteLine("Total files checked : " + total);
             Console.WriteLine("Finished {0} csproj files", Command.Fix ? "fixing" : "checking");
+            return fixedup;
         }
 
         public IEnumerable<string> FixImportAndRestorePackagesInCsproj(IEnumerable<string> lines, string file)
@@ -156,7 +158,7 @@ namespace NuGet
         /// Delete all the nuget.target files found.  Optionally copy the relevant info on external nuget repositories to the nuget.config file.  
         /// </summary>
         /// <param name="here"></param>
-        public void RemoveAllNugetTargetFiles(string here)
+        public int RemoveAllNugetTargetFiles(string here)
         {
             Console.WriteLine("Checking for nuget.target files");
             string[] filePaths = Directory.GetFiles(here, "nuget.targets",
@@ -184,6 +186,7 @@ namespace NuGet
                 msg = string.Format("{1} : {0} nuget.targets file(s)", filePaths.Count(),Command.Fix?"Fixed":"Found");
             Console.WriteLine(msg);
             Console.ResetColor();
+            return filePaths.Count();
         }
 
 
@@ -303,7 +306,7 @@ namespace NuGet
             return comment;
         }
 
-        private void FixSolutionFiles(string here)
+        private int FixSolutionFiles(string here)
         {
 
             Console.WriteLine("{0} solution files", Command.Fix ? "Fixing" : "Checking");
@@ -343,6 +346,7 @@ namespace NuGet
                 msg2 = string.Format("No issues found in {0} solution file(s) ", slnFilePaths.Length);
             Console.WriteLine(msg2);
             Console.ResetColor();
+            return count;
         }
 
         static public bool ALineContains(IEnumerable<string> lines, string pattern1, string pattern2 = "")

@@ -6,7 +6,7 @@ namespace IFix
     public class FixCA0053
     {
         private bool changed;
-        public void Execute(CommonOptions options)
+        public int Execute(CommonOptions options)
         {
             int skipped = 0;
             int fixedup = 0;
@@ -57,6 +57,7 @@ namespace IFix
                 Console.WriteLine("Unable to write :" + nowrite);
             int total = fixedup + skipped;
             Console.WriteLine("Total files checked : " + total);
+            return fixedup;
         }
 
         private string Change2(string text, SearchTerms terms)

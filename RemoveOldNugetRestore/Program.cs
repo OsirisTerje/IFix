@@ -4,7 +4,7 @@ namespace IFix
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             var options = new Options();
             string invokedverb="";
@@ -12,9 +12,9 @@ namespace IFix
             if (args == null || args.Length == 0)
             {
                 Console.WriteLine(options.GetUsage());
-                return;
+                return -1;
             }
-                
+            int retval = 0;     
             if (CommandLine.Parser.Default.ParseArguments(args, options,(verb,subOptions)=>
             {
                 invokedverb = verb;
@@ -25,7 +25,7 @@ namespace IFix
                 {
                     if (invokedverbinstance.Fix || invokedverbinstance.Check)
                     {
-                        invokedverbinstance.Execute();
+                        retval = invokedverbinstance.Execute();
                     }
                     else
                     {
@@ -35,6 +35,7 @@ namespace IFix
                 }
                 else
                 {
+                    retval = -1;
                     Console.WriteLine("Unknown command : " + invokedverb);
                 }
             }
@@ -42,6 +43,7 @@ namespace IFix
             {
                 Console.WriteLine(options.GetUsage());
             }
+            return retval;
         }
 
 

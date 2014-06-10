@@ -12,9 +12,10 @@ namespace IFix
     {
         private GitIgnoreCommand Command { get; set; }
 
-        public void Execute(GitIgnoreCommand command)
+        public int Execute(GitIgnoreCommand command)
         {
             Command = command;
+            int retval = 0;
             string here = Directory.GetCurrentDirectory();
             var stdGitIgnore = RetrieveStdGitIgnore().ToList();
             string[] repositories = Directory.GetDirectories(here, ".git", SearchOption.AllDirectories);
@@ -36,6 +37,7 @@ namespace IFix
                                 File.WriteAllLines(filetocheck, lines);
                                 Writer.Write("Fixed " + filetocheck);
                             }
+                            retval++;
 
                         }
                         else
@@ -54,6 +56,7 @@ namespace IFix
                             File.WriteAllLines(filetocheck, stdGitIgnore);
                             Writer.Write("Added " + filetocheck);
                         }
+                        retval++;
                     }
                 }
                 else // Commands replace or merge
@@ -62,6 +65,7 @@ namespace IFix
                     {
                         File.WriteAllLines(filetocheck, stdGitIgnore);
                         Writer.Write("Replaced gitignore with standard for " + dir);
+                        
                     }
                     else
                     {
@@ -74,6 +78,7 @@ namespace IFix
                                 lines.AddRange(missing);
                                 File.WriteAllLines(filetocheck, lines);
                                 Writer.Write("Added "+missing.Count()+" lines to .gitignore for "+dir);
+                                retval++;
                             }
                             else 
                                 Writer.Write("No change needed for "+dir);
@@ -82,11 +87,13 @@ namespace IFix
                         {
                             File.WriteAllLines(filetocheck, stdGitIgnore);
                             Writer.Write("Added gitignore for "+dir);
+                            retval++;
                         }
                     }
                 }
+                
             }
-
+            return retval;
         }
 
         private IEnumerable<string> RetrieveStdGitIgnore()
