@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using IFix;
-using NuGet;
 using NUnit.Framework;
 
 namespace IntegrationTest

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using IFix;
 
-namespace NuGet
+namespace IFix
 {
     public class RemoveOldNugetRestore
     {

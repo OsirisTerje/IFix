@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IFix;
-using NuGet;
 using NUnit.Framework;
 
 namespace RestoreTests

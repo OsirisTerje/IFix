@@ -1,8 +1,6 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using CommandLine;
-using NuGet;
 
 namespace IFix
 {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IFix
 {
@@ -129,9 +126,7 @@ namespace IFix
 
         public bool CheckIfNotEqual(IEnumerable<string> ourGitIgnore, IEnumerable<string> stdGitIgnore)
         {
-            if (ourGitIgnore.Count() != stdGitIgnore.Count())
-                return false;
-            return true;
+            return ourGitIgnore.Count() == stdGitIgnore.Count();
         }
 
         public IEnumerable<string> CheckIfOurContainsStd(IEnumerable<string> ourGitIgnore, IEnumerable<string> stdGitIgnore)
