@@ -20,7 +20,7 @@ namespace IFix
             {
                 var dir = Directory.GetParent(repository);
                 var filetocheck = dir + @"/.gitignore";
-                if (Command.Check || Command.Fix || Command.Add)
+                if ((Command.Check || Command.Fix || Command.Add) && !Command.Merge && !Command.Replace)
                 {
                     if (File.Exists(filetocheck))
                     {
@@ -72,9 +72,12 @@ namespace IFix
                             var missing = CheckIfOurContainsStd(lines, stdGitIgnore).ToList();
                             if (missing.Any())
                             {
-                                lines.AddRange(missing);
-                                File.WriteAllLines(filetocheck, lines);
-                                Writer.Write("Added "+missing.Count()+" lines to .gitignore for "+dir);
+                                if (Command.Fix)
+                                {
+                                    lines.AddRange(missing);
+                                    File.WriteAllLines(filetocheck, lines);
+                                }
+                                Writer.Write(Command.Fix?"Added "+missing.Count()+" lines to .gitignore for "+dir:"Missing "+missing.Count()+" lines to gitignore for "+dir);
                                 retval++;
                             }
                             else 
@@ -82,8 +85,9 @@ namespace IFix
                         }
                         else
                         {
-                            File.WriteAllLines(filetocheck, stdGitIgnore);
-                            Writer.Write("Added gitignore for "+dir);
+                            if (Command.Fix)
+                                File.WriteAllLines(filetocheck, stdGitIgnore);
+                            Writer.Write(string.Format("{0} gitignore for {1}",Command.Fix?"Added":"Missing",dir));
                             retval++;
                         }
                     }
