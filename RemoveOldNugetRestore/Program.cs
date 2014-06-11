@@ -31,6 +31,7 @@ namespace IFix
                     {
                         var msg = invokedverbinstance.Help();
                         Console.WriteLine(msg);
+                        retval = -1;
                     }
                 }
                 else
