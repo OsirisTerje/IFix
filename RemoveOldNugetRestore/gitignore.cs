@@ -64,7 +64,7 @@ namespace IFix
                         Writer.Write("Replaced gitignore with standard for " + dir);
                         
                     }
-                    else
+                    else  // merge
                     {
                         if (File.Exists(filetocheck))
                         {
