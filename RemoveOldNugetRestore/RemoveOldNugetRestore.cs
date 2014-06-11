@@ -18,16 +18,24 @@ namespace IFix
 
         public int Execute()
         {
+
+            try
+            {
+                string here = Directory.GetCurrentDirectory();
+                int status = 0;
+                status += RemoveAllNugetTargetFiles(here);
+                status += RemoveAllNugetExeFiles(here);
+                status += FixSolutionFiles(here);
+
+                status += FixingCsprojFiles(here);
+                return status;
+            }
+            catch (System.UnauthorizedAccessException)
+            {
+                Writer.WriteRed("ERROR:  IFix need to write to your sln and csproj files, but is not allowed. You might need to check out the files, if you use server workspaces.  (Consider using local workspace where this is not an issue.)");
+                return -1;
+            }
             
-
-            string here = Directory.GetCurrentDirectory();
-            int status = 0;
-            status += RemoveAllNugetTargetFiles(here);
-            status += RemoveAllNugetExeFiles(here);
-            status += FixSolutionFiles(here);
-
-            status += FixingCsprojFiles(here);
-            return status;
         }
 
         public int RemoveAllNugetExeFiles(string here)
