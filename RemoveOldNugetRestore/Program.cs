@@ -23,7 +23,7 @@ namespace IFix
             {
                 if (invokedverbinstance != null)
                 {
-                    if (invokedverbinstance.Fix || invokedverbinstance.Check)
+                    if (invokedverbinstance.ValidOptions())
                     {
                         retval = invokedverbinstance.Execute();
                     }

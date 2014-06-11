@@ -19,7 +19,7 @@ namespace IFix
         public bool Verbose { get; set; }
 
         [HelpOption]
-        public string Help()
+        public virtual string Help()
         {
             var usage = new StringBuilder();
             usage.AppendLine(
@@ -30,6 +30,11 @@ namespace IFix
         }
 
         public abstract int Execute();
+
+        public virtual bool ValidOptions()
+        {
+            return Check || Fix;
+        }
     }
 
     public class Options
@@ -91,12 +96,28 @@ namespace IFix
         [Option('r', "replace", HelpText = "Replace the existing instead of merging in the latest, applies to all gitignore files")]
         public bool Replace { get; set; }
 
-        
+        [HelpOption]
+        public override string Help()
+        {
+            var sb = new StringBuilder(base.Help());
+            sb.AppendLine("use -a or --add to only add in missing gitignores. Use instead of fix");
+            sb.AppendLine("use -m or --merge to check or fix comparing/merging with latest visual studio gitignore file. Works with check and fix options");
+            sb.AppendLine(
+                "use -r or --replace to replace existing gitignores, and add where missing, with the latest visual studio gitignore file");
+            return sb.ToString();
+        }
 
         public override int Execute()
         {
             var fixer = new GitIgnore();
             return fixer.Execute(this);
+        }
+
+        public override bool ValidOptions()
+        {
+            var ok = base.ValidOptions();
+            ok |= (Add || Replace);
+            return ok;
         }
     }
 }
