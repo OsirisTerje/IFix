@@ -51,7 +51,7 @@ namespace IntegrationTest
             string path = Directory.GetCurrentDirectory() + subpath;
             var lines = File.ReadAllLines(path + "/TestProject.csproj");
             var sut = new RemoveOldNugetRestore(Command);
-            var outlines = sut.FixImportAndRestorePackagesInCsproj(lines, path + "/TestProject.csproj");
+            var outlines = sut.FixImportAndRestorePackagesInProj(lines, path + "/TestProject.csproj");
             
             Assert.IsTrue(outlines.Count()<lines.Count());
             Assert.IsTrue(RemoveOldNugetRestore.ALineContains(lines, "RestorePackages"), "1");
@@ -68,7 +68,7 @@ namespace IntegrationTest
             var lines = File.ReadAllLines(path + "/TestProject.csproj");
 
             var sut = new RemoveOldNugetRestore(Command);
-            var outlines = sut.FixTargetInCsproj(lines);
+            var outlines = sut.FixTargetInProj(lines);
             Assert.IsTrue(lines.Count()==outlines.Count()+6);
 
         }

@@ -9,7 +9,7 @@ namespace IFix
     {
         private bool changed;
 
-        NuGetRestoreCommand Command { get; set; }
+        private NuGetRestoreCommand Command { get; set; }
 
         public RemoveOldNugetRestore(NuGetRestoreCommand command)
         {
@@ -18,7 +18,6 @@ namespace IFix
 
         public int Execute()
         {
-
             try
             {
                 string here = Directory.GetCurrentDirectory();
@@ -27,15 +26,14 @@ namespace IFix
                 status += RemoveAllNugetExeFiles(here);
                 status += FixSolutionFiles(here);
 
-                status += FixingCsprojFiles(here);
+                status += FixingProjFiles(here);
                 return status;
             }
-            catch (System.UnauthorizedAccessException)
+            catch (UnauthorizedAccessException)
             {
-                Writer.WriteRed("ERROR:  IFix need to write to your sln and csproj files, but is not allowed. You might need to check out the files, if you use server workspaces.  (Consider using local workspace where this is not an issue.)");
+                Writer.WriteRed("ERROR:  IFix need to write to your sln, vbproj and csproj files, but is not allowed. You might need to check out the files, if you use server workspaces.  (Consider using local workspace where this is not an issue.)");
                 return -1;
             }
-            
         }
 
         public int RemoveAllNugetExeFiles(string here)
@@ -45,13 +43,12 @@ namespace IFix
             var enumerable = filePaths as IList<string> ?? filePaths.ToList();
             foreach (var file in enumerable)
             {
-
                 if (Command.Fix)
                     File.Delete(file);
-                Console.WriteLine((Command.Fix)?"Deleting ":"Found in " + file);
+                Console.WriteLine((Command.Fix) ? "Deleting " : "Found in " + file);
             }
             int count = enumerable.Count();
-            string msg = ((Command.Fix) ? "Removed :" : "Found :") + count+" nuget.exe file(s)";
+            string msg = ((Command.Fix) ? "Removed :" : "Found :") + count + " nuget.exe file(s)";
             if (count == 0)
                 msg = "No nuget.exe files found";
             Console.ForegroundColor = (count > 0) ? ConsoleColor.Red : ConsoleColor.Green;
@@ -60,21 +57,29 @@ namespace IFix
             return count;
         }
 
-        public int FixingCsprojFiles(string here)
+        public int FixingProjFiles(string here)
         {
             int skipped = 0;
             int fixedup = 0;
             int nowrite = 0;
             string fixOrCheck = (Command.Fix) ? "Fixed" : "Found";
-            Console.WriteLine("{0} csproj files", Command.Fix ? "Fixing" : "Checking");
-            var filePaths = Directory.GetFiles(here, "*.csproj",
+            Console.WriteLine("{0} proj files", Command.Fix ? "Fixing" : "Checking");
+            var filePathsCsproj = Directory.GetFiles(here, "*.csproj",
                 SearchOption.AllDirectories);
+
+            var filesPathsVbproj = Directory.GetFiles(here, "*.vbproj",
+                SearchOption.AllDirectories);
+
+            var filePaths = new List<string>();
+            filePaths.AddRange(filePathsCsproj);
+            filePaths.AddRange(filesPathsVbproj);
+
             foreach (var file in filePaths)
             {
                 changed = false;
                 var lines = File.ReadAllLines(file);
-                var output = FixImportAndRestorePackagesInCsproj(lines, file);
-                var output2 = FixTargetInCsproj(output);
+                var output = FixImportAndRestorePackagesInProj(lines, file);
+                var output2 = FixTargetInProj(output);
                 try
                 {
                     if (changed)
@@ -97,9 +102,9 @@ namespace IFix
                 }
             }
             Console.ForegroundColor = (fixedup > 0) ? ConsoleColor.Red : ConsoleColor.Green;
-            string msg = fixOrCheck + " : " + fixedup+" csproj file(s)";
+            string msg = fixOrCheck + " : " + fixedup + " proj file(s)";
             if (fixedup == 0)
-                msg = "No csproj files with target info found";
+                msg = "No proj files with target info found";
             Console.WriteLine(msg);
             Console.ResetColor();
             Console.WriteLine("Skipped : " + skipped);
@@ -107,19 +112,18 @@ namespace IFix
                 Console.WriteLine("Unable to write :" + nowrite);
             int total = fixedup + skipped;
             Console.WriteLine("Total files checked : " + total);
-            Console.WriteLine("Finished {0} csproj files", Command.Fix ? "fixing" : "checking");
+            Console.WriteLine("Finished {0} proj files", Command.Fix ? "fixing" : "checking");
             return fixedup;
         }
 
-        public IEnumerable<string> FixImportAndRestorePackagesInCsproj(IEnumerable<string> lines, string file)
+        public IEnumerable<string> FixImportAndRestorePackagesInProj(IEnumerable<string> lines, string file)
         {
             var output = new List<string>();
-
 
             foreach (var line in lines)
             {
                 if (
-                    !((line.Contains(@"<Import Project") && line.Contains("NuGet.targets")) ||
+                    !((line.Contains(@"<Import Project") && line.ToLower().Contains("nuget.targets")) ||
                       line.Contains("<RestorePackages>true</RestorePackages>")))
                 {
                     output.Add(line);
@@ -135,7 +139,7 @@ namespace IFix
             return output;
         }
 
-        public IEnumerable<string> FixTargetInCsproj(IEnumerable<string> output)
+        public IEnumerable<string> FixTargetInProj(IEnumerable<string> output)
         {
             var output2 = new List<string>();
             bool foundTarget = false;
@@ -162,7 +166,7 @@ namespace IFix
         }
 
         /// <summary>
-        /// Delete all the nuget.target files found.  Optionally copy the relevant info on external nuget repositories to the nuget.config file.  
+        /// Delete all the nuget.target files found.  Optionally copy the relevant info on external nuget repositories to the nuget.config file.
         /// </summary>
         /// <param name="here"></param>
         public int RemoveAllNugetTargetFiles(string here)
@@ -190,13 +194,11 @@ namespace IFix
             Console.ForegroundColor = filePaths.Any() ? ConsoleColor.Red : ConsoleColor.Green;
             string msg = "No nuget.target files found";
             if (filePaths.Any())
-                msg = string.Format("{1} : {0} nuget.targets file(s)", filePaths.Count(),Command.Fix?"Fixed":"Found");
+                msg = string.Format("{1} : {0} nuget.targets file(s)", filePaths.Count(), Command.Fix ? "Fixed" : "Found");
             Console.WriteLine(msg);
             Console.ResetColor();
             return filePaths.Count();
         }
-
-
 
         public ConfigFile CheckAndCopyNugetPaths(string file)
         {
@@ -214,7 +216,7 @@ namespace IFix
                             nugetpaths.Add(url);
                     }
                 }
-                comment = IsCommentLine(line,comment);  // Extract comment if previous line is a starting comment line with no ending comment
+                comment = IsCommentLine(line, comment);  // Extract comment if previous line is a starting comment line with no ending comment
             }
             // Does there exist a nuget.config file ?
             var pathconfig = Path.GetDirectoryName(file);
@@ -268,8 +270,6 @@ namespace IFix
             return ALineContains(configlines, nugetpath);
         }
 
-
-
         private int ContainsPackageSource(IEnumerable<string> configlines)
         {
             int i = 0;
@@ -296,10 +296,11 @@ namespace IFix
             }
             return "";
         }
+
         /// <summary>
         /// True if we are in comment state after the line
         /// </summary>
-        public bool IsCommentLine(string line,bool comment)
+        public bool IsCommentLine(string line, bool comment)
         {
             var line2 = line.Trim();
             if (comment)
@@ -308,14 +309,13 @@ namespace IFix
             }
             else
             {
-                comment = line2.StartsWith("<!--") &&  !line2.EndsWith("-->");
+                comment = line2.StartsWith("<!--") && !line2.EndsWith("-->");
             }
             return comment;
         }
 
         private int FixSolutionFiles(string here)
         {
-
             Console.WriteLine("{0} solution files", Command.Fix ? "Fixing" : "Checking");
             int count = 0;
             string[] slnFilePaths = Directory.GetFiles(here, "*.sln", SearchOption.AllDirectories);
@@ -326,13 +326,13 @@ namespace IFix
                 bool found = false;
                 foreach (var line in text)
                 {
-                    if (!line.Contains(@".nuget\NuGet.targets"))
+                    if (!line.ToLower().Contains(@".nuget\nuget.targets") && !line.ToLower().Contains(@".nuget\nuget.exe"))
                         outlines.Add(line);
                     else
                     {
                         found = true;
-                        Console.WriteLine("Found nuget.target in " + file);
-                    }
+                        Console.WriteLine("Found nuget.target/nuget.exe in " + file);
+                    }                    
                 }
                 if (found)
                 {
@@ -340,15 +340,15 @@ namespace IFix
                         File.WriteAllLines(file, outlines);
                     count++;
                 }
-                if ((found && Command.Fix)|| Command.Verbose)
+                if ((found && Command.Fix) || Command.Verbose)
                 {
                     string msg = string.Format("{0} checked. {1}", file,
-                        found ? "Nuget.target" + (Command.Fix ? " removed" : " found") : "Skipped, nothing found");
+                        found ? "Nuget.target/Nuget.exe" + (Command.Fix ? " removed" : " found") : "Skipped, nothing found");
                     Console.WriteLine(msg);
                 }
             }
             Console.ForegroundColor = count > 0 ? ConsoleColor.Red : ConsoleColor.Green;
-            string msg2 = string.Format("{0} {1} solution file(s), out of {2}", Command.Fix ? "Fixed : " : "Found : ",count, slnFilePaths.Length);
+            string msg2 = string.Format("{0} {1} solution file(s), out of {2}", Command.Fix ? "Fixed : " : "Found : ", count, slnFilePaths.Length);
             if (count == 0)
                 msg2 = string.Format("No issues found in {0} solution file(s) ", slnFilePaths.Length);
             Console.WriteLine(msg2);
@@ -369,7 +369,9 @@ namespace IFix
             Lines = lines;
             Name = name;
         }
+
         public IEnumerable<string> Lines { get; private set; }
+
         public string Name { get; private set; }
     }
 }
