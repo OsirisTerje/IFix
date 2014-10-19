@@ -25,12 +25,12 @@ namespace IFix
                     if (File.Exists(filetocheck))
                     {
                         var lines = File.ReadAllLines(filetocheck).ToList();
-                        if (!CheckIfPackages(lines))
+                        if (!CheckIfNuGetPackages(lines))
                         {
-                            Writer.WriteRed("Missing 'packages/' in ignorelist for " + filetocheck);
+                            Writer.WriteRed("Missing 'packages' or 'packages/' or 'packages/*' or '**/packages/*' in ignorelist for " + filetocheck);
                             if (Command.Fix && !Command.Add)
                             {
-                                AddMissingInfo(lines);
+                                AddMissingInfo(lines, command.LatestGitVersion);
                                 File.WriteAllLines(filetocheck, lines);
                                 Writer.Write("Fixed " + filetocheck);
                             }
@@ -60,8 +60,11 @@ namespace IFix
                 {
                     if (Command.Replace)
                     {
+                        var exist = File.Exists(filetocheck);
                         File.WriteAllLines(filetocheck, stdGitIgnore);
-                        Writer.Write("Replaced gitignore with standard for " + dir);
+                        string msg = string.Format("{0} gitignore with standard for {1}", exist ? "Replaced" : "Added",
+                            dir);
+                        Writer.Write(msg);
                         
                     }
                     else  // merge
@@ -106,17 +109,27 @@ namespace IFix
             return stdGitIgnore;
         }
 
-        public void AddMissingInfo(ICollection<string> lines)
+        public void AddMissingInfo(ICollection<string> lines,bool latest=false)
         {
             lines.Add(@"# NuGet Packages");
-            lines.Add(@"packages/*");
+            lines.Add(@"**/packages/*");
+            if (!latest)
+                lines.Add(@"packages/*");
             lines.Add(@"*.nupkg");
+            if (!latest)
+                lines.Add(@"!**/packages/build/");
             lines.Add(@"!packages/build/");
+            
         }
 
-        public bool CheckIfPackages(IEnumerable<string> lines)
+        public bool CheckIfNuGetPackages(IEnumerable<string> lines)
         {
-            return lines.Any(line => line.Trim()=="packages/" || line.Trim()=="packages/*");
+            return lines.Any(line => line.Trim()=="packages/" || line.Trim()=="packages/*" || line.Trim()=="packages");
+        }
+
+        public bool CheckIfNDepend(IEnumerable<string> lines)
+        {
+            return lines.Any(line => line.Trim() == "NDependOut/");
         }
 
         public void DownloadGitIgnore(string path)

@@ -19,7 +19,7 @@ namespace GitIgnoreTests
 
             var sut = new IFix.GitIgnore();
 
-            var result = sut.CheckIfPackages(testdata);
+            var result = sut.CheckIfNuGetPackages(testdata);
             Assert.IsTrue(result);
 
         }
@@ -31,7 +31,7 @@ namespace GitIgnoreTests
 
             var sut = new IFix.GitIgnore();
 
-            var result = sut.CheckIfPackages(testdata);
+            var result = sut.CheckIfNuGetPackages(testdata);
             Assert.IsFalse(result);
 
         }
@@ -43,10 +43,10 @@ namespace GitIgnoreTests
 
             var sut = new IFix.GitIgnore();
 
-            var result = sut.CheckIfPackages(testdata);
+            var result = sut.CheckIfNuGetPackages(testdata);
             Assert.IsFalse(result,"Testdata contains packages or CheckIfPackages failed");
             sut.AddMissingInfo(testdata);
-            result = sut.CheckIfPackages(testdata);
+            result = sut.CheckIfNuGetPackages(testdata);
             Assert.IsTrue(result,"Add missing info failed");
 
         }

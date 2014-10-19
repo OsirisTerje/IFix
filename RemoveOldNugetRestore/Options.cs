@@ -60,7 +60,7 @@ namespace IFix
             usage.AppendLine("Verbs:  NuGetRestore: Converts all projects in a directory tree to remove old nuget restore, by removing nuget.target and exe files and converts all csproj and sln files.");
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
             usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore");
-            usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/Terje");
+            usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/terje/archive/2014/07/03/gitignorendashhow-to-exclude-nuget-packages-at-any-level-and-make.aspx");
             usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             
             return usage.ToString();
@@ -90,11 +90,14 @@ namespace IFix
         [Option('a', "add", HelpText = "Only add latest standard public .gitignore when missing, don't fix up the others.")]
         public bool Add { get; set; }
 
-        [Option('m', "merge", HelpText = "Get and merge information from the  standard public gitnore file")]
+        [Option('m', "merge", HelpText = "Get and merge information from the  standard public gitignore file")]
         public bool Merge { get; set; }
 
         [Option('r', "replace", HelpText = "Replace the existing instead of merging in the latest, applies to all gitignore files")]
         public bool Replace { get; set; }
+
+        [Option('l',"latestgit",HelpText = "Use for compatibility with the latest git version 2.0.1. If you have git < 2.0.1 leave this out.")]
+        public bool LatestGitVersion { get; set; }
 
         [HelpOption]
         public override string Help()
@@ -103,7 +106,8 @@ namespace IFix
             sb.AppendLine("use -a or --add to only add in missing gitignores. Use instead of fix");
             sb.AppendLine("use -m or --merge to check or fix comparing/merging with latest visual studio gitignore file. Works with check and fix options");
             sb.AppendLine(
-                "use -r or --replace to replace existing gitignores, and add where missing, with the latest visual studio gitignore file");
+                "use -r or --replace to replace existing gitignores, or add where missing, with the latest visual studio gitignore file");
+            sb.AppendLine("use -l or --latestgit if you have version >= 2.0.1 of git, then the gitignore will be a few lines shorter. Latest Windows git is currently 1.9.4");
             return sb.ToString();
         }
 
