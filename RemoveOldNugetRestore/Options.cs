@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using System.Text;
 using CommandLine;
 
@@ -113,7 +114,7 @@ namespace IFix
 
         public override int Execute()
         {
-            var fixer = new GitIgnore();
+            var fixer = new GitIgnore(Directory.GetCurrentDirectory());
             return fixer.Execute(this);
         }
 

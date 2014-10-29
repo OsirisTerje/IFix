@@ -1,16 +1,38 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
 namespace GitIgnoreTests
 {
-    [TestFixture,Category("GitIgnore")]
+    [TestFixture, Category("GitIgnore")]
     public class GitIgnore
     {
 
         private const string W = "gitignoreWPackage.tst";
         private const string WO = "gitignoreWOPackage.tst";
         private const string STD = "VisualStudio.gitignore";
+        private const string GitHubVS = "github.visualstudio.gitignore";
+
+
+        /// <summary>
+        /// Checks that the gitignore get the extra 194 line added.
+        /// </summary>
+        [Test]
+        public void VerifyGitHubIgnore()
+        {
+            var testdata = ResourceReader.Read(GitHubVS);
+            Assert.That(testdata.Any(l => l.Trim() == @"packages/*"), Is.False, "githubignore contained the packages/*");
+            var sut = new IFix.GitIgnore();
+
+            var result = sut.CheckIfNuGetPackages(testdata);
+            Assert.IsTrue(result);
+            var outlines = sut.AddOnlyMissingInfo(testdata);
+            Assert.That(outlines.Any(l => l.Trim() == @"packages/*"), "packages/* was not added");
+
+        }
+
 
         [Test]
         public void VerifyWithPackages()
@@ -44,10 +66,10 @@ namespace GitIgnoreTests
             var sut = new IFix.GitIgnore();
 
             var result = sut.CheckIfNuGetPackages(testdata);
-            Assert.IsFalse(result,"Testdata contains packages or CheckIfPackages failed");
-            sut.AddMissingInfo(testdata);
-            result = sut.CheckIfNuGetPackages(testdata);
-            Assert.IsTrue(result,"Add missing info failed");
+            Assert.IsFalse(result, "Testdata contains packages or CheckIfPackages failed");
+            var outlines = sut.AddOnlyMissingInfo(testdata);
+            result = sut.CheckIfNuGetPackages(outlines);
+            Assert.IsTrue(result, "Add missing info failed");
 
         }
 
@@ -78,8 +100,54 @@ namespace GitIgnoreTests
 
 
         }
+
+
+        [Test]
+        public void VerifyAddMissing()
+        {
+            var lines = new List<string> { "Somestart" };
+
+            var sut = new IFix.GitIgnore();
+
+            var outlines = sut.AddOnlyMissingInfo(lines);
+
+            Assert.That(outlines.Count() == 7, "Count was " + outlines.Count());
+        }
+
+        [Test]
+        public void VerifyAddMissing2()
+        {
+            var lines = new List<string> { "Somestart", @"**/packages/*" };
+
+            var sut = new IFix.GitIgnore();
+
+            var outlines = sut.AddOnlyMissingInfo(lines);
+
+            Assert.That(outlines.Count() == 7, "Count was " + outlines.Count());
+        }
+
+
+        [Test]
+        public void FindMyOwnGitRepo()
+        {
+            var sut = new IFix.GitIgnore();
+            Assert.That(sut.Repositories.Count() == 1, "Can't find my own repo");
+            var file = sut.Repositories.First().File;
+            Assert.That(File.Exists(file), "No gitignore file");
+        }
+
+        [Test]
+        public void VerifyThatGitHubIgnoreFileWasDownloaded()
+        {
+            var sut = new IFix.GitIgnore(); // Make sure we create it and thus also download the file. 
+            var temp = Path.GetTempPath();
+            var tempgitignore = temp + "/VisualStudio.gitignore";
+            Assert.That(File.Exists(tempgitignore),"No temporary gitignore found at "+tempgitignore);
+        }
+
+
     }
 
-    public class Integration:CategoryAttribute
-    {}
+    public class Integration : CategoryAttribute
+    { }
 }
