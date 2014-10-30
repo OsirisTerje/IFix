@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using CommandLine;
@@ -51,6 +52,9 @@ namespace IFix
         [VerbOption("gitignore")]
         public GitIgnoreCommand GitIgnoreCommand { get; set; }
 
+        [VerbOption("blog")]
+        public GoToBlog BlogCommand { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {
@@ -58,11 +62,27 @@ namespace IFix
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             usage.AppendLine("IFix  "+version);
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore");
-            usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/terje/archive/2014/07/03/gitignorendashhow-to-exclude-nuget-packages-at-any-level-and-make.aspx");
+            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore, blog");
+            usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx");
+            usage.AppendLine("or use: IFix blog -c");
             usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             
             return usage.ToString();
+        }
+    }
+
+    public class GoToBlog : CommonOptions
+    {
+        public override int Execute()
+        {
+            var b = new Process
+            {
+                StartInfo =
+                    new ProcessStartInfo(
+                        "http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx")
+            };
+            b.Start();
+            return 0;
         }
     }
 
