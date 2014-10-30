@@ -43,15 +43,16 @@ namespace IFix
         /// <summary>
         /// For testing purposes only
         /// </summary>
-        public GitIgnore() : this(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(),@"../../../")))
+        public GitIgnore()
+            : this(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"../../../")))
         {
-            
+
         }
 
         public GitIgnore(string currentdirectory)
         {
             RetrieveStdGitIgnore();
-            var reponames = new List<string>(Directory.GetDirectories(currentdirectory, ".git", SearchOption.AllDirectories)); 
+            var reponames = new List<string>(Directory.GetDirectories(currentdirectory, ".git", SearchOption.AllDirectories));
             Repositories = reponames.Select(r => new Repository(r));
         }
 
@@ -63,28 +64,33 @@ namespace IFix
 #endif
             Command = command;
             int retval = 0;
-            
+
             if (!Repositories.Any())
                 Writer.Write("No git subfolders found. Run IFix from either above your git repos or from within root folder of your git repo.");
             foreach (var repository in Repositories)
             {
+                int thisrepo = 0;
+                Writer.Write("Checking: " + repository.GitRepo);
                 if (Command.Replace)
                 {
                     ExecuteReplace(repository);
                 }
-                else if (Command.Merge) 
+                else if (Command.Merge)
                 {
-                    retval += ExecuteMerge(repository);
-                } 
+                    thisrepo += ExecuteMerge(repository);
+                }
                 else if ((Command.Check || Command.Fix || Command.Add))
                 {
-                    retval += ExecuteFixAdd(command, repository);
+                    thisrepo += ExecuteFixAdd(command, repository);
                 }
-           }
+                if (thisrepo == 0 && !command.Verbose)
+                    Writer.WriteGreen("-->is Ok<--");
+                retval += thisrepo;
+            }
             return retval;
         }
 
-        private int ExecuteFixAdd(GitIgnoreCommand command, Repository repo )
+        private int ExecuteFixAdd(GitIgnoreCommand command, Repository repo)
         {
             int retval = 0;
             var filetocheck = repo.File;
@@ -111,7 +117,7 @@ namespace IFix
             int retval = 0;
             if (File.Exists(repo.File))
             {
-               
+
                 var lines = File.ReadAllLines(repo.File).ToList();
                 var missing = CheckIfOurContainsStd(lines, stdGitIgnore).ToList();
                 if (missing.Any())
@@ -156,8 +162,8 @@ namespace IFix
                                 filetocheck);
                 if (Command.Fix && !Command.Add)
                 {
-                    AddOnlyMissingInfo(lines, command.LatestGitVersion);
-                    File.WriteAllLines(filetocheck, lines);
+                    var outlines = AddOnlyMissingInfo(lines, command.LatestGitVersion);
+                    File.WriteAllLines(filetocheck, outlines);
                     Writer.Write("Fixed " + filetocheck);
                 }
                 retval++;
@@ -165,8 +171,8 @@ namespace IFix
             else
             {
                 var reincludes = CheckIfNuGetPackagesAllowReincludes(lines);
-                if (!reincludes)
-                    Writer.Write("Warning: Reincludes does not work with this pattern " + GetNuGetPackageCommand(lines));
+                if (!reincludes && command.Verbose)
+                    Writer.Write("Warning: Reincludes does not work with this pattern '" + GetNuGetPackageCommand(lines) + "'");
                 if (Command.Verbose)
                 {
                     if (!reincludes)
@@ -182,7 +188,7 @@ namespace IFix
         {
             var temp = Path.GetTempPath();
             var tempgitignore = temp + "/VisualStudio.gitignore";
-            if (!File.Exists(tempgitignore) || (DateTime.Now.Subtract(File.GetLastWriteTime(tempgitignore)).Hours>24))
+            if (!File.Exists(tempgitignore) || (DateTime.Now.Subtract(File.GetLastWriteTime(tempgitignore)).Hours > 24))
                 DownloadGitIgnore(tempgitignore);
             stdGitIgnore = new List<string>(File.ReadAllLines(tempgitignore));
 
@@ -204,9 +210,9 @@ namespace IFix
 
         //}
 
-/*
-        enum GitIgnoreParsing { Start, FoundNuGet, FoundNupkg, FoundPackagesFirst, FoundPackagesSecond, FoundReincludeBuild };
-*/
+        /*
+                enum GitIgnoreParsing { Start, FoundNuGet, FoundNupkg, FoundPackagesFirst, FoundPackagesSecond, FoundReincludeBuild };
+        */
 
         /// <summary>
         /// Adds the missing info line by line in-place
@@ -221,35 +227,38 @@ namespace IFix
             const string nuGetReincludeBuild = @"!packages/build/";
             const string nuGetReincludeBuild2 = @"!**/packages/build/";
             var outlines = new Collection<string>();
-            foreach( var line in lines)
+            foreach (var line in lines)
                 outlines.Add(line);
-            var patterns = new List<string>
+            var patterns = new List<Tuple<string, bool>>
             {
-                nuGetStart,
-                nuGetPkg,
-                nuGetPackageFull,
-                nuGetPackage194,
-                nuGetReincludeBuild,
-                nuGetReincludeBuild2
+                new Tuple<string, bool>(nuGetStart,true),
+                new Tuple<string, bool>(nuGetPkg,false),
+                new Tuple<string, bool>(nuGetPackageFull,false),
+                new Tuple<string, bool>(nuGetPackage194,false),
+                new Tuple<string, bool>(nuGetReincludeBuild,false),
+                new Tuple<string, bool>(nuGetReincludeBuild2,false)
             };
             string lastpattern = "";
             foreach (var pattern in patterns)
             {
-                string line = outlines.FirstOrDefault(l => l.Trim() == pattern);
+                string line = pattern.Item2 ? 
+                    outlines.FirstOrDefault(l => l.Trim().Contains(pattern.Item1)) : 
+                    outlines.FirstOrDefault(l => l.Trim() == pattern.Item1);
                 if (string.IsNullOrEmpty(line))
                 {
                     if (string.IsNullOrEmpty(lastpattern))
-                        outlines.Add(pattern);
+                        outlines.Add(pattern.Item1);
                     else
                     {
                         int index = outlines.IndexOf(lastpattern);
-                        if (index==outlines.Count())
-                            outlines.Add(pattern);
+                        if (index == outlines.Count())
+                            outlines.Add(pattern.Item1);
                         else
-                            outlines.Insert(index+1,pattern);
+                            outlines.Insert(index + 1, pattern.Item1);
+                        line = pattern.Item1;
                     }
                 }
-                lastpattern = pattern;
+                lastpattern = line;
             }
 
             return outlines;
@@ -270,7 +279,7 @@ namespace IFix
         /// </summary>
         public string GetNuGetPackageCommand(IEnumerable<string> lines)
         {
-            var cmd = lines.FirstOrDefault(line => line.Trim() == "packages");
+            var cmd = lines.FirstOrDefault(line => line.Trim().Contains("packages"));
             return cmd;
         }
 
