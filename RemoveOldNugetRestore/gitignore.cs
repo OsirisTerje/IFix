@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace IFix
@@ -215,7 +216,7 @@ namespace IFix
         */
 
         /// <summary>
-        /// Adds the missing info line by line in-place
+        /// Adds the missing info line by line in-place, removes commented lines for NuGet which are no longer needed
         /// </summary>
         public ICollection<string> AddOnlyMissingInfo(ICollection<string> lines, bool latest = false)
         {
@@ -239,7 +240,7 @@ namespace IFix
                 new Tuple<string, bool>(nuGetReincludeBuild2,false)
             };
             string lastpattern = "";
-            foreach (var pattern in patterns)
+           foreach (var pattern in patterns)
             {
                 string line = pattern.Item2 ? 
                     outlines.FirstOrDefault(l => l.Trim().Contains(pattern.Item1)) : 
@@ -260,7 +261,9 @@ namespace IFix
                 }
                 lastpattern = line;
             }
-
+            // Removed commented lines, no longer needed
+            outlines.Remove("## TODO: If you have NuGet Package Restore enabled, uncomment the next line");
+            outlines.Remove("#packages/");
             return outlines;
         }
 
