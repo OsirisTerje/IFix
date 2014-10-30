@@ -73,13 +73,22 @@ namespace IFix
 
     public class GoToBlog : CommonOptions
     {
+        private string urlIFix = @"https://visualstudiogallery.msdn.microsoft.com/b8ba97b0-bb89-4c21-a1e2-53ef335fd9cb";
+
+        private string urlgitignore = @"http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx";
+
+        private string urlNugetrestore =
+            @"http://geekswithblogs.net/terje/archive/2014/06/11/converting-projects-to-use-automatic-nuget-restore.aspx";
+
+        private string urlCA0053 =
+            @"http://geekswithblogs.net/terje/archive/2012/08/18/how-to-fix-the-ca0053-error-in-code-analysis-in.aspx";
+
         public override int Execute()
         {
             var b = new Process
             {
                 StartInfo =
-                    new ProcessStartInfo(
-                        "http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx")
+                    new ProcessStartInfo(urlIFix)
             };
             b.Start();
             return 0;
