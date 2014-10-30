@@ -52,7 +52,7 @@ namespace IFix
         [VerbOption("gitignore")]
         public GitIgnoreCommand GitIgnoreCommand { get; set; }
 
-        [VerbOption("blog")]
+        [VerbOption("info")]
         public GoToBlog BlogCommand { get; set; }
 
         [HelpOption]
@@ -62,9 +62,9 @@ namespace IFix
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             usage.AppendLine("IFix  "+version);
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore, blog");
+            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore, info");
             usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx");
-            usage.AppendLine("or use: IFix blog -c");
+            usage.AppendLine("or use: IFix info -c   or one of IFix info --gitignore/--nugetrestore/--ca0053 -c");
             usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             
             return usage.ToString();
@@ -73,26 +73,39 @@ namespace IFix
 
     public class GoToBlog : CommonOptions
     {
-        private string urlIFix = @"https://visualstudiogallery.msdn.microsoft.com/b8ba97b0-bb89-4c21-a1e2-53ef335fd9cb";
+        private const string UrlIFix = @"https://visualstudiogallery.msdn.microsoft.com/b8ba97b0-bb89-4c21-a1e2-53ef335fd9cb";
 
-        private string urlgitignore = @"http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx";
+        private const string Urlgitignore = @"http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx";
 
-        private string urlNugetrestore =
-            @"http://geekswithblogs.net/terje/archive/2014/06/11/converting-projects-to-use-automatic-nuget-restore.aspx";
+        private const string UrlNugetrestore = @"http://geekswithblogs.net/terje/archive/2014/06/11/converting-projects-to-use-automatic-nuget-restore.aspx";
 
-        private string urlCA0053 =
-            @"http://geekswithblogs.net/terje/archive/2012/08/18/how-to-fix-the-ca0053-error-in-code-analysis-in.aspx";
+        private const string UrlCa0053 = @"http://geekswithblogs.net/terje/archive/2012/08/18/how-to-fix-the-ca0053-error-in-code-analysis-in.aspx";
 
         public override int Execute()
         {
+            string url = UrlIFix;
+            if (GitIgnore)
+                url = Urlgitignore;
+            else if (NuGetRestore)
+                url = UrlNugetrestore;
+            else if (Ca0053)
+                url = UrlCa0053;
             var b = new Process
             {
                 StartInfo =
-                    new ProcessStartInfo(urlIFix)
+                    new ProcessStartInfo(url)
             };
             b.Start();
             return 0;
         }
+
+        [Option('g', "gitignore", HelpText = "gitignore blog")]
+        public bool GitIgnore { get; set; }
+        [Option('n', "nugetrestore", HelpText = "nugetrestore blog")]
+        public bool NuGetRestore { get; set; }
+        [Option('a', "ca0053", HelpText = "ca0053 blog")]
+        public bool Ca0053 { get; set; }
+
     }
 
     public class NuGetRestoreCommand : CommonOptions
