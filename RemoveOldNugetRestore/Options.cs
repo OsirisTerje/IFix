@@ -57,8 +57,6 @@ namespace IFix
             var usage = new StringBuilder();
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             usage.AppendLine("IFix  "+version);
-            usage.AppendLine("IFix: Fixes common solution and project file issues");
-            usage.AppendLine("Verbs:  NuGetRestore: Converts all projects in a directory tree to remove old nuget restore, by removing nuget.target and exe files and converts all csproj and sln files.");
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
             usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore");
             usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/terje/archive/2014/07/03/gitignorendashhow-to-exclude-nuget-packages-at-any-level-and-make.aspx");

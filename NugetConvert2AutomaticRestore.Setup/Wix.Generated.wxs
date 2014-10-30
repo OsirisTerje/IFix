@@ -14,9 +14,6 @@
             <Component Id="cmp9721F1F9E58B3B5A13113D4FFDDC760A" Guid="*">
                 <File Id="fil3E76BCDD24ACB778409414C183979E5D" KeyPath="yes" Source="$(var.AppProjectDir)\IFix.exe.config" />
             </Component>
-            <Component Id="cmp0B5CF81FFC431E8F8C8061D95CD90F32" Guid="*">
-                <File Id="fil1919D012D9726452EC0172083991370E" KeyPath="yes" Source="$(var.AppProjectDir)\IFix.pdb" />
-            </Component>
         </DirectoryRef>
     </Fragment>
     <Fragment>
@@ -25,7 +22,6 @@
             <ComponentRef Id="cmp5E3D3348D828484657D3F25D74F6957D" />
             <ComponentRef Id="cmp9C10E065CAA211E29C3F463220F708D7" />
             <ComponentRef Id="cmp9721F1F9E58B3B5A13113D4FFDDC760A" />
-            <ComponentRef Id="cmp0B5CF81FFC431E8F8C8061D95CD90F32" />
         </ComponentGroup>
     </Fragment>
 </Wix>
