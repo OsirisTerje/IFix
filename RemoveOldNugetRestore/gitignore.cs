@@ -157,15 +157,26 @@ namespace IFix
 
         private int FixNuGet(GitIgnoreCommand command, ICollection<string> lines, string filetocheck, int retval)
         {
-            if (!CheckIfNuGetPackages(lines))
+            var outlines = new List<string>();
+            bool fix = false;
+            if (!CheckIfNuGetPackages(lines,Command.Strict,Command.LatestGitVersion))
             {
-                Writer.WriteRed("Missing 'packages' or 'packages/' or 'packages/*' or '**/packages/*' in ignorelist for " +
-                                filetocheck);
+                if (!Command.Strict)
+                    Writer.WriteRed(
+                        "Missing 'packages' or 'packages/' or 'packages/*' or '**/packages/*' in ignorelist for " + filetocheck);
+                else
+                {
+                    if (!Command.LatestGitVersion)
+                        Writer.WriteRed("Missing either/or both '**/packages/*' and 'packages/*'  in ignorelist for " + filetocheck);
+                    else 
+                        Writer.WriteRed("Missing  '**/packages/*'  in ignorelist for " + filetocheck);
+                }
                 if (Command.Fix && !Command.Add)
                 {
-                    var outlines = AddOnlyMissingInfo(lines, command.LatestGitVersion);
-                    File.WriteAllLines(filetocheck, outlines);
-                    Writer.Write("Fixed " + filetocheck);
+                    outlines.AddRange(AddOnlyMissingInfo(lines, command.LatestGitVersion));
+                    lines = outlines;
+                    fix = true;
+                   
                 }
                 retval++;
             }
@@ -182,7 +193,30 @@ namespace IFix
                     Writer.WriteGreen("Ok : " + filetocheck);
                 }
             }
+
+            if (CheckIfVS2015Files(lines))
+            {
+                Writer.WriteRed("Missing node_modules and/or bower_components in "+filetocheck);
+                if (Command.Fix && !Command.Add)
+                {
+                    outlines.AddRange(new List<string> { "node_modules/", "bower_components/" });
+                    fix = true;
+                }
+               
+            }
+
+            if (fix)
+            {
+                File.WriteAllLines(filetocheck, outlines);
+                Writer.Write("Fixed " + filetocheck);
+            }
             return retval;
+        }
+
+        private bool CheckIfVS2015Files(ICollection<string> lines)
+        {
+            return lines.Any(line => line.Contains("node_modules/")) &&
+                   lines.Any(line => line.Contains("bower_components/"));
         }
 
         private void RetrieveStdGitIgnore()
@@ -267,9 +301,13 @@ namespace IFix
             return outlines;
         }
 
-        public bool CheckIfNuGetPackages(IEnumerable<string> lines)
+        public bool CheckIfNuGetPackages(IEnumerable<string> lines,bool strict,bool latest)
         {
-            return lines.Any(line => line.Trim() == "packages/" || line.Trim() == "packages/*" || line.Trim() == "packages" || line.Trim() == "**/packages/*");
+            if (!strict)
+                return lines.Any(line => line.Trim() == "packages/" || line.Trim() == "packages/*" || line.Trim() == "packages" || line.Trim() == "**/packages/*");
+            return  lines.Any(line => line.Trim() == "**/packages/*") &&
+                    (latest || lines.Any(line => line.Trim() == "packages/*"));
+            
         }
 
         public bool CheckIfNuGetPackagesAllowReincludes(IEnumerable<string> lines)

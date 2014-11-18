@@ -140,12 +140,16 @@ namespace IFix
         [Option('l',"latestgit",HelpText = "Use for compatibility with the latest git version 2.0.1. If you have git < 2.0.1 leave this out.")]
         public bool LatestGitVersion { get; set; }
 
+        [Option('s',"strict",HelpText="Ensure that the most extensive pattern is used")]
+        public bool Strict { get; set; }
+
         [HelpOption]
         public override string Help()
         {
             var sb = new StringBuilder(base.Help());
             sb.AppendLine("use -a or --add to only add in missing gitignores. Use instead of fix");
             sb.AppendLine("use -m or --merge to check or fix comparing/merging with latest visual studio gitignore file. Works with check and fix options");
+            sb.AppendLine("use -s or --strict to ensure the most extensive pattern is used.  Combine with -f");
             sb.AppendLine(
                 "use -r or --replace to replace existing gitignores, or add where missing, with the latest visual studio gitignore file");
             sb.AppendLine("use -l or --latestgit if you have version >= 2.0.1 of git, then the gitignore will be a few lines shorter. Latest Windows git is currently 1.9.4");
