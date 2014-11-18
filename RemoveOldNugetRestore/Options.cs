@@ -63,8 +63,8 @@ namespace IFix
             usage.AppendLine("IFix  "+version);
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
             usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore, info");
-            usage.AppendLine("For more instructions and information see blogpost at http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx");
-            usage.AppendLine("or use: IFix info -c   or one of IFix info --gitignore/--nugetrestore/--ca0053 -c");
+            usage.AppendLine("For more instructions and information run 'IFix info -c'");
+            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053 -c");
             usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
             
             return usage.ToString();

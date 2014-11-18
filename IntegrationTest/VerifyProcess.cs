@@ -18,8 +18,7 @@ namespace IntegrationTest
         [SetUp]
         public void Init()
         {
-            Command = new NuGetRestoreCommand();
-            Command.Check = true;
+            Command = new NuGetRestoreCommand {Check = true};
         }
 
 
