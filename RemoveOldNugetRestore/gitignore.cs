@@ -159,6 +159,7 @@ namespace IFix
         {
             var outlines = new List<string>();
             bool fix = false;
+            bool green = true;
             if (!CheckIfNuGetPackages(lines,Command.Strict,Command.LatestGitVersion))
             {
                 if (!Command.Strict)
@@ -179,22 +180,20 @@ namespace IFix
                    
                 }
                 retval++;
+                green = false;
             }
             else
             {
                 var reincludes = CheckIfNuGetPackagesAllowReincludes(lines);
                 if (!reincludes && command.Verbose)
-                    Writer.Write("Warning: Reincludes does not work with this pattern '" + GetNuGetPackageCommand(lines) + "'");
-                if (Command.Verbose)
                 {
-                    if (!reincludes)
-                        Writer.Write(
-                            "See http://geekswithblogs.net/terje/archive/2014/07/03/gitignorendashhow-to-exclude-nuget-packages-at-any-level-and-make.aspx for more information");
-                    Writer.WriteGreen("Ok : " + filetocheck);
+                    Writer.Write("Warning: Reincludes does not work with this pattern '" + GetNuGetPackageCommand(lines) +"'");
+                    Writer.Write("See http://geekswithblogs.net/terje/archive/2014/07/03/gitignorendashhow-to-exclude-nuget-packages-at-any-level-and-make.aspx for more information");
+               
                 }
             }
 
-            if (CheckIfVS2015Files(lines))
+            if (!CheckIfVS2015Files(lines))
             {
                 Writer.WriteRed("Missing node_modules and/or bower_components in "+filetocheck);
                 if (Command.Fix && !Command.Add)
@@ -202,18 +201,20 @@ namespace IFix
                     outlines.AddRange(new List<string> { "node_modules/", "bower_components/" });
                     fix = true;
                 }
-               
-            }
+                green = false;
+                retval++;
 
-            if (fix)
-            {
-                File.WriteAllLines(filetocheck, outlines);
-                Writer.Write("Fixed " + filetocheck);
-            }
+            } 
+            if (green)
+                Writer.WriteGreen("Ok : " + filetocheck);
+            if (!fix) 
+                return retval;
+            File.WriteAllLines(filetocheck, outlines);
+            Writer.Write("Fixed " + filetocheck);
             return retval;
         }
 
-        private bool CheckIfVS2015Files(ICollection<string> lines)
+        public bool CheckIfVS2015Files(ICollection<string> lines)
         {
             return lines.Any(line => line.Contains("node_modules/")) &&
                    lines.Any(line => line.Contains("bower_components/"));
@@ -274,10 +275,10 @@ namespace IFix
                 new Tuple<string, bool>(nuGetReincludeBuild2,false)
             };
             string lastpattern = "";
-           foreach (var pattern in patterns)
+            foreach (var pattern in patterns)
             {
-                string line = pattern.Item2 ? 
-                    outlines.FirstOrDefault(l => l.Trim().Contains(pattern.Item1)) : 
+                string line = pattern.Item2 ?
+                    outlines.FirstOrDefault(l => l.Trim().Contains(pattern.Item1)) :
                     outlines.FirstOrDefault(l => l.Trim() == pattern.Item1);
                 if (string.IsNullOrEmpty(line))
                 {
@@ -301,13 +302,13 @@ namespace IFix
             return outlines;
         }
 
-        public bool CheckIfNuGetPackages(IEnumerable<string> lines,bool strict,bool latest)
+        public bool CheckIfNuGetPackages(IEnumerable<string> lines, bool strict, bool latest)
         {
             if (!strict)
                 return lines.Any(line => line.Trim() == "packages/" || line.Trim() == "packages/*" || line.Trim() == "packages" || line.Trim() == "**/packages/*");
-            return  lines.Any(line => line.Trim() == "**/packages/*") &&
+            return lines.Any(line => line.Trim() == "**/packages/*") &&
                     (latest || lines.Any(line => line.Trim() == "packages/*"));
-            
+
         }
 
         public bool CheckIfNuGetPackagesAllowReincludes(IEnumerable<string> lines)
