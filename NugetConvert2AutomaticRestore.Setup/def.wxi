@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-  <?define Version= "1.2.0.0"?>
+  <?define Version= "1.4.0.0"?>
   <?define DefaultRegistryKey="SOFTWARE\Inmeta\IFix\Install"?>
   <?define UpgradeCode="52fa75e8-9aef-443b-9b31-a70989d5b42d"?>
   
