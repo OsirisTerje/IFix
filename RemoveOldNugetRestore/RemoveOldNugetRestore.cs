@@ -25,7 +25,6 @@ namespace IFix
                 status += RemoveAllNugetTargetFiles(here);
                 status += RemoveAllNugetExeFiles(here);
                 status += FixSolutionFiles(here);
-
                 status += FixingProjFiles(here);
                 return status;
             }
@@ -80,12 +79,13 @@ namespace IFix
                 var lines = File.ReadAllLines(file);
                 var output = FixImportAndRestorePackagesInProj(lines, file);
                 var output2 = FixTargetInProj(output);
+                var output3 = FixSolutionDirInProj(output2);
                 try
                 {
                     if (changed)
                     {
                         if (Command.Fix)
-                            File.WriteAllLines(file, output2);
+                            File.WriteAllLines(file, output3);
                         fixedup++;
                     }
                     else
@@ -148,6 +148,7 @@ namespace IFix
                 if (line.Contains("<Target Name=\"EnsureNuGetPackageBuildImports"))
                 {
                     foundTarget = true;
+                    changed = true;
                 }
                 else
                 {
@@ -161,6 +162,24 @@ namespace IFix
                         output2.Add(line);
                     }
                 }
+            }
+            return output2;
+        }
+
+        public IEnumerable<string> FixSolutionDirInProj(IEnumerable<string> output)
+        {
+            var output2 = new List<string>();
+            foreach (var line in output)
+            {
+                if (!line.Contains("<SolutionDir Condition=\"$(SolutionDir)"))
+                {
+                    output2.Add(line);
+                }
+                else
+                {
+                    changed = true;
+                }
+                
             }
             return output2;
         }
