@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 
 namespace GitIgnoreTests
 {
-    [TestFixture, Category("GitIgnore")]
+    [TestFixture, Category(nameof(GitIgnore))]
     public class GitIgnore
     {
 
@@ -15,6 +16,21 @@ namespace GitIgnoreTests
         private const string STD = "VisualStudio.gitignore";
         private const string GitHubVS = "github.visualstudio.gitignore";
 
+        private string gitDirectory;
+        public string GitDirectory
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(gitDirectory))
+                {
+                    string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                    var uri = new UriBuilder(codeBase);
+                    string path = Uri.UnescapeDataString(uri.Path);
+                    gitDirectory = Path.Combine(Path.GetDirectoryName(path), @"..\..\..\");
+                }
+                return gitDirectory;
+            }
+        }
 
         /// <summary>
         /// Checks that the gitignore get the extra 194 line added.
@@ -24,7 +40,7 @@ namespace GitIgnoreTests
         {
             var testdata = ResourceReader.Read(GitHubVS);
             Assert.That(testdata.Any(l => l.Trim() == @"packages/*"), Is.False, "githubignore contained the packages/*");
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata,false,false);
             Assert.IsTrue(result);
@@ -39,7 +55,7 @@ namespace GitIgnoreTests
         {
             var testdata = ResourceReader.Read(W);
 
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata,false,false);
             Assert.IsTrue(result);
@@ -51,7 +67,7 @@ namespace GitIgnoreTests
         {
             var testdata = ResourceReader.Read(WO);
 
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata, false, false);
             Assert.IsFalse(result);
@@ -63,7 +79,7 @@ namespace GitIgnoreTests
         {
             var testdata = ResourceReader.Read(WO);
 
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata, false, false);
             Assert.IsFalse(result, "Testdata contains packages or CheckIfPackages failed");
@@ -92,7 +108,7 @@ namespace GitIgnoreTests
             var gitignorelines = ResourceReader.Read(W);
             var stdlines = ResourceReader.Read(STD);
 
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfOurContainsStd(gitignorelines, stdlines);
 
@@ -107,7 +123,7 @@ namespace GitIgnoreTests
         {
             var lines = new List<string> { "Somestart" };
 
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
 
             var outlines = sut.AddOnlyMissingInfo(lines);
 
@@ -119,7 +135,7 @@ namespace GitIgnoreTests
         {
             var lines = new List<string> { "Somestart", @"**/packages/*" };
 
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
 
             var outlines = sut.AddOnlyMissingInfo(lines);
 
@@ -130,7 +146,7 @@ namespace GitIgnoreTests
         [Test]
         public void FindMyOwnGitRepo()
         {
-            var sut = new IFix.GitIgnore();
+            var sut = new IFix.GitIgnore(GitDirectory);
             Assert.That(sut.Repositories.Count() == 1, "Can't find my own repo");
             var file = sut.Repositories.First().File;
             Assert.That(File.Exists(file), "No gitignore file");
@@ -139,7 +155,7 @@ namespace GitIgnoreTests
         [Test]
         public void VerifyThatGitHubIgnoreFileWasDownloaded()
         {
-            var sut = new IFix.GitIgnore(); // Make sure we create it and thus also download the file. 
+            var sut = new IFix.GitIgnore(GitDirectory); // Make sure we create it and thus also download the file. 
             var temp = Path.GetTempPath();
             var tempgitignore = temp + "/VisualStudio.gitignore";
             Assert.That(File.Exists(tempgitignore),"No temporary gitignore found at "+tempgitignore);

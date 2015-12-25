@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GitIgnoreTests
 {
@@ -14,7 +13,7 @@ namespace GitIgnoreTests
         {
             var resource =
                 Assembly.GetExecutingAssembly().GetManifestResourceNames()
-                    .FirstOrDefault(item => item.ToUpper().EndsWith(resourceName.ToUpper()));
+                    .FirstOrDefault(item => item.ToUpper(CultureInfo.InvariantCulture).EndsWith(resourceName.ToUpper(CultureInfo.InvariantCulture)));
             if (resource==null)
                 throw new ArgumentException("No test file resource named : " + resourceName);
             string content = "";
