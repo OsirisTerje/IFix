@@ -93,7 +93,7 @@ namespace IFix
             }
             else
             {
-                Writer.WriteRed("No .gitignore in " + repo.GitRepo);
+                Writer.WriteRed("No .gitignore in " + repo.GitRepo+"\nUse IFix gitignore -r -f to retrieve the standard gitignore");
                 if (Command.Fix || Command.Add)
                 {
                     File.WriteAllLines(filetocheck, stdGitIgnore);
