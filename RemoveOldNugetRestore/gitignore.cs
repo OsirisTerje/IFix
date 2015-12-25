@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 
 
 namespace IFix
@@ -15,18 +14,10 @@ namespace IFix
     {
         private readonly string gitdirectory;
 
-        public DirectoryInfo GitRepo
-        {
-            get { return Directory.GetParent(gitdirectory); }
-        }
+        public DirectoryInfo GitRepo => Directory.GetParent(gitdirectory);
 
-        public string File
-        {
-            get
-            {
-                return GitRepo + @"/.gitignore";
-            }
-        }
+        public string File => GitRepo + @"/.gitignore";
+
         public Repository(string repo)
         {
             gitdirectory = repo;
@@ -38,7 +29,7 @@ namespace IFix
         private GitIgnoreCommand Command { get; set; }
 
         private List<string> stdGitIgnore;
-        public IEnumerable<Repository> Repositories { get; private set; }
+        public IEnumerable<Repository> Repositories { get; }
 
 
         /// <summary>
@@ -129,8 +120,8 @@ namespace IFix
                         File.WriteAllLines(repo.File, lines);
                     }
                     Writer.Write(Command.Fix
-                        ? "Added " + missing.Count() + " lines to .gitignore for " + repo.GitRepo
-                        : "Missing " + missing.Count() + " lines to gitignore for " + repo.GitRepo);
+                        ? "Added " + missing.Count + " lines to .gitignore for " + repo.GitRepo
+                        : "Missing " + missing.Count + " lines to gitignore for " + repo.GitRepo);
                     retval++;
                 }
                 else
@@ -140,7 +131,7 @@ namespace IFix
             {
                 if (Command.Fix)
                     File.WriteAllLines(repo.File, stdGitIgnore);
-                Writer.Write(string.Format("{0} gitignore for {1}", Command.Fix ? "Added" : "Missing", repo.GitRepo));
+                Writer.Write($"{(Command.Fix ? "Added" : "Missing")} gitignore for {repo.GitRepo}");
                 retval++;
             }
             return retval;
@@ -150,8 +141,7 @@ namespace IFix
         {
             var exist = File.Exists(repository.File);
             File.WriteAllLines(repository.File, stdGitIgnore);
-            string msg = string.Format("{0} gitignore with standard for {1}", exist ? "Replaced" : "Added",
-                repository.GitRepo);
+            string msg = $"{(exist ? "Replaced" : "Added")} gitignore with standard for {repository.GitRepo}";
             Writer.Write(msg);
         }
 
@@ -195,10 +185,10 @@ namespace IFix
 
             if (!CheckIfVS2015Files(lines))
             {
-                Writer.WriteRed("Missing node_modules and/or bower_components in "+filetocheck);
+                Writer.WriteRed("Missing node_modules  in "+filetocheck);
                 if (Command.Fix && !Command.Add)
                 {
-                    outlines.AddRange(new List<string> { "node_modules/", "bower_components/" });
+                    outlines.AddRange(new List<string> { "node_modules/"});
                     fix = true;
                 }
                 green = false;
@@ -216,8 +206,7 @@ namespace IFix
 
         public bool CheckIfVS2015Files(ICollection<string> lines)
         {
-            return lines.Any(line => line.Contains("node_modules/")) &&
-                   lines.Any(line => line.Contains("bower_components/"));
+            return lines.Any(line => line.Contains("node_modules/")) ;
         }
 
         private void RetrieveStdGitIgnore()
