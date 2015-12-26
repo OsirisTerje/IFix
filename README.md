@@ -18,4 +18,4 @@ For building:
 Requires: 
 Wix 3.8
 .Net 4.5.1
-Projects set up for VS 2013 Update 2. 
+To build use Visual Studio 2015 Update 1. 
