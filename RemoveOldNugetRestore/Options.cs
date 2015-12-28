@@ -55,6 +55,10 @@ namespace IFix
         [VerbOption("info")]
         public GoToBlog BlogCommand { get; set; }
 
+        [VerbOption("mefcache")]
+        public  MefCacheCommand MefCacheCommand { get; set; }
+        
+
         [HelpOption]
         public string GetUsage()
         {
@@ -62,10 +66,10 @@ namespace IFix
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             usage.AppendLine("IFix  "+version);
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-            usage.AppendLine("where <command> is one of :  nugetrestore,  ca0053, gitignore, info");
+            usage.AppendLine("where <command> is one of :  mefcache, nugetrestore,  ca0053, gitignore, info");
             usage.AppendLine("For more instructions and information run 'IFix info -c'");
-            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053 -c");
-            usage.AppendLine("by Terje Sandstrom, Inmeta Consulting, 2014");
+            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache -c");
+            usage.AppendLine("by Terje Sandstrom, 2015");
             
             return usage.ToString();
         }
@@ -90,13 +94,16 @@ namespace IFix
                 url = UrlNugetrestore;
             else if (Ca0053)
                 url = UrlCa0053;
-            var b = new Process
+            
+            using (var b = new Process
             {
                 StartInfo =
                     new ProcessStartInfo(url)
-            };
-            b.Start();
-            return 0;
+            })
+            {
+                b.Start();
+                return 0;
+            }
         }
 
         [Option('g', "gitignore", HelpText = "gitignore blog")]
@@ -125,6 +132,29 @@ namespace IFix
             return fixer.Execute(this);
         }
     }
+
+    public class MefCacheCommand : CommonOptions
+    {
+        public override int Execute()
+        {
+            var fixer = new DeleteMefCache();
+            return fixer.Execute(this);
+        }
+        [Option('2',"vs2012",HelpText="Delete cache for VS2012")]
+        public bool Vs2012 { get; set; }
+        [Option('3', "vs2013", HelpText = "Delete cache for VS2013")]
+        public bool Vs2013 { get; set; }
+        [Option('5', "vs2015", HelpText = "Delete cache for VS2015")]
+        public bool Vs2015 { get; set; }
+
+        [Option('a', "all", HelpText = "Delete cache for all VS instances")]
+        public bool All { get; set; }
+
+        public bool NotSpecific => !Vs2012 && !Vs2013 && !Vs2015;
+    }
+
+   
+
 
     public class GitIgnoreCommand : CommonOptions
     {

@@ -61,6 +61,7 @@
     <Compile Include="FixCA0053.cs" />
     <Compile Include="gitignore.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="DeleteMefCache.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
