@@ -66,7 +66,7 @@ namespace IFix
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             usage.AppendLine("IFix  "+version);
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-            usage.AppendLine("where <command> is one of :  mefcache, nugetrestore,  ca0053, gitignore, info");
+            usage.AppendLine("where <command> is one of :  gitignore, mefcache, nugetrestore,  ca0053, info");
             usage.AppendLine("For more instructions and information run 'IFix info -c'");
             usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache -c");
             usage.AppendLine("by Terje Sandstrom, 2015");
@@ -151,6 +151,13 @@ namespace IFix
         public bool All { get; set; }
 
         public bool NotSpecific => !Vs2012 && !Vs2013 && !Vs2015;
+
+        public override string Help()
+        {
+            var msg = base.Help();
+            msg += "Use options --vs2012/--vs2013/--vs2015 to limit cache deletion to one version";
+            return msg;
+        }
     }
 
    

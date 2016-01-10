@@ -35,12 +35,12 @@ namespace IFix
             {
                 var exist = Directory.Exists(cache.Location);
                 cache.Exist = exist;
-                Console.WriteLine($"Cache for {cache.Name} at {cache.Location} {(exist ? " do exist" : " do not exist")}");
+                Console.Write($"Cache for {cache.Name} at {cache.Location} {(exist ? " do exist." : " do not exist.")}");
                 if (exist)
                 {
                     bool hascontent = (Directory.EnumerateDirectories(cache.Location).Count() + Directory.EnumerateFiles(cache.Location).Count()) > 0;
-                    Console.WriteLine(!hascontent ? @"Cache is empty" : @"Cache is not empty");
-                }
+                    Console.WriteLine(!hascontent ? @" Cache is empty" : @" Cache is not empty");
+                } else Console.WriteLine("");
             }
         }
 

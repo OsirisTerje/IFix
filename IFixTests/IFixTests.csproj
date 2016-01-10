@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RemoveOldNugetRestore\IFix.csproj">
-      <Project>{22ADA2BA-033A-47E0-AD83-8399775DB135}</Project>
+      <Project>{22ada2ba-033a-47e0-ad83-8399775db135}</Project>
       <Name>IFix</Name>
     </ProjectReference>
   </ItemGroup>

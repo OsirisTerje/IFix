@@ -51,13 +51,13 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RemoveOldNugetRestore\IFix.csproj">
-      <Project>{22ADA2BA-033A-47E0-AD83-8399775DB135}</Project>
-      <Name>IFix</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\RemoveOldNugetRestore\IFix.csproj">
+      <Project>{22ada2ba-033a-47e0-ad83-8399775db135}</Project>
+      <Name>IFix</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
