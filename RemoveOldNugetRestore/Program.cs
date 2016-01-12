@@ -29,6 +29,11 @@ namespace IFix
                     }
                     else
                     {
+                        if (invokedverb == "info")
+                        {
+                            retval = invokedverbinstance.Execute();
+                            return retval;
+                        }
                         var msg = invokedverbinstance.Help();
                         Console.WriteLine(msg);
                         retval = -1;
