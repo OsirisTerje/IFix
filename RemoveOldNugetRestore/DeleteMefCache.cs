@@ -46,7 +46,7 @@ namespace IFix
 
         private  void CreateCaches(MefCacheCommand command)
         {
-            if (command.All || (command.NotSpecific && command.Check))
+            if (command.All || command.NotSpecific )
             {
                 caches.AddRange(new List<Cache> { new Vs2012Cache(), new Vs2013Cache(), new Vs2015Cache() });
             }

@@ -155,7 +155,7 @@ namespace IFix
         public override string Help()
         {
             var msg = base.Help();
-            msg += "Use options --vs2012/--vs2013/--vs2015 to limit cache deletion to one version";
+            msg += "Use options --vs2012/--vs2013/--vs2015 to limit cache deletion to one version, --all to clear all";
             return msg;
         }
     }
