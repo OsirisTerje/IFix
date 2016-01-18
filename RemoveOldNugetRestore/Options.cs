@@ -57,7 +57,10 @@ namespace IFix
 
         [VerbOption("mefcache")]
         public  MefCacheCommand MefCacheCommand { get; set; }
-        
+
+        [VerbOption("createsln")]
+        public CreateSln CreateSln { get; set; }
+
 
         [HelpOption]
         public string GetUsage()
@@ -129,6 +132,16 @@ namespace IFix
         public override int Execute()
         {
             var fixer = new FixCA0053();
+            return fixer.Execute(this);
+        }
+    }
+
+
+    public class CreateSln : CommonOptions
+    {
+        public override int Execute()
+        {
+            var fixer = new CreateBlankSolution();
             return fixer.Execute(this);
         }
     }
