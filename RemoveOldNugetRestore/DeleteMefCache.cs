@@ -48,7 +48,7 @@ namespace IFix
         {
             if (command.All || command.NotSpecific )
             {
-                caches.AddRange(new List<Cache> { new Vs2012Cache(), new Vs2013Cache(), new Vs2015Cache() });
+                caches.AddRange(new List<Cache> { new Vs2012Cache(), new Vs2013Cache(), new Vs2015Cache(), new Vs15Cache() });
             }
             else
             {
@@ -70,7 +70,7 @@ namespace IFix
 
     public abstract class Cache
     {
-        public string Location { get; private set; }
+        public string Location { get; }
 
         public bool Exist { get; set; }
 
@@ -108,5 +108,14 @@ namespace IFix
         }
 
         public override string Name => "VS2015";
+    }
+
+    public class Vs15Cache : Cache
+    {
+        public Vs15Cache() : base("15.0")
+        {
+        }
+
+        public override string Name => "VS15 Preview";
     }
 }

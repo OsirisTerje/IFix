@@ -160,6 +160,9 @@ namespace IFix
         [Option('5', "vs2015", HelpText = "Delete cache for VS2015")]
         public bool Vs2015 { get; set; }
 
+        [Option('6', "vs15", HelpText = "Delete cache for VS15 Preview")]
+        public bool Vs15 { get; set; }
+
         [Option('a', "all", HelpText = "Delete cache for all VS instances")]
         public bool All { get; set; }
 
@@ -168,7 +171,7 @@ namespace IFix
         public override string Help()
         {
             var msg = base.Help();
-            msg += "Use options --vs2012/--vs2013/--vs2015 to limit cache deletion to one version, --all to clear all";
+            msg += "Use options --vs2012/--vs2013/--vs2015/--vs15 to limit cache deletion to one version, --all to clear all";
             return msg;
         }
     }
