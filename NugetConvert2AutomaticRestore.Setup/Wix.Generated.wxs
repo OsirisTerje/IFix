@@ -2,6 +2,9 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Fragment>
         <DirectoryRef Id="INSTALLDIR">
+            <Component Id="cmp7512A24D328968BFF1168CA83A9F0636" Guid="*">
+                <File Id="filD453BC62A9354DCA3419398C1F7832C4" KeyPath="yes" Source="$(var.AppProjectDir)\.gitattributes" />
+            </Component>
             <Component Id="cmp86E49024F3704AE42C64B56231946E6C" Guid="*">
                 <File Id="fil7F34779767A8FCCCCF4BEF268A82802D" KeyPath="yes" Source="$(var.AppProjectDir)\.gitignore" />
             </Component>
@@ -22,6 +25,12 @@
             </Component>
             <Component Id="cmp1968B0C16107D39C65704F2CDC5B4F0E" Guid="*">
                 <File Id="filE7305F37BF22FB9E2E674C0A423CB43E" KeyPath="yes" Source="$(var.AppProjectDir)\arne2.sln" />
+            </Component>
+            <Component Id="cmpFC36BA21DC90E62C231A1B054E1F6DD5" Guid="*">
+                <File Id="fil769674D8C42E792A0B145B7F6F393998" KeyPath="yes" Source="$(var.AppProjectDir)\arne21.sln" />
+            </Component>
+            <Component Id="cmp89B38776B23EF26BCACF9329C7E6A116" Guid="*">
+                <File Id="fil8D2D660C83D5ECBA50CA087AE6B0D1A6" KeyPath="yes" Source="$(var.AppProjectDir)\arne22.sln" />
             </Component>
             <Component Id="cmp2A60B56871F0608874F51C7342931E1D" Guid="*">
                 <File Id="filFB0D01535A0CA73BA23835BC221DBBAA" KeyPath="yes" Source="$(var.AppProjectDir)\arne4.sln" />
@@ -46,6 +55,9 @@
             </Component>
             <Component Id="cmp5E3D3348D828484657D3F25D74F6957D" Guid="*">
                 <File Id="fil45F83EAF62A9E97F8C317185F8AD4656" KeyPath="yes" Source="$(var.AppProjectDir)\CommandLine.xml" />
+            </Component>
+            <Component Id="cmpFC69740E08BD4D930092C9FFBE4EF99B" Guid="*">
+                <File Id="filCD9DB25C1FF65EDC092C58E6FCEDD80D" KeyPath="yes" Source="$(var.AppProjectDir)\default.runsettings" />
             </Component>
             <Component Id="cmp9C10E065CAA211E29C3F463220F708D7" Guid="*">
                 <File Id="filFE45DA496FF381061AD163DB4EA19DB5" KeyPath="yes" Source="$(var.AppProjectDir)\IFix.exe" />
@@ -75,6 +87,13 @@
                     <Directory Id="dir807ED396900BA6DA4278347C3D4397D4" Name="v14">
                         <Component Id="cmpDA59EA4B4D4270A41D6102B39D37168F" Guid="*">
                             <File Id="filF7BA27D207F9BF0DCAFCDEE5DFB491A1" KeyPath="yes" Source="$(var.AppProjectDir)\.vs\arne12\v14\.suo" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dir28244C8F17FAC781FC1DE50509F91305" Name="arne13">
+                    <Directory Id="dir974A50B04B0482E57380D834CB3D5DAE" Name="v14">
+                        <Component Id="cmpAA69D2D5C2AD1E95C32846E6523FE86D" Guid="*">
+                            <File Id="filC801B30315BF73567BB138CBD8C7C077" KeyPath="yes" Source="$(var.AppProjectDir)\.vs\arne13\v14\.suo" />
                         </Component>
                     </Directory>
                 </Directory>
@@ -123,6 +142,7 @@
     </Fragment>
     <Fragment>
         <ComponentGroup Id="Wix.Generated_Project">
+            <ComponentRef Id="cmp7512A24D328968BFF1168CA83A9F0636" />
             <ComponentRef Id="cmp86E49024F3704AE42C64B56231946E6C" />
             <ComponentRef Id="cmp739BBA41054DB3C3386B721B7916977B" />
             <ComponentRef Id="cmpBC6E68F2B3C2FFD3A278C861E7C5D212" />
@@ -130,6 +150,8 @@
             <ComponentRef Id="cmp1B631C967DB4098ECDF03AB3800CEC94" />
             <ComponentRef Id="cmpA473D231D0359A3C84C58779806F8086" />
             <ComponentRef Id="cmp1968B0C16107D39C65704F2CDC5B4F0E" />
+            <ComponentRef Id="cmpFC36BA21DC90E62C231A1B054E1F6DD5" />
+            <ComponentRef Id="cmp89B38776B23EF26BCACF9329C7E6A116" />
             <ComponentRef Id="cmp2A60B56871F0608874F51C7342931E1D" />
             <ComponentRef Id="cmp735D88B5DF0CB55E8C8006EF4B6E0D3D" />
             <ComponentRef Id="cmp29B55D293D6EC7645AE9D04B85B77BC9" />
@@ -138,12 +160,14 @@
             <ComponentRef Id="cmpB24FE5095083AD7ACA89F95C29A5ACBF" />
             <ComponentRef Id="cmp08072DED40A2AE0F2F7264A3ECFD4107" />
             <ComponentRef Id="cmp5E3D3348D828484657D3F25D74F6957D" />
+            <ComponentRef Id="cmpFC69740E08BD4D930092C9FFBE4EF99B" />
             <ComponentRef Id="cmp9C10E065CAA211E29C3F463220F708D7" />
             <ComponentRef Id="cmp9721F1F9E58B3B5A13113D4FFDDC760A" />
             <ComponentRef Id="cmpAD9B223F4F4855E37C90BCB9A78AEE8E" />
             <ComponentRef Id="cmp7ACB3B8FF5FB7DF616E322C77DA1A23B" />
             <ComponentRef Id="cmpB31F0B86D7D996E0CE8BBE7E71E0DAE3" />
             <ComponentRef Id="cmpDA59EA4B4D4270A41D6102B39D37168F" />
+            <ComponentRef Id="cmpAA69D2D5C2AD1E95C32846E6523FE86D" />
             <ComponentRef Id="cmpAFB51E11F818B4763E27451E4E103C2C" />
             <ComponentRef Id="cmp47058B2C2701AA765DF44FBD7E4AF839" />
             <ComponentRef Id="cmp28ACACDB4CDDED33AA338B36BB172B0A" />

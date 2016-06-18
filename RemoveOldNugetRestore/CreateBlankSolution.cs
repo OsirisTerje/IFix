@@ -21,13 +21,37 @@ namespace IFix
                 {
                     var items = new SolutionItems();
                     AddGitIgnore(items);
+                    AddGitAttribute(items);
                     AddReadme(items, name);
+                    AddRunsettings(items);
                     content.AddRange(items.Content);
                 }
                 File.WriteAllLines(name, content);
                 Console.WriteLine($"{name} file created");
             }
             return 0;
+        }
+
+        private void AddRunsettings(SolutionItems items)
+        {
+            const string runsettings = "default.runsettings";
+            if (!File.Exists(runsettings))
+            {
+                var rs = new Runsettings();
+                File.WriteAllLines(runsettings,rs.FileContent);
+            }
+            items.Add(runsettings);
+        }
+
+        private void AddGitAttribute(SolutionItems items)
+        {
+            const string gitattributes = ".gitattributes";
+            if (!File.Exists(gitattributes))
+            {
+                var gitattr = ResourceReader.Read("gitattributes");
+                File.WriteAllText(gitattributes, gitattr);
+            }
+            items.Add(gitattributes);
         }
 
         private void AddGitIgnore(SolutionItems items)
@@ -47,7 +71,7 @@ namespace IFix
             if (!File.Exists(readme))
             {
                 var content = $"### Readme file for {name}" + Environment.NewLine + Environment.NewLine;
-                content += "Add information for the developer about things that are helpful to know";
+                content += "Add information for the developer about things that are helpful to know in order to work with this program";
                 File.WriteAllText(readme, content);
             }
             items.Add(readme);
