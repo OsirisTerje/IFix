@@ -144,6 +144,12 @@ namespace IFix
             var fixer = new CreateBlankSolution();
             return fixer.Execute(this);
         }
+
+        [ValueOption(0)]
+        public string Name { get; set; }
+
+        [Option('b',"blank",HelpText="Create a complete blank solution")]
+        public bool Blank { get; set; }
     }
 
     public class MefCacheCommand : CommonOptions

@@ -48,6 +48,25 @@ namespace IFix
             Repositories = reponames.Select(r => new Repository(r));
         }
 
+        /// <summary>
+        /// For use within IFix, from other commands, only works on current directory. Requires that the Fix option is set
+        /// </summary>
+        /// <param name="command"></param>
+        public GitIgnore(GitIgnoreCommand command)
+        {
+            Command = command;
+            RetrieveStdGitIgnore();
+            
+        }
+
+        public void WriteGitIgnore()
+        {
+            if (!Command.Fix)
+                return;
+            File.WriteAllLines(".gitignore", stdGitIgnore);
+        }
+
+
         public int Execute(GitIgnoreCommand command)
         {
 #if DEBUG
