@@ -62,6 +62,10 @@ namespace IFix
         public CreateSln CreateSln { get; set; }
 
 
+        [VerbOption("nugetconsolidate")]
+        public NugetConsolidateCommands Consolidate { get; set; }
+
+
         [HelpOption]
         public string GetUsage()
         {
@@ -71,8 +75,8 @@ namespace IFix
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
             usage.AppendLine("where <command> is one of :  gitignore, mefcache, nugetrestore,  ca0053, info");
             usage.AppendLine("For more instructions and information run 'IFix info -c'");
-            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache -c");
-            usage.AppendLine("by Terje Sandstrom, 2015");
+            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache/--nugetconsolidate -c");
+            usage.AppendLine("by Terje Sandstrom, 2015, 2016");
             
             return usage.ToString();
         }
@@ -226,6 +230,15 @@ namespace IFix
             var ok = base.ValidOptions();
             ok |= (Add || Replace);
             return ok;
+        }
+    }
+
+    public class NugetConsolidateCommands : CommonOptions
+    {
+        public override int Execute()
+        {
+            var fixer = new NugetConsolidate();
+            return fixer.Execute(this);
         }
     }
 }
