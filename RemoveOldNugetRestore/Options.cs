@@ -235,6 +235,16 @@ namespace IFix
 
     public class NugetConsolidateCommands : CommonOptions
     {
+
+
+        [Option('s', "short", HelpText = "Only list packages and versions, skip the project information")]
+        public bool Short { get; set; }
+
+        [Option('o', "consolidate", HelpText = "Only list packages that needs consolidation")]
+        public bool Consolidate { get; set; }
+
+
+
         public override int Execute()
         {
             var fixer = new NugetConsolidate();

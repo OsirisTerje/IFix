@@ -19,28 +19,50 @@ namespace IFix
             var res = LocalExecute(commands, files);
             if (commands.Check)
             {
-                foreach (var pack in NugetPackages)
+                if (!commands.Consolidate)
                 {
-                    Console.WriteLine(pack.Name);
-                    foreach (var version in pack.Versions)
+                    foreach (var pack in NugetPackages)
                     {
-                        Console.WriteLine($"   {version.Version}");
-                        foreach (var project in version.Projects)
-                        {
-                            Console.WriteLine($"      {project.Name}");
-                        }
+                        WriteVersionsAndProjects(commands, pack);
                     }
+                }
+                else
+                {
+                    foreach (var pack in NugetPackages.Where(o => o.Versions.Count > 1))
+                    {
+                        WriteVersionsAndProjects(commands, pack);
+                    }
+
                 }
             }
             return res;
         }
+
+        private static void WriteVersionsAndProjects(NugetConsolidateCommands commands, NugetPackage pack)
+        {
+            Console.WriteLine(pack.Name);
+            foreach (var version in pack.Versions)
+            {
+                Console.WriteLine($"   {version.Version}");
+                if (!commands.Short)
+                {
+                    foreach (var project in version.Projects)
+                    {
+                        Console.WriteLine($"      {project.Name}");
+                    }
+                }
+            }
+        }
+
         private string FindCsProjFileName(string packageconfigFile)
         {
             var dirpath = Path.GetDirectoryName(packageconfigFile);
-            var csprojs = Directory.GetFiles(dirpath, "*.csproj", SearchOption.TopDirectoryOnly).ToList();
-            if (csprojs.Count == 1)
+            var projs = Directory.GetFiles(dirpath, "*.csproj", SearchOption.TopDirectoryOnly).ToList();
+            projs.AddRange(Directory.GetFiles(dirpath, "*.vbproj", SearchOption.TopDirectoryOnly).ToList());
+            projs.AddRange(Directory.GetFiles(dirpath, "*.vcxproj", SearchOption.TopDirectoryOnly).ToList());
+            if (projs.Count == 1)
             {
-                var s = csprojs.Single();
+                var s = projs.Single();
                 s = s.Substring(0, s.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase));
                 return s;
             }
