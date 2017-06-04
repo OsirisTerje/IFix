@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
+using IntegrationTest;
 
 namespace GitIgnoreTests
 {
@@ -35,7 +36,7 @@ namespace GitIgnoreTests
         /// <summary>
         /// Checks that the gitignore get the extra 194 line added.
         /// </summary>
-        [Test]
+        [Test,LocalOnly]
         public void VerifyGitHubIgnore()
         {
             var testdata = ResourceReader.Read(GitHubVS);
