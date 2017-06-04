@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntegrationTest;
 
 namespace IFix.Tests
 {
-    [TestFixture()]
+   
     public class DeleteMefCacheTests
     {
+        [LocalOnly)]
         [Test()]
         public void CheckCacheForVS2012()
         {

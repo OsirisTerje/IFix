@@ -58,6 +58,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IntegrationTest\IntegrationTest.csproj">
+      <Project>{3568c376-f3ab-469c-94a0-695cf2844c1f}</Project>
+      <Name>IntegrationTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RemoveOldNugetRestore\IFix.csproj">
       <Project>{22ada2ba-033a-47e0-ad83-8399775db135}</Project>
       <Name>IFix</Name>

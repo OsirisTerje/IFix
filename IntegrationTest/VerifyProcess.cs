@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace IntegrationTest
 {
-    [TestFixture, PathDependent]
+    [TestFixture, PathDependent,LocalOnly]
     public class VerifyProcess
     {
 
@@ -129,5 +129,8 @@ namespace IntegrationTest
     { }
 
     public class PathDependentAttribute : CategoryAttribute
+    { }
+
+    public class LocalOnlyAttribute : CategoryAttribute
     { }
 }
