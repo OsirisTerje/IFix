@@ -12,7 +12,7 @@ namespace IFix.Tests
    
     public class DeleteMefCacheTests
     {
-        [LocalOnly)]
+        [LocalOnly]
         [Test()]
         public void CheckCacheForVS2012()
         {
