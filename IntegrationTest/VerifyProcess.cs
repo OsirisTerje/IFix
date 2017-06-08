@@ -41,7 +41,7 @@ namespace IntegrationTest
         }
 
 
-        [Test, Integration]
+        [Test, Integration, LocalOnly]
         public void CheckDeletingNugetExe()
         {
             var v = new RemoveOldNugetRestore(Command);
