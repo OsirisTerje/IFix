@@ -41,11 +41,11 @@ namespace IntegrationTest
         }
 
 
-        [Test, Integration, LocalOnly]
+        [Test, Integration, LocalOnly, Category("Integration")]
         public void CheckDeletingNugetExe()
         {
             var v = new RemoveOldNugetRestore(Command);
-            string path = CurrentDirectory ;
+            string path = CurrentDirectory;
             string fileisat = path + "/.nuget/nuget.exe";
             bool exist = File.Exists(fileisat);
             Assert.IsTrue(exist);
