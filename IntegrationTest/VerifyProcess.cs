@@ -41,18 +41,18 @@ namespace IntegrationTest
         }
 
 
-        [Test, Integration, LocalOnly, Category("Integration")]
-        public void CheckDeletingNugetExe()
-        {
-            var v = new RemoveOldNugetRestore(Command);
-            string path = CurrentDirectory;
-            string fileisat = path + "/.nuget/nuget.exe";
-            bool exist = File.Exists(fileisat);
-            Assert.IsTrue(exist);
-            v.RemoveAllNugetExeFiles(path);
-            exist = File.Exists(fileisat);
-            Assert.IsFalse(exist);
-        }
+        //[Test, Integration, LocalOnly, Category("Integration")]
+        //public void CheckDeletingNugetExe()
+        //{
+        //    var v = new RemoveOldNugetRestore(Command);
+        //    string path = CurrentDirectory;
+        //    string fileisat = path + "/.nuget/nuget.exe";
+        //    bool exist = File.Exists(fileisat);
+        //    Assert.IsTrue(exist);
+        //    v.RemoveAllNugetExeFiles(path);
+        //    exist = File.Exists(fileisat);
+        //    Assert.IsFalse(exist);
+        //}
 
         [Test]
         public void VerifyCorrectDirectory()
