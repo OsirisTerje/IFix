@@ -90,7 +90,7 @@ namespace GitIgnoreTests
 
         }
 
-        [Test, Integration]
+        [Test, GitIgnoreTests.Integration]
         public void CheckDownload()
         {
             var sut = new IFix.GitIgnore();
