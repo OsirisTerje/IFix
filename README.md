@@ -18,7 +18,7 @@ For building:
 Requires: 
 Wix 3.8
 .Net 4.5.1
-To build use Visual Studio 2015 Update 1. 
+To build use Visual Studio 2017 Update 3 
 
 Latest build
 [![Build Status](https://terjedemo.visualstudio.com/_apis/public/build/definitions/1c2183f6-7be6-4865-a8a1-5de2b16cf629/13/badge)]
