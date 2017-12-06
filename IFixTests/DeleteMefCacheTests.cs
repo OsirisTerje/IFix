@@ -17,7 +17,9 @@ namespace IFix.Tests
         public void CheckCacheForVS2012()
         {
             var sut = new Vs2012Cache();
-            Assert.That(sut.Location.Contains("VisualStudio"),Is.True);
+            var locations = sut.Locations;
+            foreach ( var loc in locations)
+                Assert.That(loc.Contains("VisualStudio"),Is.True);
         }
     }
 }

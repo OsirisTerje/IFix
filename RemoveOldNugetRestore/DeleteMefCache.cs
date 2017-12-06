@@ -24,8 +24,13 @@ namespace IFix
         {
             foreach (var cache in caches.Where(d=>d.Exist))
             {
-                Directory.Delete(cache.Location,true);
-                Console.WriteLine($"Cache for {cache.Name} at {cache.Location} deleted");
+                int no = 1;
+                foreach (var location in cache.Locations)
+                {
+                    Directory.Delete(location, true);
+                    Console.WriteLine($"Cache {no} for {cache.Name} at {location} deleted");
+                    no++;
+                }
             }
         }
 
@@ -33,14 +38,22 @@ namespace IFix
         {
             foreach (var cache in caches)
             {
-                var exist = Directory.Exists(cache.Location);
-                cache.Exist = exist;
-                Console.Write($"Cache for {cache.Name} at {cache.Location} {(exist ? " do exist." : " do not exist.")}");
-                if (exist)
+                int no = 1;
+                foreach (var location in cache.Locations)
                 {
-                    bool hascontent = (Directory.EnumerateDirectories(cache.Location).Count() + Directory.EnumerateFiles(cache.Location).Count()) > 0;
-                    Console.WriteLine(!hascontent ? @" Cache is empty" : @" Cache is not empty");
-                } else Console.WriteLine("");
+                    var exist = Directory.Exists(location);
+                    cache.Exist |= exist;
+                    Console.Write(
+                        $"Cache {no} for {cache.Name} at {location} {(exist ? " do exist." : " do not exist.")}");
+                    if (exist)
+                    {
+                        bool hascontent = (Directory.EnumerateDirectories(location).Count() +
+                                           Directory.EnumerateFiles(location).Count()) > 0;
+                        Console.WriteLine(!hascontent ? @" Cache is empty" : @" Cache is not empty");
+                    }
+                    else Console.WriteLine("");
+                    no++;
+                }
             }
         }
 
@@ -48,7 +61,7 @@ namespace IFix
         {
             if (command.All || command.NotSpecific )
             {
-                caches.AddRange(new List<Cache> { new Vs2012Cache(), new Vs2013Cache(), new Vs2015Cache(), new Vs15Cache() });
+                caches.AddRange(new List<Cache> { new Vs2012Cache(), new Vs2013Cache(), new Vs2015Cache(), new Vs2017Cache() });
             }
             else
             {
@@ -64,13 +77,17 @@ namespace IFix
                 {
                     caches.Add(new Vs2015Cache());
                 }
+                if (command.Vs2017)
+                {
+                    caches.Add(new Vs2017Cache());
+                }
             }
         }
     }
 
     public abstract class Cache
     {
-        public string Location { get; }
+        public List<string> Locations { get; } = new List<string>();
 
         public bool Exist { get; set; }
 
@@ -78,8 +95,16 @@ namespace IFix
 
         protected Cache(string version)
         {
-            Location = Path.Combine(Environment.GetEnvironmentVariable("localappdata"), "Microsoft", "VisualStudio",
-                version, "ComponentModelCache");
+            const string componentmodelcache = "ComponentModelCache";
+            var baselocation = Path.Combine(Environment.GetEnvironmentVariable("localappdata"), "Microsoft", "VisualStudio");
+            var dirs = Directory.EnumerateDirectories(baselocation, $"{version}*");
+            foreach (var dir in dirs)
+            {
+                var checkPath = Path.Combine(dir, componentmodelcache);
+                if (Directory.Exists(checkPath))
+                    Locations.Add(checkPath);
+            }
+            
         }
     }
 
@@ -110,12 +135,12 @@ namespace IFix
         public override string Name => "VS2015";
     }
 
-    public class Vs15Cache : Cache
+    public class Vs2017Cache : Cache
     {
-        public Vs15Cache() : base("15.0")
+        public Vs2017Cache() : base("15.0")
         {
         }
 
-        public override string Name => "VS15 Preview";
+        public override string Name => "VS2017";
     }
 }

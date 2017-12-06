@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("IFix")]
-[assembly: AssemblyCopyright("Copyright ©Inmeta Consulting, Terje Sandstrom  2014")]
+[assembly: AssemblyCopyright("Copyright Terje Sandstrom  2014-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8.0.3")]
-[assembly: AssemblyFileVersion("1.8.0.3")]
+[assembly: AssemblyVersion("1.9.0.1")]
+[assembly: AssemblyFileVersion("1.9.0.1")]

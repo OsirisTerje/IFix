@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestoreTests", "RestoreTests\RestoreTests.csproj", "{892BB4F7-4BC7-438F-A6B9-A22D5F64228B}"
 EndProject
@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFixTests", "IFixTests\IFixTests.csproj", "{06833A0D-F436-472A-8323-62BFCF6ED5AA}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "IFix.Setup", "NugetConvert2AutomaticRestore.Setup\IFix.Setup.wixproj", "{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,8 +86,22 @@ Global
 		{06833A0D-F436-472A-8323-62BFCF6ED5AA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{06833A0D-F436-472A-8323-62BFCF6ED5AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{06833A0D-F436-472A-8323-62BFCF6ED5AA}.Release|x86.Build.0 = Release|Any CPU
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|x86.ActiveCfg = Debug|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|x86.Build.0 = Debug|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Any CPU.ActiveCfg = Release|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Any CPU.Build.0 = Release|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Mixed Platforms.Build.0 = Release|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|x86.ActiveCfg = Release|x86
+		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BCFAAC2-FFE4-4F08-9978-E72182BCB6B6}
 	EndGlobalSection
 EndGlobal

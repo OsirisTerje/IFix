@@ -23,15 +23,15 @@ namespace IFix
         public static string Read(Assembly assembly, string deviceXml)
         {
             LastError = "";
-            foreach (string manifestResourceName in assembly.GetManifestResourceNames())
+            foreach (var manifestResourceName in assembly.GetManifestResourceNames())
             {
                 if (
                     manifestResourceName.ToUpper(CultureInfo.InvariantCulture)
                         .EndsWith(deviceXml.ToUpper(CultureInfo.InvariantCulture)))
                 {
-                    using (Stream manifestResourceStream = assembly.GetManifestResourceStream(manifestResourceName))
+                    using (var manifestResourceStream = assembly.GetManifestResourceStream(manifestResourceName))
                     {
-                        using (StreamReader streamReader = new StreamReader(manifestResourceStream))
+                        using (var streamReader = new StreamReader(manifestResourceStream))
                             return streamReader.ReadToEnd();
                     }
                 }

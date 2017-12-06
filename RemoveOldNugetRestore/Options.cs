@@ -76,7 +76,7 @@ namespace IFix
             usage.AppendLine("where <command> is one of :  gitignore, mefcache, nugetrestore,  ca0053, info");
             usage.AppendLine("For more instructions and information run 'IFix info -c'");
             usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache/--nugetconsolidate -c");
-            usage.AppendLine("by Terje Sandstrom, 2015, 2016");
+            usage.AppendLine("by Terje Sandstrom, 2015-2017");
             
             return usage.ToString();
         }
@@ -170,8 +170,8 @@ namespace IFix
         [Option('5', "vs2015", HelpText = "Delete cache for VS2015")]
         public bool Vs2015 { get; set; }
 
-        [Option('6', "vs15", HelpText = "Delete cache for VS15 Preview")]
-        public bool Vs15 { get; set; }
+        [Option('6', "vs2017", HelpText = "Delete cache for VS2017")]
+        public bool Vs2017 { get; set; }
 
         [Option('a', "all", HelpText = "Delete cache for all VS instances")]
         public bool All { get; set; }
@@ -181,7 +181,7 @@ namespace IFix
         public override string Help()
         {
             var msg = base.Help();
-            msg += "Use options --vs2012/--vs2013/--vs2015/--vs15 to limit cache deletion to one version, --all to clear all";
+            msg += "Use options --vs2012/--vs2013/--vs2015/--vs2017 to limit cache deletion to one version, --all to clear all";
             return msg;
         }
     }
