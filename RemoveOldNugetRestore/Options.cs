@@ -66,6 +66,11 @@ namespace IFix
         public NugetConsolidateCommands Consolidate { get; set; }
 
 
+        [VerbOption("diagnostics")]
+        public DiagnosticsCommands Diagnostics { get; set; }
+
+
+
         [HelpOption]
         public string GetUsage()
         {
@@ -73,7 +78,7 @@ namespace IFix
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             usage.AppendLine("IFix  "+version);
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-            usage.AppendLine("where <command> is one of :  gitignore, mefcache, nugetrestore,  ca0053, info");
+            usage.AppendLine("where <command> is one of :  gitignore, diagnostics, mefcache, createsln, nugetrestore,  ca0053, info");
             usage.AppendLine("For more instructions and information run 'IFix info -c'");
             usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache/--nugetconsolidate -c");
             usage.AppendLine("by Terje Sandstrom, 2015-2017");
@@ -86,11 +91,11 @@ namespace IFix
     {
         private const string UrlIFix = @"https://visualstudiogallery.msdn.microsoft.com/b8ba97b0-bb89-4c21-a1e2-53ef335fd9cb";
 
-        private const string Urlgitignore = @"http://geekswithblogs.net/terje/archive/2014/06/13/fixing-up-visual-studiorsquos-gitignore--using-ifix.aspx";
+        private const string Urlgitignore = @"http://hermit.no/fixing-up-visual-studio-rsquo-s-gitignore-using-ifix/";
 
-        private const string UrlNugetrestore = @"http://geekswithblogs.net/terje/archive/2014/06/11/converting-projects-to-use-automatic-nuget-restore.aspx";
+        private const string UrlNugetrestore = @"http://hermit.no/converting-projects-to-use-automatic-nuget-restore-using-ifix/";
 
-        private const string UrlCa0053 = @"http://geekswithblogs.net/terje/archive/2012/08/18/how-to-fix-the-ca0053-error-in-code-analysis-in.aspx";
+        private const string UrlCa0053 = @"http://hermit.no/how-to-fix-the-ca0053-error-in-code-analysis-in-visual-studio-2012/";
 
         public override int Execute()
         {
@@ -251,4 +256,28 @@ namespace IFix
             return fixer.Execute(this);
         }
     }
+
+    public class DiagnosticsCommands : CommonOptions
+    {
+
+        [Option('a',"all",HelpText = "Show all diagnostics settings")]
+        public bool All { get; set; }
+
+        [Option('d',"Dump",HelpText="Enable or Disable dump")]
+        public int EnableDisableDump { get; set; }
+
+        [Option('u', "Fuslog", HelpText = "Enable or Disable fuslog")]
+        public int EnableDisableFuslog { get; set; }
+
+        [Option('t', "Vstest", HelpText = "Enable or Disable vstest tracing, 0 = disable, 1 = enable discovery 2= enable execution, 3 = enable both")]
+        public int VSTestTracing { get; set; }
+
+
+        public override int Execute()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+
 }
