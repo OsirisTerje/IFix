@@ -16,7 +16,7 @@ namespace IFix
             SubKeyName = subkeyname;
         }
 
-        public T Read<T>(string property)
+        public virtual T Read<T>(string property)
         {
             var result = Registry.GetValue(BaseKey + SubKeyName, property, null);
             if (result == null)
@@ -25,7 +25,7 @@ namespace IFix
             return value;
         }
 
-        public bool Exist(string property)
+        public virtual bool Exist(string property)
         {
             var value = Registry.GetValue(BaseKey + SubKeyName, property, null);
             return value != null;
@@ -35,7 +35,7 @@ namespace IFix
         public abstract bool ExistKey();
 
 
-        public void Write<T>(string property, T val)
+        public virtual void Write<T>(string property, T val)
         {
             Registry.SetValue(BaseKey + SubKeyName, property, val);
         }

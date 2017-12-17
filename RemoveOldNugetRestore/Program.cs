@@ -8,7 +8,7 @@ namespace IFix
         {
             var options = new Options();
             string invokedverb="";
-            CommonOptions invokedverbinstance=null;
+            IOptions invokedverbinstance=null;
             if (args == null || args.Length == 0)
             {
                 Console.WriteLine(options.GetUsage());
@@ -18,7 +18,7 @@ namespace IFix
             if (CommandLine.Parser.Default.ParseArguments(args, options,(verb,subOptions)=>
             {
                 invokedverb = verb;
-                invokedverbinstance = (CommonOptions)subOptions;
+                invokedverbinstance = (IOptions)subOptions;
             }) )
             {
                 if (invokedverbinstance != null)

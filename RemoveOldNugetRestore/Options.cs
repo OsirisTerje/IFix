@@ -8,42 +8,42 @@ namespace IFix
 {
 
 
-    public abstract class CommonOptions
+    public interface IOptions
     {
         [Option('c', "check", HelpText = "Only check if we have an issue. No changes done")]
-        public bool Check { get; set; }
+         bool Check { get; set; }
 
 
         [Option('f', "fix", HelpText = "Fix all files with issues")]
-        public bool Fix { get; set; }
+         bool Fix { get; set; }
 
         [Option('v', "verbose", HelpText = "More verbose output")]
-        public bool Verbose { get; set; }
+         bool Verbose { get; set; }
 
-        [HelpOption]
-        public virtual string Help()
-        {
-            var usage = new StringBuilder();
-            usage.AppendLine(
-                "Use :  -c or --check to only check without fixing, or -f or --fix to check and fix the errors");
-            usage.AppendLine(
-                "Use option -v or --verbose in addition to get more information.  Default for this is false.");
-            return usage.ToString();
-        }
+       // [HelpOption]
+        string Help();
+        //{
+        //    var usage = new StringBuilder();
+        //    usage.AppendLine(
+        //        "Use :  -c or --check to only check without fixing, or -f or --fix to check and fix the errors");
+        //    usage.AppendLine(
+        //        "Use option -v or --verbose in addition to get more information.  Default for this is false.");
+        //    return usage.ToString();
+        //}
 
-        public abstract int Execute();
+       int Execute();
 
-        public virtual bool ValidOptions()
-        {
-            return Check || Fix;
-        }
-    }
+        bool ValidOptions();
+    //    {
+    //        return Check || Fix;
+    //    }
+    //}
 
     public class Options
     {
        
 
-        [VerbOption("nugetrestore")]
+        [Verb("nugetrestore")]
         public NuGetRestoreCommand NuGetRestore { get; set; }
 
         [VerbOption("ca0053")]
@@ -87,7 +87,7 @@ namespace IFix
         }
     }
 
-    public class GoToBlog : CommonOptions
+    public class GoToBlog : IOptions
     {
         private const string UrlIFix = @"https://visualstudiogallery.msdn.microsoft.com/b8ba97b0-bb89-4c21-a1e2-53ef335fd9cb";
 
@@ -127,7 +127,8 @@ namespace IFix
 
     }
 
-    public class NuGetRestoreCommand : CommonOptions
+        [Verb("nugetrestore")]
+    public class NuGetRestoreCommand : IOptions
     {
         public override int Execute()
         {
@@ -136,7 +137,7 @@ namespace IFix
         }
     }
 
-    public class FixCA0053Command : CommonOptions
+    public class FixCA0053Command : IOptions
     {
         public override int Execute()
         {
@@ -146,7 +147,7 @@ namespace IFix
     }
 
 
-    public class CreateSln : CommonOptions
+    public class CreateSln : IOptions
     {
         public override int Execute()
         {
@@ -161,7 +162,7 @@ namespace IFix
         public bool Blank { get; set; }
     }
 
-    public class MefCacheCommand : CommonOptions
+    public class MefCacheCommand : IOptions
     {
         public override int Execute()
         {
@@ -194,7 +195,7 @@ namespace IFix
    
 
 
-    public class GitIgnoreCommand : CommonOptions
+    public class GitIgnoreCommand : IOptions
     {
         [Option('a', "add", HelpText = "Only add latest standard public .gitignore when missing, don't fix up the others.")]
         public bool Add { get; set; }
@@ -238,7 +239,7 @@ namespace IFix
         }
     }
 
-    public class NugetConsolidateCommands : CommonOptions
+    public class NugetConsolidateCommands : IOptions
     {
 
 
@@ -257,25 +258,39 @@ namespace IFix
         }
     }
 
-    public class DiagnosticsCommands : CommonOptions
+    public class DiagnosticsCommands : IOptions
     {
 
-        [Option('a',"all",HelpText = "Show all diagnostics settings")]
-        public bool All { get; set; }
+        [Option('s',"show",HelpText = "Show all diagnostics settings")]
+        public bool Show { get; set; }
 
-        [Option('d',"Dump",HelpText="Enable or Disable dump")]
-        public int EnableDisableDump { get; set; }
+        [Option('d', "Dump", DefaultValue = -1, HelpText = "Enable or Disable dump")]
+        public int? EnableDisableDump { get; set; } 
 
-        [Option('u', "Fuslog", HelpText = "Enable or Disable fuslog")]
-        public int EnableDisableFuslog { get; set; }
+        [Option('D', "Dumpfolder", DefaultValue="",HelpText = "Set dumpfolder")]
+        public string DumpFolder { get; set; } 
 
-        [Option('t', "Vstest", HelpText = "Enable or Disable vstest tracing, 0 = disable, 1 = enable discovery 2= enable execution, 3 = enable both")]
-        public int VSTestTracing { get; set; }
+        [Option('u', "Fuslog", DefaultValue = -1, HelpText = "Enable or Disable fuslog")]
+        public int EnableDisableFuslog { get; set; } 
+
+        [Option('U', "Fuslogfolder", DefaultValue = "", HelpText = "Set fuslog logfolder")]
+        public string FuslogFolder { get; set; } 
+
+
+        [Option('t', "Vstest", DefaultValue = -1, HelpText =
+            "Enable or Disable vstest tracing, 0 = disable, 1 = enable discovery 2= enable execution, 3 = enable both")]
+        public int VSTestTracing { get; set; } 
+
+
+        public bool HasDumpCommand => EnableDisableDump != -1;
+        public bool HasFuslogCommand => EnableDisableFuslog != -1;
+        public bool HasVSTestCommand => VSTestTracing != -1;
 
 
         public override int Execute()
         {
-            throw new System.NotImplementedException();
+            var diag = new Diagnostics();
+            return diag.Execute(this);
         }
     }
 

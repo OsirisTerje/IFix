@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IFixTests", "IFixTests\IFix
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "IFix.Setup", "NugetConvert2AutomaticRestore.Setup\IFix.Setup.wixproj", "{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticsTests", "DIagnosticsTests\DiagnosticsTests.csproj", "{C0BC6F38-71E7-4749-838A-5F39119F0B91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticsTests", "DiagnosticsTests\DiagnosticsTests.csproj", "{C0BC6F38-71E7-4749-838A-5F39119F0B91}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

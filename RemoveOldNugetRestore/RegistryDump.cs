@@ -23,6 +23,11 @@ public class RegistryDump : RegistryLocalMachine
         pkey.CreateSubKey(LocalDumps);
     }
 
+
+    public bool ExistDumpType => Exist(DumpType);
+    public bool ExistDumpFolder => Exist(DumpFolder);
+
+
     public void EnableDump()
     {
         Write(DumpType, 2);
@@ -42,6 +47,9 @@ public class RegistryDump : RegistryLocalMachine
     {
         return Read<int>(DumpType);
     }
+
+    public bool IsDumpEnabled => ReadDump() != 0;
+
 
     public string ReadDumpFolder()
     {
