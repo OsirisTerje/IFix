@@ -1,4 +1,5 @@
 ﻿using System;
+using Fclp;
 
 namespace IFix
 {
@@ -6,9 +7,11 @@ namespace IFix
     {
         static int Main(string[] args)
         {
+            var fclp = new FluentCommandLineParser();
+            
             var options = new Options();
             string invokedverb="";
-            IOptions invokedverbinstance=null;
+            Options invokedverbinstance=null;
             if (args == null || args.Length == 0)
             {
                 Console.WriteLine(options.GetUsage());

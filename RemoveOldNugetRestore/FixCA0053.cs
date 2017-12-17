@@ -6,7 +6,7 @@ namespace IFix
     public class FixCA0053
     {
         private bool changed;
-        public int Execute(IOptions options)
+        public int Execute(Options options)
         {
             int skipped = 0;
             int fixedup = 0;
