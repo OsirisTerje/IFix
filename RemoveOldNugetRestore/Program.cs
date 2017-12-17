@@ -8,7 +8,8 @@ namespace IFix
         static int Main(string[] args)
         {
             var fclp = new FluentCommandLineParser();
-            
+            var p = new SetupCommands(fclp);
+            p.Setup();
             var options = new Options();
             string invokedverb="";
             Options invokedverbinstance=null;

@@ -207,7 +207,7 @@ namespace IFix
         public bool Replace { get; set; }
 
         //[Option('l',"latestgit",HelpText = "Use for compatibility with the latest git version 2.0.1. If you have git < 2.0.1 leave this out.")]
-        public bool LatestGitVersion { get; set; }
+        public bool LatestGitVersion { get; set; } = true;
 
         //[Option('s',"strict",HelpText="Ensure that the most extensive pattern is used")]
         public bool Strict { get; set; }
@@ -265,7 +265,7 @@ namespace IFix
         public bool Show { get; set; }
 
         //[Option('d', "Dump", DefaultValue = -1, HelpText = "Enable or Disable dump")]
-        public int? EnableDisableDump { get; set; } 
+        public int EnableDisableDump { get; set; } 
 
         //[Option('D', "Dumpfolder", DefaultValue="",HelpText = "Set dumpfolder")]
         public string DumpFolder { get; set; } 
@@ -297,10 +297,34 @@ namespace IFix
 
     public class SetupCommands
     {
-        public void SetupGitIgnore(FluentCommandLineParser fclp)
+        FluentCommandLineParser fclp;
+        public SetupCommands(FluentCommandLineParser fclp)
+        {
+            this.fclp = fclp;
+        }
+        public void Setup()
+        {
+            SetupDiagnostics();
+            SetupGitIgnore();
+        }
+        public void SetupGitIgnore()
         {
             var gi = fclp.SetupCommand<GitIgnoreCommand>("gitignore").OnSuccess(Execute);
-            gi.Setup(args => args.Replace).As('r', "replace").SetDefault(false).WithDescription("dfdfdfdfdf");
+            gi.Setup(args => args.Replace).As('r', "replace").SetDefault(false).WithDescription("Replace the existing instead of merging in the latest, applies to all gitignore files");
+            gi.Setup(args => args.Merge).As('m', "merge").WithDescription("Get and merge information from the  standard public gitignore file");
+            gi.Setup(args => args.Add).As('a', "add").WithDescription("Only add latest standard public .gitignore when missing, don't fix up the others.");
+            gi.Setup(args => args.Strict).As('s', "strict").WithDescription("Ensure that the most extensive pattern is used");
+
+        }
+
+        public void SetupDiagnostics()
+        {
+            var di = fclp.SetupCommand<DiagnosticsCommands>("diagnostics").OnSuccess(Execute);
+            di.Setup(args => args.Show).As('s', "show").WithDescription("Show all diagnostics settings");
+            di.Setup(args => args.EnableDisableDump).As('d', "Dump").SetDefault(-1).WithDescription("Enable or Disable dump");
+            di.Setup(args => args.DumpFolder).As('D', "Dumpfolder").SetDefault("").WithDescription("Set dumpfolder");
+            di.Setup(args => args.EnableDisableFuslog).As('u', "Fuslog").SetDefault(-1).WithDescription("Enable or Disable fuslog");
+            di.Setup(args => args.FuslogFolder).As('U', "Fuslogfolder").SetDefault("").WithDescription("Set fuslog logfolder");
         }
 
         public void Execute(Options args)
