@@ -8,51 +8,19 @@ namespace IFix
         static int Main(string[] args)
         {
             var fclp = new FluentCommandLineParser();
-            
-            var options = new Options();
-            string invokedverb="";
-            Options invokedverbinstance=null;
+            var setup = new SetupCommands(fclp);
             if (args == null || args.Length == 0)
             {
-                Console.WriteLine(options.GetUsage());
+                Console.WriteLine();
                 return -1;
             }
-            int retval = 0;     
-            if (CommandLine.Parser.Default.ParseArguments(args, options,(verb,subOptions)=>
+            var result = fclp.Parse(args);
+            if (result.HasErrors)
             {
-                invokedverb = verb;
-                invokedverbinstance = (IOptions)subOptions;
-            }) )
-            {
-                if (invokedverbinstance != null)
-                {
-                    if (invokedverbinstance.ValidOptions())
-                    {
-                        retval = invokedverbinstance.Execute();
-                    }
-                    else
-                    {
-                        if (invokedverb == "info")
-                        {
-                            retval = invokedverbinstance.Execute();
-                            return retval;
-                        }
-                        var msg = invokedverbinstance.Help();
-                        Console.WriteLine(msg);
-                        retval = -1;
-                    }
-                }
-                else
-                {
-                    retval = -1;
-                    Console.WriteLine("Unknown command : " + invokedverb);
-                }
+                Console.WriteLine("Errors in parsing commands");
+                return 1;
             }
-            else
-            {
-                Console.WriteLine(options.GetUsage());
-            }
-            return retval;
+            return 0;
         }
 
 

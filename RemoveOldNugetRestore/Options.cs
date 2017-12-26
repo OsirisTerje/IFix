@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Reflection;
-using System.Text;
 using Fclp;
 
 namespace IFix
@@ -10,18 +8,18 @@ namespace IFix
 
     public abstract class Options
     {
-       // [Option('c', "check", HelpText = "Only check if we have an issue. No changes done")]
-         public bool Check { get; set; }
+        // [Option('c', "check", HelpText = "Only check if we have an issue. No changes done")]
+        public bool Check { get; set; }
 
 
-       // [Option('f', "fix", HelpText = "Fix all files with issues")]
-         public bool Fix { get; set; }
+        // [Option('f', "fix", HelpText = "Fix all files with issues")]
+        public bool Fix { get; set; }
 
-       // [Option('v', "verbose", HelpText = "More verbose output")]
+        // [Option('v', "verbose", HelpText = "More verbose output")]
         public bool Verbose { get; set; }
 
-       // [HelpOption]
-       // string Help();
+        // [HelpOption]
+        // string Help();
         //{
         //    var usage = new StringBuilder();
         //    usage.AppendLine(
@@ -31,61 +29,61 @@ namespace IFix
         //    return usage.ToString();
         //}
 
-       public abstract  int Execute();
+        public abstract int Execute();
 
         public virtual bool ValidOptions()
         {
             return Check || Fix;
         }
-}
+    }
 
-//public class CommonOptions
-//    {
-       
-
-//        [Verb("nugetrestore")]
-//        public NuGetRestoreCommand NuGetRestore { get; set; }
-
-//        [VerbOption("ca0053")]
-//        public FixCA0053Command FixCa0053Command { get; set; }
-
-//        [VerbOption("gitignore")]
-//        public GitIgnoreCommand GitIgnoreCommand { get; set; }
-
-//        [VerbOption("info")]
-//        public GoToBlog BlogCommand { get; set; }
-
-//        [VerbOption("mefcache")]
-//        public  MefCacheCommand MefCacheCommand { get; set; }
-
-//        [VerbOption("createsln")]
-//        public CreateSln CreateSln { get; set; }
+    //public class CommonOptions
+    //    {
 
 
-//        [VerbOption("nugetconsolidate")]
-//        public NugetConsolidateCommands Consolidate { get; set; }
+    //        [Verb("nugetrestore")]
+    //        public NuGetRestoreCommand NuGetRestore { get; set; }
+
+    //        [VerbOption("ca0053")]
+    //        public FixCA0053Command FixCa0053Command { get; set; }
+
+    //        [VerbOption("gitignore")]
+    //        public GitIgnoreCommand GitIgnoreCommand { get; set; }
+
+    //        [VerbOption("info")]
+    //        public GoToBlog BlogCommand { get; set; }
+
+    //        [VerbOption("mefcache")]
+    //        public  MefCacheCommand MefCacheCommand { get; set; }
+
+    //        [VerbOption("createsln")]
+    //        public CreateSln CreateSln { get; set; }
 
 
-//        [VerbOption("diagnostics")]
-//        public DiagnosticsCommands Diagnostics { get; set; }
+    //        [VerbOption("nugetconsolidate")]
+    //        public NugetConsolidateCommands Consolidate { get; set; }
+
+
+    //        [VerbOption("diagnostics")]
+    //        public DiagnosticsCommands Diagnostics { get; set; }
 
 
 
-//        [HelpOption]
-//        public string GetUsage()
-//        {
-//            var usage = new StringBuilder();
-//            var version = Assembly.GetExecutingAssembly().GetName().Version;
-//            usage.AppendLine("IFix  "+version);
-//            usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-//            usage.AppendLine("where <command> is one of :  gitignore, diagnostics, mefcache, createsln, nugetrestore,  ca0053, info");
-//            usage.AppendLine("For more instructions and information run 'IFix info -c'");
-//            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache/--nugetconsolidate -c");
-//            usage.AppendLine("by Terje Sandstrom, 2015-2017");
-            
-//            return usage.ToString();
-//        }
-//    }
+    //        [HelpOption]
+    //        public string GetUsage()
+    //        {
+    //            var usage = new StringBuilder();
+    //            var version = Assembly.GetExecutingAssembly().GetName().Version;
+    //            usage.AppendLine("IFix  "+version);
+    //            usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
+    //            usage.AppendLine("where <command> is one of :  gitignore, diagnostics, mefcache, createsln, nugetrestore,  ca0053, info");
+    //            usage.AppendLine("For more instructions and information run 'IFix info -c'");
+    //            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache/--nugetconsolidate -c");
+    //            usage.AppendLine("by Terje Sandstrom, 2015-2017");
+
+    //            return usage.ToString();
+    //        }
+    //    }
 
     public class GoToBlog : Options
     {
@@ -106,7 +104,7 @@ namespace IFix
                 url = UrlNugetrestore;
             else if (Ca0053)
                 url = UrlCa0053;
-            
+
             using (var b = new Process
             {
                 StartInfo =
@@ -127,7 +125,7 @@ namespace IFix
 
     }
 
-        //[Verb("nugetrestore")]
+    //[Verb("nugetrestore")]
     public class NuGetRestoreCommand : Options
     {
         public override int Execute()
@@ -176,7 +174,7 @@ namespace IFix
         //[Option('5', "vs2015", HelpText = "Delete cache for VS2015")]
         public bool Vs2015 { get; set; }
 
-        //[Option('6', "vs2017", HelpText = "Delete cache for VS2017")]
+        //[Option('7', "vs2017", HelpText = "Delete cache for VS2017")]
         public bool Vs2017 { get; set; }
 
         //[Option('a', "all", HelpText = "Delete cache for all VS instances")]
@@ -192,7 +190,7 @@ namespace IFix
         //}
     }
 
-   
+
 
 
     public class GitIgnoreCommand : Options
@@ -265,21 +263,21 @@ namespace IFix
         public bool Show { get; set; }
 
         //[Option('d', "Dump", DefaultValue = -1, HelpText = "Enable or Disable dump")]
-        public int? EnableDisableDump { get; set; } 
+        public int? EnableDisableDump { get; set; }
 
         //[Option('D', "Dumpfolder", DefaultValue="",HelpText = "Set dumpfolder")]
-        public string DumpFolder { get; set; } 
+        public string DumpFolder { get; set; }
 
         //[Option('u', "Fuslog", DefaultValue = -1, HelpText = "Enable or Disable fuslog")]
-        public int EnableDisableFuslog { get; set; } 
+        public int EnableDisableFuslog { get; set; }
 
         //[Option('U', "Fuslogfolder", DefaultValue = "", HelpText = "Set fuslog logfolder")]
-        public string FuslogFolder { get; set; } 
+        public string FuslogFolder { get; set; }
 
 
         //[Option('t', "Vstest", DefaultValue = -1, HelpText =
-            //"Enable or Disable vstest tracing, 0 = disable, 1 = enable discovery 2= enable execution, 3 = enable both")]
-        public int VSTestTracing { get; set; } 
+        //"Enable or Disable vstest tracing, 0 = disable, 1 = enable discovery 2= enable execution, 3 = enable both")]
+        public int VSTestTracing { get; set; }
 
 
         public bool HasDumpCommand => EnableDisableDump != -1;
@@ -295,17 +293,100 @@ namespace IFix
     }
 
 
+
+
     public class SetupCommands
     {
-        public void SetupGitIgnore(FluentCommandLineParser fclp)
+        private FluentCommandLineParser fclp;
+        public bool DoExecute { get; set; } = true;
+
+        public SetupCommands(FluentCommandLineParser fclp)
+        {
+            this.fclp = fclp;
+
+            SetupGitIgnore();
+            SetupMefCache();
+            SetupNugetRestore();
+            SetupCa0053();
+            SetupNugetConsolidate();
+            SetupCreateSln();
+            SetupDiagnostics();
+        }
+        public void SetupGitIgnore()
         {
             var gi = fclp.SetupCommand<GitIgnoreCommand>("gitignore").OnSuccess(Execute);
-            gi.Setup(args => args.Replace).As('r', "replace").SetDefault(false).WithDescription("dfdfdfdfdf");
+            gi.Setup(args => args.Replace).As('r', "replace").SetDefault(false).WithDescription("Replace the existing instead of merging in the latest, applies to all gitignore files");
+            gi.Setup(args => args.Add).As('a', "add").SetDefault(false).WithDescription("Only add latest standard public .gitignore when missing, don't fix up the others");
+            gi.Setup(args => args.Merge).As('m', "merge").SetDefault(false).WithDescription("Get and merge information from the  standard public gitignore file");
+            gi.Setup(args => args.LatestGitVersion).As('l', "latest").SetDefault(false).WithDescription("Use for compatibility with the latest git version 2.0.1. If you have git < 2.0.1 leave this out");
+            gi.Setup(args => args.Strict).As('s', "strict").SetDefault(false).WithDescription("Ensure that the most extensive pattern is used");
+            Setup(gi);
         }
+
+        public void SetupMefCache()
+        {
+            var gi = fclp.SetupCommand<MefCacheCommand>("mefcache").OnSuccess(Execute);
+            gi.Setup(args => args.Vs2012).As('2', "VS2012").SetDefault(false).WithDescription("Delete VS2012 cache");
+            gi.Setup(args => args.Vs2013).As('3', "VS2013").SetDefault(false).WithDescription("Delete VS2013 cache");
+            gi.Setup(args => args.Vs2015).As('5', "VS2015").SetDefault(false).WithDescription("Delete VS2015 cache");
+            gi.Setup(args => args.Vs2017).As('7', "VS2017").SetDefault(false).WithDescription("Delete VS2017 cache");
+            gi.Setup(args => args.All).As('a', "All").SetDefault(false).WithDescription("Delete cache for all VS instances");
+            Setup(gi);
+
+        }
+
+        public void SetupNugetRestore()
+        {
+            var gi = fclp.SetupCommand<NuGetRestoreCommand>("nugetrestore").OnSuccess(Execute);
+            Setup(gi);
+        }
+
+        public void SetupCa0053()
+        {
+            var gi = fclp.SetupCommand<FixCA0053Command>("ca0053").OnSuccess(Execute);
+            Setup(gi);
+        }
+
+        public void SetupNugetConsolidate()
+        {
+            var gi = fclp.SetupCommand<NugetConsolidateCommands>("nugetconsolidate").OnSuccess(Execute);
+            gi.Setup(args => args.Consolidate).As('o', "consolidate").SetDefault(false).WithDescription("Only list packages that needs consolidation");
+            gi.Setup(args => args.Short).As('s', "short").SetDefault(false).WithDescription("Only list packages and versions, skip the project information");
+            Setup(gi);
+        }
+
+        public void SetupCreateSln()
+        {
+            var gi = fclp.SetupCommand<CreateSln>("createsln").OnSuccess(Execute);
+            gi.Setup(args => args.Blank).As('b', "blank").SetDefault(false).WithDescription("Create a complete blank solution");
+            gi.Setup(args => args.Name).As('n', "name").SetDefault("BlankSln").WithDescription("Enter a name for the new sln");
+            Setup(gi);
+        }
+
+        public void SetupDiagnostics()
+        {
+            var gi = fclp.SetupCommand<DiagnosticsCommands>("diagnostics").OnSuccess(Execute);
+            gi.Setup(args => args.Show).As('s', "show").SetDefault(false).WithDescription("Show all diagnostics settings");
+            gi.Setup(args => args.EnableDisableDump).As('d', "dump").SetDefault(-1).WithDescription("Enable or Disable dump");
+            gi.Setup(args => args.EnableDisableFuslog).As('u', "fuslog").SetDefault(-1).WithDescription("Enable or Disable fuslog");
+            gi.Setup(args => args.DumpFolder).As('D', "dumpfolder").SetDefault(@"C:\dumps").WithDescription("Set dumpfolder");
+            gi.Setup(args => args.FuslogFolder).As('U', "fuslogfolder").SetDefault(@"C:\fuslog").WithDescription("Set fuslog logfolder");
+            Setup(gi);
+        }
+
 
         public void Execute(Options args)
         {
-            args.Execute();
+            if (DoExecute)
+                args.Execute();
+        }
+
+
+        private void Setup<T>(Fclp.ICommandLineCommandFluent<T> cmd) where T : Options
+        {
+            cmd.Setup(args => args.Fix).As('f', "fix").SetDefault(false).WithDescription("Fix the issue");
+            cmd.Setup(args => args.Check).As('c', "check").SetDefault(false).WithDescription("Check only");
+            cmd.Setup(args => args.Verbose).As('v', "verbose").SetDefault(false).WithDescription("Enable verbose mode");
         }
 
     }
