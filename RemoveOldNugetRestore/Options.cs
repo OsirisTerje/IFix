@@ -205,7 +205,7 @@ namespace IFix
         public bool Replace { get; set; }
 
         //[Option('l',"latestgit",HelpText = "Use for compatibility with the latest git version 2.0.1. If you have git < 2.0.1 leave this out.")]
-        public bool LatestGitVersion { get; set; }
+        public bool LatestGitVersion { get; set; } = true;
 
         //[Option('s',"strict",HelpText="Ensure that the most extensive pattern is used")]
         public bool Strict { get; set; }
@@ -263,7 +263,7 @@ namespace IFix
         public bool Show { get; set; }
 
         //[Option('d', "Dump", DefaultValue = -1, HelpText = "Enable or Disable dump")]
-        public int? EnableDisableDump { get; set; }
+        public int EnableDisableDump { get; set; } 
 
         //[Option('D', "Dumpfolder", DefaultValue="",HelpText = "Set dumpfolder")]
         public string DumpFolder { get; set; }
