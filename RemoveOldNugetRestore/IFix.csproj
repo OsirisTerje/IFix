@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateBlankSolution.cs" />
+    <Compile Include="DeleteVSTestCache.cs" />
     <Compile Include="Diagnostics.cs" />
     <Compile Include="FixCA0053.cs" />
     <Compile Include="gitignore.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="RemoveOldNugetRestore.cs" />
     <Compile Include="ResourceReader.cs" />
     <Compile Include="Runsettings.cs" />
+    <Compile Include="SetupCommands.cs" />
     <Compile Include="Write.cs" />
   </ItemGroup>
   <ItemGroup>

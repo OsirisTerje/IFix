@@ -2,11 +2,11 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Fragment>
         <DirectoryRef Id="INSTALLDIR">
-            <Component Id="cmp08072DED40A2AE0F2F7264A3ECFD4107" Guid="*">
-                <File Id="fil2D4373138064E87DA9D84948B330BDC1" KeyPath="yes" Source="$(var.AppProjectDir)\CommandLine.dll" />
+            <Component Id="cmp663F410B585D24992388443D6F899E37" Guid="*">
+                <File Id="fil246E6FB2146BC34A678A4D5B434DA43B" KeyPath="yes" Source="$(var.AppProjectDir)\FluentCommandLineParser.dll" />
             </Component>
-            <Component Id="cmp5E3D3348D828484657D3F25D74F6957D" Guid="*">
-                <File Id="fil45F83EAF62A9E97F8C317185F8AD4656" KeyPath="yes" Source="$(var.AppProjectDir)\CommandLine.xml" />
+            <Component Id="cmp65F6184094EEC13E20F3DE0FB51170BD" Guid="*">
+                <File Id="filBAEE4680126DFF90403F86A46798E00A" KeyPath="yes" Source="$(var.AppProjectDir)\FluentCommandLineParser.pdb" />
             </Component>
             <Component Id="cmp9C10E065CAA211E29C3F463220F708D7" Guid="*">
                 <File Id="filFE45DA496FF381061AD163DB4EA19DB5" KeyPath="yes" Source="$(var.AppProjectDir)\IFix.exe" />
@@ -21,8 +21,8 @@
     </Fragment>
     <Fragment>
         <ComponentGroup Id="Wix.Generated_Project">
-            <ComponentRef Id="cmp08072DED40A2AE0F2F7264A3ECFD4107" />
-            <ComponentRef Id="cmp5E3D3348D828484657D3F25D74F6957D" />
+            <ComponentRef Id="cmp663F410B585D24992388443D6F899E37" />
+            <ComponentRef Id="cmp65F6184094EEC13E20F3DE0FB51170BD" />
             <ComponentRef Id="cmp9C10E065CAA211E29C3F463220F708D7" />
             <ComponentRef Id="cmp9721F1F9E58B3B5A13113D4FFDDC760A" />
             <ComponentRef Id="cmp0B5CF81FFC431E8F8C8061D95CD90F32" />
