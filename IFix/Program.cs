@@ -15,6 +15,7 @@ namespace IFix
             var setup = new SetupCommands(fclp);
             if (args == null || args.Length == 0)
             {
+                DisplayVersion();
                 Console.WriteLine(GetUsage());
                 return -1;
             }
@@ -32,7 +33,7 @@ namespace IFix
                 Console.WriteLine($"Options for command: {cmdstring}");
                 foreach (var c in cmd.Options)
                 {
-                    var msg = $"Short: {c.ShortName}, Long: {c.LongName}: Descr: {c.Description}";
+                    var msg = $"Short: -{c.ShortName}, Long: --{c.LongName}: Descr: {c.Description}";
                     Console.WriteLine(msg);
                 }
 
@@ -41,6 +42,7 @@ namespace IFix
             if (setup.ParsedOptions == null)
             {
                 Console.WriteLine("Unrecognized command");
+                Console.WriteLine(GetUsage());
             }
             return 0;
         }
@@ -48,12 +50,19 @@ namespace IFix
         public static string GetUsage()
         {
             var usage = new StringBuilder();
-            DisplayVersion();
-            usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-            usage.AppendLine("where <command> is one of :  gitignore, diagnostics, mefcache, vstestcache, nugetconsolidate, createsln, nugetrestore,  ca0053, info");
-            usage.AppendLine("For more instructions and information run 'IFix info -c'");
-            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache/--nugetconsolidate -c");
-            usage.AppendLine("by Terje Sandstrom, 2015-2018");
+            usage.AppendLine("Usage: IFix  <command> [command_specific_options]  [-c](Check only) [-f](Fix)  [-v](Verbose mode");
+            usage.AppendLine("where <command> is one of :  ");
+            usage.AppendLine("    gitignore");
+            usage.AppendLine("    diagnostics");
+            usage.AppendLine("    mefcache");
+            usage.AppendLine("    vstestcache");
+            usage.AppendLine("    nugetconsolidate");
+            usage.AppendLine("    createsln");
+            usage.AppendLine("    nugetrestore");
+            usage.AppendLine("    ca0053");
+            usage.AppendLine("    info");
+            usage.AppendLine("For more instructions and information run 'IFix info', or for specific commands 'IFix <command> -?' , or 'IFix info -? ");
+            usage.AppendLine("(c) Terje Sandstrom (http://hermit.no) , 2015-2018");
 
             return usage.ToString();
         }
