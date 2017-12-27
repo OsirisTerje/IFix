@@ -15,12 +15,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>Debug;AppProjectDir=$(SolutionDir)RemoveOldNugetRestore\bin\Debug</DefineConstants>
+    <DefineConstants>Debug;AppProjectDir=$(SolutionDir)IFix\bin\Debug</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>Release;AppProjectDir=$(SolutionDir)RemoveOldNugetRestore\bin\Release</DefineConstants>
+    <DefineConstants>Release;AppProjectDir=$(SolutionDir)IFix\bin\Release</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MyUI.wxs" />
@@ -42,7 +42,7 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RemoveOldNugetRestore\IFix.csproj">
+    <ProjectReference Include="..\IFix\IFix.csproj">
       <Name>IFix</Name>
       <Project>{22ada2ba-033a-47e0-ad83-8399775db135}</Project>
       <Private>True</Private>

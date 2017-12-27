@@ -9,9 +9,11 @@ namespace IFix
     {
         private readonly List<Cache> caches=new List<Cache>();
 
+        public MefCacheCommand MefCacheCommand { get; private set; }
 
         public int Execute(MefCacheCommand command)
         {
+            MefCacheCommand = command;
             CreateCaches(command);
             if (command.Check || command.Fix)
                 VerifyExistenceOfCache();

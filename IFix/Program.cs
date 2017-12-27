@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Fclp;
@@ -24,8 +26,17 @@ namespace IFix
             }
             if (result.HelpCalled)
             {
-                
-                Console.WriteLine(setup.HelpText);
+                DisplayVersion();
+                var cmdstring = result.RawResult.Command;
+                var cmd = fclp.Commands.FirstOrDefault(o => o.Name == cmdstring);
+                Console.WriteLine($"Options for command: {cmdstring}");
+                foreach (var c in cmd.Options)
+                {
+                    var msg = $"Short: {c.ShortName}, Long: {c.LongName}: Descr: {c.Description}";
+                    Console.WriteLine(msg);
+                }
+
+                return 0;
             }
             if (setup.ParsedOptions == null)
             {
@@ -37,8 +48,7 @@ namespace IFix
         public static string GetUsage()
         {
             var usage = new StringBuilder();
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            usage.AppendLine("IFix  " + version);
+            DisplayVersion();
             usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
             usage.AppendLine("where <command> is one of :  gitignore, diagnostics, mefcache, vstestcache, nugetconsolidate, createsln, nugetrestore,  ca0053, info");
             usage.AppendLine("For more instructions and information run 'IFix info -c'");
@@ -46,6 +56,12 @@ namespace IFix
             usage.AppendLine("by Terje Sandstrom, 2015-2018");
 
             return usage.ToString();
+        }
+
+        private static void DisplayVersion()
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Console.WriteLine("IFix  " + version);
         }
     }
 }

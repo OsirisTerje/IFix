@@ -26,7 +26,7 @@ namespace IFix
 
     public class GitIgnore
     {
-        private GitIgnoreCommand Command { get; set; }
+        public GitIgnoreCommand GitIgnoreCommand { get; private set; }
 
         private List<string> stdGitIgnore;
         public IEnumerable<Repository> Repositories { get; }
@@ -51,17 +51,17 @@ namespace IFix
         /// <summary>
         /// For use within IFix, from other commands, only works on current directory. Requires that the Fix option is set
         /// </summary>
-        /// <param name="command"></param>
-        public GitIgnore(GitIgnoreCommand command)
+        /// <param name="gitIgnoreCommand"></param>
+        public GitIgnore(GitIgnoreCommand gitIgnoreCommand)
         {
-            Command = command;
+            GitIgnoreCommand = gitIgnoreCommand;
             RetrieveStdGitIgnore();
             
         }
 
         public void WriteGitIgnore()
         {
-            if (!Command.Fix)
+            if (!GitIgnoreCommand.Fix)
                 return;
             File.WriteAllLines(".gitignore", stdGitIgnore);
         }
@@ -73,7 +73,7 @@ namespace IFix
             Console.Write("A chance to attach the debugger");
             Console.ReadKey();
 #endif
-            Command = command;
+            GitIgnoreCommand = command;
             int retval = 0;
 
             if (!Repositories.Any())
@@ -82,15 +82,15 @@ namespace IFix
             {
                 int thisrepo = 0;
                 Writer.Write("Checking: " + repository.GitRepo);
-                if (Command.Replace)
+                if (GitIgnoreCommand.Replace)
                 {
                     ExecuteReplace(repository);
                 }
-                else if (Command.Merge)
+                else if (GitIgnoreCommand.Merge)
                 {
                     thisrepo += ExecuteMerge(repository);
                 }
-                else if ((Command.Check || Command.Fix || Command.Add))
+                else if ((GitIgnoreCommand.Check || GitIgnoreCommand.Fix || GitIgnoreCommand.Add))
                 {
                     thisrepo += ExecuteFixAdd(command, repository);
                 }
@@ -113,7 +113,7 @@ namespace IFix
             else
             {
                 Writer.WriteRed("No .gitignore in " + repo.GitRepo+"\nUse IFix gitignore -r -f to retrieve the standard gitignore");
-                if (Command.Fix || Command.Add)
+                if (GitIgnoreCommand.Fix || GitIgnoreCommand.Add)
                 {
                     File.WriteAllLines(filetocheck, stdGitIgnore);
                     Writer.Write("Added " + filetocheck);
@@ -133,12 +133,12 @@ namespace IFix
                 var missing = CheckIfOurContainsStd(lines, stdGitIgnore).ToList();
                 if (missing.Any())
                 {
-                    if (Command.Fix)
+                    if (GitIgnoreCommand.Fix)
                     {
                         lines.AddRange(missing);
                         File.WriteAllLines(repo.File, lines);
                     }
-                    Writer.Write(Command.Fix
+                    Writer.Write(GitIgnoreCommand.Fix
                         ? "Added " + missing.Count + " lines to .gitignore for " + repo.GitRepo
                         : "Missing " + missing.Count + " lines to gitignore for " + repo.GitRepo);
                     retval++;
@@ -148,9 +148,9 @@ namespace IFix
             }
             else
             {
-                if (Command.Fix)
+                if (GitIgnoreCommand.Fix)
                     File.WriteAllLines(repo.File, stdGitIgnore);
-                Writer.Write($"{(Command.Fix ? "Added" : "Missing")} gitignore for {repo.GitRepo}");
+                Writer.Write($"{(GitIgnoreCommand.Fix ? "Added" : "Missing")} gitignore for {repo.GitRepo}");
                 retval++;
             }
             return retval;
@@ -169,19 +169,19 @@ namespace IFix
             var outlines = new List<string>();
             bool fix = false;
             bool green = true;
-            if (!CheckIfNuGetPackages(lines,Command.Strict,Command.LatestGitVersion))
+            if (!CheckIfNuGetPackages(lines,GitIgnoreCommand.Strict,GitIgnoreCommand.LatestGitVersion))
             {
-                if (!Command.Strict)
+                if (!GitIgnoreCommand.Strict)
                     Writer.WriteRed(
                         "Missing 'packages' or 'packages/' or 'packages/*' or '**/packages/*' in ignorelist for " + filetocheck);
                 else
                 {
-                    if (!Command.LatestGitVersion)
+                    if (!GitIgnoreCommand.LatestGitVersion)
                         Writer.WriteRed("Missing either/or both '**/packages/*' and 'packages/*'  in ignorelist for " + filetocheck);
                     else 
                         Writer.WriteRed("Missing  '**/packages/*'  in ignorelist for " + filetocheck);
                 }
-                if (Command.Fix && !Command.Add)
+                if (GitIgnoreCommand.Fix && !GitIgnoreCommand.Add)
                 {
                     outlines.AddRange(AddOnlyMissingInfo(lines, command.LatestGitVersion));
                     lines = outlines;
@@ -205,7 +205,7 @@ namespace IFix
             if (!CheckIfVS2015Files(lines))
             {
                 Writer.WriteRed("Missing node_modules  in "+filetocheck);
-                if (Command.Fix && !Command.Add)
+                if (GitIgnoreCommand.Fix && !GitIgnoreCommand.Add)
                 {
                     outlines.AddRange(new List<string> { "node_modules/"});
                     fix = true;

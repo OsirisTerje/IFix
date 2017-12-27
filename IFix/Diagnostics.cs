@@ -6,8 +6,10 @@ namespace IFix
 {
     public class Diagnostics
     {
+        public DiagnosticsCommands DiagnosticsCommands { get; private set; }
         public int Execute(DiagnosticsCommands command)
         {
+            DiagnosticsCommands = command;
             if (command.Show)
             {
                 ShowDump();
