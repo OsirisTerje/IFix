@@ -22,7 +22,18 @@ namespace IFix
             SetupCreateSln();
             SetupDiagnostics();
             SetupVSTestCache();
+            SetupGoToBlog();
             parser.SetupHelp("?", "help").Callback(text => HelpText = text);  //Console.WriteLine(text));
+        }
+
+        public void SetupGoToBlog()
+        {
+            var setup = parser.SetupCommand<GoToBlog>("info").OnSuccess(Execute);
+            setup.Setup(args => args.GitIgnore).As('g', "gitignore");
+            setup.Setup(args => args.Ca0053).As('a', "ca0053");
+            setup.Setup(args => args.NuGetRestore).As('n', "nugetrestore");
+            setup.Setup(args => args.MefCache).As('m', "mefcache");
+            Setup(setup);
         }
         public void SetupGitIgnore()
         {

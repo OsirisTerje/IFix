@@ -36,54 +36,6 @@ namespace IFix
         }
     }
 
-    //public class CommonOptions
-    //    {
-
-
-    //        [Verb("nugetrestore")]
-    //        public NuGetRestoreCommand NuGetRestore { get; set; }
-
-    //        [VerbOption("ca0053")]
-    //        public FixCA0053Command FixCa0053Command { get; set; }
-
-    //        [VerbOption("gitignore")]
-    //        public GitIgnoreCommand GitIgnoreCommand { get; set; }
-
-    //        [VerbOption("info")]
-    //        public GoToBlog BlogCommand { get; set; }
-
-    //        [VerbOption("mefcache")]
-    //        public  MefCacheCommand MefCacheCommand { get; set; }
-
-    //        [VerbOption("createsln")]
-    //        public CreateSln CreateSln { get; set; }
-
-
-    //        [VerbOption("nugetconsolidate")]
-    //        public NugetConsolidateCommands Consolidate { get; set; }
-
-
-    //        [VerbOption("diagnostics")]
-    //        public DiagnosticsCommands Diagnostics { get; set; }
-
-
-
-    //        [HelpOption]
-    //        public string GetUsage()
-    //        {
-    //            var usage = new StringBuilder();
-    //            var version = Assembly.GetExecutingAssembly().GetName().Version;
-    //            usage.AppendLine("IFix  "+version);
-    //            usage.AppendLine("Usage: IFix  <command> [-c](Check only) [-f](Fix)  [-v](Verbose mode");
-    //            usage.AppendLine("where <command> is one of :  gitignore, diagnostics, mefcache, createsln, nugetrestore,  ca0053, info");
-    //            usage.AppendLine("For more instructions and information run 'IFix info -c'");
-    //            usage.AppendLine("or one of IFix info --gitignore/--nugetrestore/--ca0053/--mefcache/--nugetconsolidate -c");
-    //            usage.AppendLine("by Terje Sandstrom, 2015-2017");
-
-    //            return usage.ToString();
-    //        }
-    //    }
-
     public class GoToBlog : Options
     {
         private const string UrlIFix = @"https://visualstudiogallery.msdn.microsoft.com/b8ba97b0-bb89-4c21-a1e2-53ef335fd9cb";
@@ -94,6 +46,9 @@ namespace IFix
 
         private const string UrlCa0053 = @"http://hermit.no/how-to-fix-the-ca0053-error-in-code-analysis-in-visual-studio-2012/";
 
+        private const string UrlMefcache = @"http://hermit.no/how-to-fix-visual-studio-loading-errors-using-ifix/";
+
+        private const string UrlCreateSln = @"http://hermit.no/ifix-create-solution-skeleton-file/";
         public override int Execute()
         {
             string url = UrlIFix;
@@ -103,6 +58,10 @@ namespace IFix
                 url = UrlNugetrestore;
             else if (Ca0053)
                 url = UrlCa0053;
+            else if (MefCache)
+                url = UrlMefcache;
+            else if (CreateSln)
+                url = UrlCreateSln;
 
             using (var b = new Process
             {
@@ -121,6 +80,10 @@ namespace IFix
         public bool NuGetRestore { get; set; }
         //[Option('a', "ca0053", HelpText = "ca0053 blog")]
         public bool Ca0053 { get; set; }
+
+        public bool MefCache { get; set; }
+
+        public bool CreateSln { get; set; }
 
     }
 
@@ -270,7 +233,7 @@ namespace IFix
         public bool Show { get; set; }
 
         //[Option('d', "Dump", DefaultValue = -1, HelpText = "Enable or Disable dump")]
-        public int EnableDisableDump { get; set; } 
+        public int EnableDisableDump { get; set; }
 
         //[Option('D', "Dumpfolder", DefaultValue="",HelpText = "Set dumpfolder")]
         public string DumpFolder { get; set; }
