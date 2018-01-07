@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security;
 
 namespace IFix
 {
@@ -28,7 +29,10 @@ namespace IFix
                 ShowFuslog();
             }
 
+            try
+            {
 
+            
             if (command.HasDumpCommand && command.Fix)
             {
                 var dump = new RegistryDump(true);
@@ -84,7 +88,11 @@ namespace IFix
                     Console.WriteLine($"Fuslog folder  not changed, already set to {command.FuslogFolder}");
                 }
             }
-
+            }
+            catch (SecurityException)
+            {
+                Console.WriteLine("IFix needs to change your registry, please run from an elevated (admin) command prompt");
+            }
 
 
             return 0;
