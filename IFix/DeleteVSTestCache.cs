@@ -13,7 +13,7 @@ namespace IFix
                 Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp",
                     "VisualStudioTestExplorerExtensions");
             var dirs = Directory.GetDirectories(location);
-            if (vsTestCacheCommands.Check)
+            if (vsTestCacheCommands.Check || !vsTestCacheCommands.Fix)
             {
                 if (!dirs.Any())
                 {

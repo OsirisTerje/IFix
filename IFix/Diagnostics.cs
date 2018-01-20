@@ -11,7 +11,7 @@ namespace IFix
         public int Execute(DiagnosticsCommands command)
         {
             DiagnosticsCommands = command;
-            if (command.Show)
+            if (command.Show || command.Check || !command.Fix)
             {
                 ShowDump();
                 ShowFuslog();

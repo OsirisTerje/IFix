@@ -15,8 +15,7 @@ namespace IFix
         {
             MefCacheCommand = command;
             CreateCaches(command);
-            if (command.Check || command.Fix)
-                VerifyExistenceOfCache();
+            VerifyExistenceOfCache();
             if (command.Fix)
                 DeleteCaches();
             return 0;
