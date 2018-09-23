@@ -43,6 +43,7 @@ namespace IFix
 
         public GitIgnore(string currentdirectory)
         {
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             RetrieveStdGitIgnore();
             var reponames = new List<string>(Directory.GetDirectories(currentdirectory, ".git", SearchOption.AllDirectories));
             Repositories = reponames.Select(r => new Repository(r));
