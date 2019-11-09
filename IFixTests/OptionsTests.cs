@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using System.Linq.Expressions;
 using Fclp;
-using Fclp.Internals.Errors;
 using IFix;
 using NUnit.Framework;
 
