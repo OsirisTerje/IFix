@@ -44,7 +44,7 @@ namespace GitIgnoreTests
             var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata,false,false);
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
             var outlines = sut.AddOnlyMissingInfo(testdata);
             Assert.That(outlines.Any(l => l.Trim() == @"packages/*"), "packages/* was not added");
 
@@ -59,7 +59,7 @@ namespace GitIgnoreTests
             var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata,false,false);
-            Assert.IsTrue(result);
+            Assert.That(result, Is.True);
 
         }
 
@@ -71,7 +71,7 @@ namespace GitIgnoreTests
             var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata, false, false);
-            Assert.IsFalse(result);
+            Assert.That(result, Is.False);
 
         }
 
@@ -83,24 +83,27 @@ namespace GitIgnoreTests
             var sut = new IFix.GitIgnore(GitDirectory);
 
             var result = sut.CheckIfNuGetPackages(testdata, false, false);
-            Assert.IsFalse(result, "Testdata contains packages or CheckIfPackages failed");
+            Assert.That(result, Is.False, "Testdata contains packages or CheckIfPackages failed");
             var outlines = sut.AddOnlyMissingInfo(testdata);
             result = sut.CheckIfNuGetPackages(outlines, false, false);
-            Assert.IsTrue(result, "Add missing info failed");
+            Assert.That(result, "Add missing info failed");
 
         }
 
         [Test, GitIgnoreTests.Integration]
         public void CheckDownload()
         {
-            var sut = new IFix.GitIgnore();
+            var assemblyLoc = Assembly.GetExecutingAssembly().Location;
+            var currentPath = Path.GetFullPath(Path.Combine(assemblyLoc, @"../../../"));
+
+            var sut = new IFix.GitIgnore(currentPath);
 
             var temp = Path.GetTempPath();
-            var tempgitignore = temp + "/VisualStudio.gitignore";
-            sut.DownloadGitIgnore(tempgitignore);
-            var lines = File.ReadAllLines(tempgitignore);
-            Assert.IsTrue(lines.Any());
-            Assert.IsTrue(lines[0].StartsWith("##"));
+            var tempGitIgnore = temp + "/VisualStudio.gitignore";
+            sut.DownloadGitIgnore(tempGitIgnore);
+            var lines = File.ReadAllLines(tempGitIgnore);
+            Assert.That(lines.Any());
+            Assert.That(lines[0],Does.StartWith("##"));
         }
 
         [Test]
@@ -113,7 +116,7 @@ namespace GitIgnoreTests
 
             var result = sut.CheckIfOurContainsStd(gitignorelines, stdlines);
 
-            Assert.IsTrue(result.Any());
+            Assert.That(result.Any());
 
 
         }

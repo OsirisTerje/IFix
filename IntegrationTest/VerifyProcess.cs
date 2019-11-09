@@ -58,7 +58,7 @@ namespace IntegrationTest
         public void VerifyCorrectDirectory()
         {
            var exist = File.Exists(CurrentDirectory + "/TestProject.csproj");
-            Assert.IsTrue(exist);
+            Assert.That(exist, Is.True);
         }
 
 
@@ -68,13 +68,13 @@ namespace IntegrationTest
             string path = CurrentDirectory;
             var lines = File.ReadAllLines(path + "/TestProject.csproj");
             var sut = new RemoveOldNugetRestore(Command);
-            var outlines = sut.FixImportAndRestorePackagesInProj(lines, path + "/TestProject.csproj");
+            var outlines = sut.FixImportAndRestorePackagesInProj(lines, path + "/TestProject.csproj").ToList();
             
-            Assert.IsTrue(outlines.Count()<lines.Count());
-            Assert.IsTrue(RemoveOldNugetRestore.ALineContains(lines, "RestorePackages"), "1");
-            Assert.IsFalse(RemoveOldNugetRestore.ALineContains(outlines, "RestorePackages"), "2");
-            Assert.IsTrue(RemoveOldNugetRestore.ALineContains(lines, "Import Project", "NuGet.targets"), "3");
-            Assert.IsFalse(RemoveOldNugetRestore.ALineContains(outlines, "Import Project", "NuGet.targets"), "4");
+            Assert.That(outlines.Count(),Is.LessThan(lines.Count()));
+            Assert.That(RemoveOldNugetRestore.ALineContains(lines, "RestorePackages"), Is.True, "1");
+            Assert.That(RemoveOldNugetRestore.ALineContains(outlines, "RestorePackages"), Is.False, "2");
+            Assert.That(RemoveOldNugetRestore.ALineContains(lines, "Import Project", "NuGet.targets"), Is.True, "3");
+            Assert.That(RemoveOldNugetRestore.ALineContains(outlines, "Import Project", "NuGet.targets"), Is.False, "4");
         }
 
 
@@ -85,7 +85,7 @@ namespace IntegrationTest
 
             var sut = new RemoveOldNugetRestore(Command);
             var outlines = sut.FixTargetInProj(lines);
-            Assert.IsTrue(lines.Length==outlines.Count()+6);
+            Assert.That(lines.Length, Is.EqualTo(outlines.Count()+6));
 
         }
 
@@ -95,12 +95,12 @@ namespace IntegrationTest
 
             string path = CurrentDirectory;
             string file = path + "/.nuget/nuget.targets";
-            Assert.IsTrue(File.Exists(file),"Target file doesnt exist");
+            Assert.That(File.Exists(file), "Target file doesn't exist");
             var sut = new RemoveOldNugetRestore(Command);
             var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
             var outlines = sut.CheckAndCopyNugetPaths(file);
             Assert.IsNotNull(outlines,"Didnt find anything");
-            Assert.IsTrue(outlines.Lines.Count()==configlinesBefore.Count()+4,"Number of new lines incorrect");
+            Assert.That(outlines.Lines.Count(),Is.EqualTo(configlinesBefore.Count()+4), "Number of new lines incorrect");
 
         }
 
@@ -110,7 +110,7 @@ namespace IntegrationTest
 
             string path = CurrentDirectory;
             string file = path + "/.nuget/nuget2.targets";
-            Assert.IsTrue(File.Exists(file), "Target file doesnt exist");
+            Assert.That(File.Exists(file), "Target file doesn't exist");
             Command.Fix = true;
             var sut = new RemoveOldNugetRestore(Command);
             var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");

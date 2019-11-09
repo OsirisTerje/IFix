@@ -35,11 +35,11 @@ namespace IFix
         /// <summary>
         /// For testing purposes only
         /// </summary>
-        public GitIgnore()
-            : this(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"../../../")))
-        {
+        //public GitIgnore()
+        //    : this(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"../../../")))
+        //{
 
-        }
+        //}
 
         public GitIgnore(string currentdirectory)
         {

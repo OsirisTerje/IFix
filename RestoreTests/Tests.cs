@@ -21,7 +21,7 @@ namespace RestoreTests
             var sut = new RemoveOldNugetRestore(null);
 
             var result = sut.IsCommentLine(line,false);
-            Assert.AreEqual(expected,result,"Fails "+line);
+            Assert.That(result, Is.EqualTo(expected), "Fails "+line);
         }
 
         [TestCase("<RestoreCommand>$(NuGetCommand) install \"$(PackagesConfig)\" -source \"$(PackageSources)\"  $(NonInteractiveSwitch) $(RequireConsentSwitch) -solutionDir $(PaddedSolutionDir)</RestoreCommand>","")]
@@ -33,7 +33,7 @@ namespace RestoreTests
             var sut = new RemoveOldNugetRestore(null);
 
             var result = sut.ExtractUrl(line);
-            Assert.AreEqual(expected,result,"Failed: "+line);
+            Assert.That(result, Is.EqualTo(expected), "Failed: "+line);
            
         }
     }
