@@ -43,7 +43,7 @@ namespace GitIgnoreTests
             Assert.That(testdata.Any(l => l.Trim() == @"packages/*"), Is.False, "githubignore contained the packages/*");
             var sut = new IFix.GitIgnore(GitDirectory);
 
-            var result = sut.CheckIfNuGetPackages(testdata,false,false);
+            bool result = sut.CheckIfNuGetPackages(testdata,false,false);
             Assert.That(result, Is.True);
             var outlines = sut.AddOnlyMissingInfo(testdata);
             Assert.That(outlines.Any(l => l.Trim() == @"packages/*"), "packages/* was not added");
@@ -58,7 +58,7 @@ namespace GitIgnoreTests
 
             var sut = new IFix.GitIgnore(GitDirectory);
 
-            var result = sut.CheckIfNuGetPackages(testdata,false,false);
+            bool result = sut.CheckIfNuGetPackages(testdata,false,false);
             Assert.That(result, Is.True);
 
         }
@@ -70,7 +70,7 @@ namespace GitIgnoreTests
 
             var sut = new IFix.GitIgnore(GitDirectory);
 
-            var result = sut.CheckIfNuGetPackages(testdata, false, false);
+            bool result = sut.CheckIfNuGetPackages(testdata, false, false);
             Assert.That(result, Is.False);
 
         }
@@ -82,7 +82,7 @@ namespace GitIgnoreTests
 
             var sut = new IFix.GitIgnore(GitDirectory);
 
-            var result = sut.CheckIfNuGetPackages(testdata, false, false);
+            bool result = sut.CheckIfNuGetPackages(testdata, false, false);
             Assert.That(result, Is.False, "Testdata contains packages or CheckIfPackages failed");
             var outlines = sut.AddOnlyMissingInfo(testdata);
             result = sut.CheckIfNuGetPackages(outlines, false, false);
@@ -93,13 +93,13 @@ namespace GitIgnoreTests
         [Test, GitIgnoreTests.Integration]
         public void CheckDownload()
         {
-            var assemblyLoc = Assembly.GetExecutingAssembly().Location;
-            var currentPath = Path.GetFullPath(Path.Combine(assemblyLoc, @"../../../"));
+            string assemblyLoc = Assembly.GetExecutingAssembly().Location;
+            string currentPath = Path.GetFullPath(Path.Combine(assemblyLoc, @"../../../"));
 
             var sut = new IFix.GitIgnore(currentPath);
 
-            var temp = Path.GetTempPath();
-            var tempGitIgnore = temp + "/VisualStudio.gitignore";
+            string temp = Path.GetTempPath();
+            string tempGitIgnore = temp + "/VisualStudio.gitignore";
             sut.DownloadGitIgnore(tempGitIgnore);
             var lines = File.ReadAllLines(tempGitIgnore);
             Assert.That(lines.Any());
@@ -131,7 +131,7 @@ namespace GitIgnoreTests
 
             var outlines = sut.AddOnlyMissingInfo(lines);
 
-            Assert.That(outlines.Count() == 7, "Count was " + outlines.Count());
+            Assert.That(outlines.Count(), Is.EqualTo(7), "Count was " + outlines.Count());
         }
 
         [Test]
@@ -143,16 +143,16 @@ namespace GitIgnoreTests
 
             var outlines = sut.AddOnlyMissingInfo(lines);
 
-            Assert.That(outlines.Count() == 7, "Count was " + outlines.Count());
+            Assert.That(outlines.Count(), Is.EqualTo(7), "Count was " + outlines.Count());
         }
 
-
+        [LocalOnly]
         [Test]
         public void FindMyOwnGitRepo()
         {
             var sut = new IFix.GitIgnore(GitDirectory);
-            Assert.That(sut.Repositories.Count() == 1, "Can't find my own repo");
-            var file = sut.Repositories.First().File;
+            Assert.That(sut.Repositories.Count(), Is.EqualTo(1), "Can't find my own repo");
+            string file = sut.Repositories.First().File;
             Assert.That(File.Exists(file), "No gitignore file");
         }
 
@@ -160,8 +160,8 @@ namespace GitIgnoreTests
         public void VerifyThatGitHubIgnoreFileWasDownloaded()
         {
             var sut = new IFix.GitIgnore(GitDirectory); // Make sure we create it and thus also download the file. 
-            var temp = Path.GetTempPath();
-            var tempgitignore = temp + "/VisualStudio.gitignore";
+            string temp = Path.GetTempPath();
+            string tempgitignore = temp + "/VisualStudio.gitignore";
             Assert.That(File.Exists(tempgitignore),"No temporary gitignore found at "+tempgitignore);
         }
 
