@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net451</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyTitle>RestoreTests</AssemblyTitle>
     <Product>RestoreTests</Product>
     <Copyright>Copyright ©  2014</Copyright>

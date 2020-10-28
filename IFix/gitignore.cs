@@ -165,7 +165,7 @@ namespace IFix
             Writer.Write(msg);
         }
 
-        private int FixNuGet(GitIgnoreCommand command, ICollection<string> lines, string filetocheck, int retval)
+        private int FixNuGet(GitIgnoreCommand command, IReadOnlyCollection<string> lines, string filetocheck, int retval)
         {
             var outlines = new List<string>();
             bool fix = false;
@@ -224,10 +224,7 @@ namespace IFix
             return retval;
         }
 
-        public bool CheckIfVS2015Files(ICollection<string> lines)
-        {
-            return lines.Any(line => line.Contains("node_modules/")) ;
-        }
+        public bool CheckIfVS2015Files(IReadOnlyCollection<string> lines) => lines.Any(line => line.Contains("node_modules/"));
 
         private void RetrieveStdGitIgnore()
         {
@@ -262,10 +259,9 @@ namespace IFix
         /// <summary>
         /// Adds the missing info line by line in-place, removes commented lines for NuGet which are no longer needed
         /// </summary>
-        public ICollection<string> AddOnlyMissingInfo(ICollection<string> lines, bool latest = false)
+        public IReadOnlyCollection<string> AddOnlyMissingInfo(IReadOnlyCollection<string> lines, bool latest = false)
         {
             const string nuGetStart = @"# NuGet Packages";
-            const string nuGetPackageSimple = "packages";
             const string nuGetPackageFull = @"**/packages/*";
             const string nuGetPackage194 = @"packages/*";
             const string nuGetPkg = @"*.nupkg";
@@ -311,7 +307,7 @@ namespace IFix
             return outlines;
         }
 
-        public bool CheckIfNuGetPackages(IEnumerable<string> lines, bool strict, bool latest)
+        public bool CheckIfNuGetPackages(IReadOnlyCollection<string> lines, bool strict, bool latest)
         {
             if (!strict)
                 return lines.Any(line => line.Trim() == "packages/" || line.Trim() == "packages/*" || line.Trim() == "packages" || line.Trim() == "**/packages/*");

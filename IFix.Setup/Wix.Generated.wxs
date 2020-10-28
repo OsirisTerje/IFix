@@ -34,6 +34,20 @@
                     <File Id="filC84C946E55E38262115D06415D38417A" KeyPath="yes" Source="$(var.AppProjectDir)\net451\IFix.pdb" />
                 </Component>
             </Directory>
+            <Directory Id="dir992775D584242DBE7C088CEF965075B2" Name="net48">
+                <Component Id="cmp375D655093C56F7107D886DCA15E3E9C" Guid="*">
+                    <File Id="fil3166C2B00352997F6AD491A0689AD8A0" KeyPath="yes" Source="$(var.AppProjectDir)\net48\FluentCommandLineParser.dll" />
+                </Component>
+                <Component Id="cmpA55D09A94064AD49E51E58EB45C6B4CC" Guid="*">
+                    <File Id="fil853E6C64806EDC888577BB6F9931B66F" KeyPath="yes" Source="$(var.AppProjectDir)\net48\IFix.exe" />
+                </Component>
+                <Component Id="cmp2C072381B841A326B60B46C452CE1A34" Guid="*">
+                    <File Id="fil8AA0B0B920842C8ED6000B0728245E67" KeyPath="yes" Source="$(var.AppProjectDir)\net48\IFix.exe.config" />
+                </Component>
+                <Component Id="cmp759E3608DFC25556A42E885036A5F2F7" Guid="*">
+                    <File Id="filD6912FB8419F3F8BD4D13572569CE6AB" KeyPath="yes" Source="$(var.AppProjectDir)\net48\IFix.pdb" />
+                </Component>
+            </Directory>
         </DirectoryRef>
     </Fragment>
     <Fragment>
@@ -48,6 +62,10 @@
             <ComponentRef Id="cmp030F85073E93BFAF11D81546A045C39C" />
             <ComponentRef Id="cmp988CB60A595C36FD3A964BAFF9789D11" />
             <ComponentRef Id="cmpA64D6F784AF6A708B7AEE7CDFAC5E59D" />
+            <ComponentRef Id="cmp375D655093C56F7107D886DCA15E3E9C" />
+            <ComponentRef Id="cmpA55D09A94064AD49E51E58EB45C6B4CC" />
+            <ComponentRef Id="cmp2C072381B841A326B60B46C452CE1A34" />
+            <ComponentRef Id="cmp759E3608DFC25556A42E885036A5F2F7" />
         </ComponentGroup>
     </Fragment>
 </Wix>
