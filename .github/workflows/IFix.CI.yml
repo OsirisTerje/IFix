@@ -16,6 +16,6 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Debug --no-restore
+      run: dotnet build ifixd.sln --configuration Debug --no-restore 
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-build --filter:"Category!=LocalOnly" --verbosity normal
