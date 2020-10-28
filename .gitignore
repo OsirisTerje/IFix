@@ -286,3 +286,78 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+*.rsuser
+# Mono auto generated files
+mono_crash.*
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+[Ll]ogs/
+# Visual Studio 2015/2017 cache/options directory
+# Visual Studio 2017 auto generated files
+Generated\ Files/
+# NUnit
+nunit-*.xml
+# Benchmark Results
+BenchmarkDotNet.Artifacts/
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+# StyleCop
+StyleCopReport.xml
+# Files built by Visual Studio
+*_h.h
+*.iobj
+*.ipdb
+*_wpftmp.csproj
+# Visual Studio Trace Files
+*.e2e
+# AxoCover is a Code Coverage Tool
+.axoCover/*
+!.axoCover/settings.json
+# Coverlet is a free, cross platform Code Coverage Tool
+coverage*.json
+coverage*.xml
+coverage*.info
+# Note: Comment the next line if you want to checkin your web deploy settings,
+# NuGet Symbol Packages
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+#!**/[Pp]ackages/repositories.config
+*.appx
+*.appxbundle
+*.appxupload
+!?*.[Cc]ache/
+# Including strong name files can present a security risk
+# (https://github.com/github/gitignore/pull/2483#issue-259490424)
+#*.snk
+ServiceFabricBackup/
+*.rptproj.bak
+*.rptproj.rsuser
+*- [Bb]ackup.rdl
+*- [Bb]ackup ([0-9]).rdl
+*- [Bb]ackup ([0-9][0-9]).rdl
+# CodeRush personal settings
+.cr/personal
+# Tabs Studio
+*.tss
+# OpenCover UI analysis results
+OpenCover/
+# Azure Stream Analytics local run output
+ASALocalRun/
+# MSBuild Binary and Structured Log
+*.binlog
+# NVidia Nsight GPU debugger configuration file
+*.nvuser
+# MFractors (Xamarin productivity tool) working folder
+.mfractor/
+# Local History for Visual Studio
+.localhistory/
+# BeatPulse healthcheck temp database
+healthchecksdb
+# Backup folder for Package Reference Convert tool in Visual Studio 2017
+MigrationBackup/
+# Ionide (cross platform F# VS Code tools) working folder
+.ionide/
+# Fody - auto-generated XML schema
+FodyWeavers.xsd
