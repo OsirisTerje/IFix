@@ -27,7 +27,7 @@ namespace GitIgnoreTests
                     string codeBase = Assembly.GetExecutingAssembly().CodeBase;
                     var uri = new UriBuilder(codeBase);
                     string path = Uri.UnescapeDataString(uri.Path);
-                    gitDirectory = Path.Combine(Path.GetDirectoryName(path), @"..\..\..\");
+                    gitDirectory = Path.Combine(Path.GetDirectoryName(path), @"..\..\..\..\");
                 }
                 return gitDirectory;
             }
@@ -94,7 +94,7 @@ namespace GitIgnoreTests
         public void CheckDownload()
         {
             string assemblyLoc = Assembly.GetExecutingAssembly().Location;
-            string currentPath = Path.GetFullPath(Path.Combine(assemblyLoc, @"../../../"));
+            string currentPath = Path.GetFullPath(Path.Combine(assemblyLoc, @"../../../../"));
 
             var sut = new IFix.GitIgnore(currentPath);
 
@@ -151,7 +151,7 @@ namespace GitIgnoreTests
         public void FindMyOwnGitRepo()
         {
             var sut = new IFix.GitIgnore(GitDirectory);
-            Assert.That(sut.Repositories.Count(), Is.EqualTo(1), "Can't find my own repo");
+            Assert.That(sut.Repositories.Count(), Is.EqualTo(1), $"Can't find my own repo at {GitDirectory}");
             string file = sut.Repositories.First().File;
             Assert.That(File.Exists(file), "No gitignore file");
         }
