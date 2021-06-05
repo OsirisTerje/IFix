@@ -18,4 +18,4 @@ jobs:
     - name: Build
       run: dotnet build ifixd.sln --configuration Debug --no-restore 
     - name: Test
-      run: dotnet test ifixd.sln --no-build --filter:"Category!=LocalOnly" --verbosity normal
+      run: dotnet test ifixd.sln --no-build --filter:"TestCategory!=LocalOnly" --verbosity normal
