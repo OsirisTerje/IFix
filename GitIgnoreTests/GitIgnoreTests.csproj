@@ -37,9 +37,9 @@
     <ProjectReference Include="..\IntegrationTest\IntegrationTest.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-    <PackageReference Include="NUnit" Version="3.13.1" />
-    <PackageReference Include="NUnit.Analyzers" Version="3.0.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit.Analyzers" Version="3.1.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0-beta.2" />
   </ItemGroup>
 </Project>
