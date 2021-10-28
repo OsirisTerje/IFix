@@ -14,7 +14,7 @@ namespace IntegrationTest
 
         NuGetRestoreCommand Command { get; set; }
 
-        private const string subpath = "../../../TestProject/TestProject";
+        private const string subpath = @"..\..\..\..\TestProject/TestProject";
 
 
         private string currentDirectory;
@@ -57,8 +57,9 @@ namespace IntegrationTest
         [Test]
         public void VerifyCorrectDirectory()
         {
-           var exist = File.Exists(CurrentDirectory + "/TestProject.csproj");
-            Assert.That(exist, Is.True);
+            var path = Path.Combine(CurrentDirectory, "TestProject.csproj");
+           var exist = File.Exists(path);
+            Assert.That(exist, $"Can locate {path}");
         }
 
 

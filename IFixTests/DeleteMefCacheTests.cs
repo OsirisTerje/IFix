@@ -7,7 +7,7 @@ namespace IFix.Tests
     public class DeleteMefCacheTests
     {
         [LocalOnly]
-        [Test()]
+        [Test]
         public void CheckCacheForVS2012()
         {
             var sut = new Vs2012Cache();

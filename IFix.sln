@@ -11,8 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitIgnoreTests", "GitIgnore
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{926FE451-32CF-4795-8575-9A5348590EC3}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		.github\workflows\blank.yml = .github\workflows\blank.yml
 		CI.runsettings = CI.runsettings
+		.github\workflows\IFix.CI.yml = .github\workflows\IFix.CI.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -21,8 +23,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticsTests", "DiagnosticsTests\DiagnosticsTests.csproj", "{C0BC6F38-71E7-4749-838A-5F39119F0B91}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IFix", "IFix\IFix.csproj", "{22ADA2BA-033A-47E0-AD83-8399775DB135}"
-EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "IFix.Setup", "IFix.Setup\IFix.Setup.wixproj", "{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,17 +103,6 @@ Global
 		{22ADA2BA-033A-47E0-AD83-8399775DB135}.Release|Mixed Platforms.Build.0 = Release|x86
 		{22ADA2BA-033A-47E0-AD83-8399775DB135}.Release|x86.ActiveCfg = Release|x86
 		{22ADA2BA-033A-47E0-AD83-8399775DB135}.Release|x86.Build.0 = Release|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|x86.ActiveCfg = Debug|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Debug|x86.Build.0 = Debug|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Any CPU.ActiveCfg = Release|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Any CPU.Build.0 = Release|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|Mixed Platforms.Build.0 = Release|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|x86.ActiveCfg = Release|x86
-		{2D68840B-5C4F-456A-A55B-9CC59B51F4F8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

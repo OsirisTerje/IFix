@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Fclp;
+using CommandLine;
 
 namespace IFix
 {
@@ -10,40 +11,45 @@ namespace IFix
     {
         static int Main(string[] args)
         {
-            var fclp = new FluentCommandLineParser();
-            var setup = new SetupCommands(fclp);
             if (args == null || args.Length == 0)
             {
                 DisplayVersion();
                 Console.WriteLine(GetUsage());
                 return -1;
             }
-            var result = fclp.Parse(args);
-            if (result.HasErrors)
-            {
-                Console.WriteLine($"Errors in parsing commands for {setup.ParsedOptions}");
-                return 1;
-            }
-            if (result.HelpCalled)
-            {
-                DisplayVersion();
-                var cmdstring = result.RawResult.Command;
-                var cmd = fclp.Commands.FirstOrDefault(o => o.Name == cmdstring);
-                Console.WriteLine($"Options for command: {cmdstring}");
-                foreach (var c in cmd.Options)
-                {
-                    var msg = $"Short: -{c.ShortName}, Long: --{c.LongName}: Descr: {c.Description}";
-                    Console.WriteLine(msg);
-                }
-
-                return 0;
-            }
-            if (setup.ParsedOptions == null)
-            {
-                Console.WriteLine("Unrecognized command");
-                Console.WriteLine(GetUsage());
-            }
+            var result = Parser.Default.ParseArguments<
+                GoToBlog,
+                NuGetRestoreCommand,
+                GitIgnoreCommand,
+                VSTestCacheCommands,
+                MefCacheCommand,
+                CreateSln,
+                NugetConsolidateCommands,
+                DiagnosticsCommands
+            >(args)
+                    .WithParsed<GoToBlog>(options=>options.Execute())
+                    .WithParsed<NuGetRestoreCommand>(options => options.Execute())
+                    .WithParsed<GitIgnoreCommand>(options => options.Execute())
+                    .WithParsed<VSTestCacheCommands>(options => options.Execute())
+                    .WithParsed<MefCacheCommand>(options => options.Execute())
+                    .WithParsed<CreateSln>(options => options.Execute())
+                    .WithParsed<NugetConsolidateCommands>(options => options.Execute())
+                    .WithParsed<DiagnosticsCommands>(options => options.Execute())
+                    .WithNotParsed(HandleErrors)
+                ;
+            
+            
+            
             return 0;
+        }
+
+        public static void HandleErrors(IEnumerable<Error> errors)
+        {
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error);
+            }
+            System.Environment.Exit(1);
         }
 
         public static string GetUsage()
@@ -61,7 +67,7 @@ namespace IFix
             usage.AppendLine("    ca0053");
             usage.AppendLine("    info");
             usage.AppendLine("For more instructions and information run 'IFix info', or for specific commands 'IFix <command> -?' , or 'IFix info -? ");
-            usage.AppendLine("(c) Terje Sandstrom (http://hermit.no) , 2015-2018");
+            usage.AppendLine("(c) Terje Sandstrom (http://hermit.no) , 2015-2021");
 
             return usage.ToString();
         }

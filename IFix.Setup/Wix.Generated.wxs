@@ -47,6 +47,51 @@
                 <Component Id="cmp759E3608DFC25556A42E885036A5F2F7" Guid="*">
                     <File Id="filD6912FB8419F3F8BD4D13572569CE6AB" KeyPath="yes" Source="$(var.AppProjectDir)\net48\IFix.pdb" />
                 </Component>
+                <Directory Id="dirDE2BB180E4E534479C16462AA60EF961" Name="publish">
+                    <Component Id="cmpA546F46AF7683A093EF4E2D51F6B70FA" Guid="*">
+                        <File Id="fil3E7D622D9719F9093DD240743C5BEF25" KeyPath="yes" Source="$(var.AppProjectDir)\net48\publish\FluentCommandLineParser.dll" />
+                    </Component>
+                    <Component Id="cmp7D94AB709ACB69D24177275DD59D6FC7" Guid="*">
+                        <File Id="filA5477C2C2DCE9955B81DA84127C24D91" KeyPath="yes" Source="$(var.AppProjectDir)\net48\publish\IFix.exe" />
+                    </Component>
+                    <Component Id="cmp82819C9C24ABA27C27F0F9054EB520D8" Guid="*">
+                        <File Id="fil5FC96769CDFDBDA7DC0D0FABEFFF98CD" KeyPath="yes" Source="$(var.AppProjectDir)\net48\publish\IFix.exe.config" />
+                    </Component>
+                    <Component Id="cmpD98F54D3DC2A0AA18A7614E4F7D374BD" Guid="*">
+                        <File Id="fil0F1ABDB966A3140A215CE462B63AF38C" KeyPath="yes" Source="$(var.AppProjectDir)\net48\publish\IFix.pdb" />
+                    </Component>
+                </Directory>
+            </Directory>
+            <Directory Id="dirFCB0CC680F9C6BF483CD52B74A1A8FFD" Name="net5.0">
+                <Component Id="cmpD5F3C5876885160CAD01EAA2026FE0E9" Guid="*">
+                    <File Id="fil4E940E92EB8F23F210AE4BB8E25E5E5F" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\FluentCommandLineParser.dll" />
+                </Component>
+                <Component Id="cmpC34703C0966CC0479D1243B1FA19E9DD" Guid="*">
+                    <File Id="fil2B915784DBB5CB320646C261B7EAD374" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\IFix.deps.json" />
+                </Component>
+                <Component Id="cmp47A92E4B389117E890EE5E8221D2DC47" Guid="*">
+                    <File Id="filBAE294F2D6D4FE326389CFE99519F4BD" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\IFix.dll" />
+                </Component>
+                <Component Id="cmpE821C615E17740E700B610918A323EE9" Guid="*">
+                    <File Id="filBEC63BEB108AF1D45D42AFC59C15B910" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\IFix.dll.config" />
+                </Component>
+                <Component Id="cmp08634E649BFF50591E891FA13D1DF9BA" Guid="*">
+                    <File Id="fil5AC581F4D20125E47EBCEEE681AA50C1" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\IFix.exe" />
+                </Component>
+                <Component Id="cmp6216287021FE22EA5F4DDFB8F4AE85DD" Guid="*">
+                    <File Id="fil7A320CFD8FEDF21AC62ADF2BE121F138" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\IFix.pdb" />
+                </Component>
+                <Component Id="cmpBB8D56E51EFE30693B4836632B5440C2" Guid="*">
+                    <File Id="fil0D2A3D04AD988E1D0D07A63DAA8579ED" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\IFix.runtimeconfig.dev.json" />
+                </Component>
+                <Component Id="cmp3414A57D16C027300A8A230EBDE0B16E" Guid="*">
+                    <File Id="filA481504A11D60253ACB7E1816EEBDF62" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\IFix.runtimeconfig.json" />
+                </Component>
+                <Directory Id="dirC2F48517ECAD4AEB50D1D98BD85B91AE" Name="ref">
+                    <Component Id="cmp930F820230A3E24A5F561FB4636914FF" Guid="*">
+                        <File Id="fil813E76159060AA67CB86266017B3A185" KeyPath="yes" Source="$(var.AppProjectDir)\net5.0\ref\IFix.dll" />
+                    </Component>
+                </Directory>
             </Directory>
         </DirectoryRef>
     </Fragment>
@@ -66,6 +111,19 @@
             <ComponentRef Id="cmpA55D09A94064AD49E51E58EB45C6B4CC" />
             <ComponentRef Id="cmp2C072381B841A326B60B46C452CE1A34" />
             <ComponentRef Id="cmp759E3608DFC25556A42E885036A5F2F7" />
+            <ComponentRef Id="cmpA546F46AF7683A093EF4E2D51F6B70FA" />
+            <ComponentRef Id="cmp7D94AB709ACB69D24177275DD59D6FC7" />
+            <ComponentRef Id="cmp82819C9C24ABA27C27F0F9054EB520D8" />
+            <ComponentRef Id="cmpD98F54D3DC2A0AA18A7614E4F7D374BD" />
+            <ComponentRef Id="cmpD5F3C5876885160CAD01EAA2026FE0E9" />
+            <ComponentRef Id="cmpC34703C0966CC0479D1243B1FA19E9DD" />
+            <ComponentRef Id="cmp47A92E4B389117E890EE5E8221D2DC47" />
+            <ComponentRef Id="cmpE821C615E17740E700B610918A323EE9" />
+            <ComponentRef Id="cmp08634E649BFF50591E891FA13D1DF9BA" />
+            <ComponentRef Id="cmp6216287021FE22EA5F4DDFB8F4AE85DD" />
+            <ComponentRef Id="cmpBB8D56E51EFE30693B4836632B5440C2" />
+            <ComponentRef Id="cmp3414A57D16C027300A8A230EBDE0B16E" />
+            <ComponentRef Id="cmp930F820230A3E24A5F561FB4636914FF" />
         </ComponentGroup>
     </Fragment>
 </Wix>

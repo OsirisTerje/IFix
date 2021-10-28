@@ -5,9 +5,14 @@ using System.Linq;
 
 namespace IFix
 {
-    public class NugetConsolidate
+    public interface INugetConsolidate
     {
-        private List<NugetPackage> NugetPackages { get; } = new List<NugetPackage>();
+        int Execute(NugetConsolidateCommands commands);
+    }
+
+    public class NugetConsolidateOld : INugetConsolidate
+    {
+        private List<NugetPackage> NugetPackages { get; } = new();
 
         public int Execute(NugetConsolidateCommands commands)
         {
@@ -99,10 +104,17 @@ namespace IFix
         }
     }
 
+    public class NugetConsolidate : INugetConsolidate
+    {
+        public int Execute(NugetConsolidateCommands commands)
+        {
+            return 0;
+        }
+    }
 
 
 
-    
+
 
 }
 
