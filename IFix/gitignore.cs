@@ -340,7 +340,7 @@ namespace IFix
         {
             using (var client = new WebClient())
             {
-                client.DownloadFile("https://github.com/github/gitignore/raw/master/VisualStudio.gitignore",
+                client.DownloadFile("https://github.com/github/gitignore/raw/main/VisualStudio.gitignore",
                     path);
             }
         }
