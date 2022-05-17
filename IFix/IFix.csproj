@@ -31,7 +31,7 @@
         <EmbeddedResource Include=".gitattributes" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
         <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     </ItemGroup>
     <ItemGroup>
