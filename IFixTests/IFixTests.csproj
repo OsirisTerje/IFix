@@ -23,7 +23,7 @@
         <ProjectReference Include="..\IntegrationTest\IntegrationTest.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
         <PackageReference Include="NUnit" Version="3.13.2" />
         <PackageReference Include="NUnit.Analyzers" Version="3.2.0" />
