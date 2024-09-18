@@ -42,15 +42,15 @@ namespace IFix
     {
         private const string UrlIFix = @"https://visualstudiogallery.msdn.microsoft.com/b8ba97b0-bb89-4c21-a1e2-53ef335fd9cb";
 
-        private const string Urlgitignore = @"http://hermit.no/fixing-up-visual-studio-rsquo-s-gitignore-using-ifix/";
+        private const string Urlgitignore = @"https://hermit.no/fixing-up-visual-studio-rsquo-s-gitignore-using-ifix/";
 
-        private const string UrlNugetrestore = @"http://hermit.no/converting-projects-to-use-automatic-nuget-restore-using-ifix/";
+        private const string UrlNugetrestore = @"https://hermit.no/converting-projects-to-use-automatic-nuget-restore-using-ifix/";
 
-        private const string UrlCa0053 = @"http://hermit.no/how-to-fix-the-ca0053-error-in-code-analysis-in-visual-studio-2012/";
+        private const string UrlCa0053 = @"https://hermit.no/how-to-fix-the-ca0053-error-in-code-analysis-in-visual-studio-2012/";
 
-        private const string UrlMefcache = @"http://hermit.no/how-to-fix-visual-studio-loading-errors-using-ifix/";
+        private const string UrlMefcache = @"https://hermit.no/how-to-fix-visual-studio-loading-errors-using-ifix/";
 
-        private const string UrlCreateSln = @"http://hermit.no/ifix-create-solution-skeleton-file/";
+        private const string UrlCreateSln = @"https://hermit.no/ifix-create-solution-skeleton-file/";
         public override int Execute()
         {
             string url = UrlIFix;

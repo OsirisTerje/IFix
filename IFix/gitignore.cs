@@ -272,12 +272,12 @@ namespace IFix
                 outlines.Add(line);
             var patterns = new List<Tuple<string, bool>>
             {
-                new Tuple<string, bool>(nuGetStart,true),
-                new Tuple<string, bool>(nuGetPkg,false),
-                new Tuple<string, bool>(nuGetPackageFull,false),
-                new Tuple<string, bool>(nuGetPackage194,false),
-                new Tuple<string, bool>(nuGetReincludeBuild,false),
-                new Tuple<string, bool>(nuGetReincludeBuild2,false)
+                new(nuGetStart,true),
+                new(nuGetPkg,false),
+                new(nuGetPackageFull,false),
+                new(nuGetPackage194,false),
+                new(nuGetReincludeBuild,false),
+                new(nuGetReincludeBuild2,false)
             };
             string lastpattern = "";
             foreach (var pattern in patterns)
@@ -340,7 +340,7 @@ namespace IFix
         {
             using (var client = new WebClient())
             {
-                client.DownloadFile("https://github.com/github/gitignore/raw/master/VisualStudio.gitignore",
+                client.DownloadFile("https://raw.githubusercontent.com/github/gitignore/main/VisualStudio.gitignore",
                     path);
             }
         }

@@ -49,7 +49,7 @@ namespace IFix
             {
                 Console.WriteLine(error);
             }
-            System.Environment.Exit(1);
+            Environment.Exit(1);
         }
 
         public static string GetUsage()
@@ -67,7 +67,7 @@ namespace IFix
             usage.AppendLine("    ca0053");
             usage.AppendLine("    info");
             usage.AppendLine("For more instructions and information run 'IFix info', or for specific commands 'IFix <command> -?' , or 'IFix info -? ");
-            usage.AppendLine("(c) Terje Sandstrom (http://hermit.no) , 2015-2021");
+            usage.AppendLine("(c) Terje Sandstrom (https://hermit.no) , 2015-2024");
 
             return usage.ToString();
         }

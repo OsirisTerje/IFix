@@ -100,7 +100,7 @@ namespace IntegrationTest
             var sut = new RemoveOldNugetRestore(Command);
             var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
             var outlines = sut.CheckAndCopyNugetPaths(file);
-            Assert.IsNotNull(outlines,"Didnt find anything");
+            Assert.That(outlines,Is.Not.Null,"Didnt find anything");
             Assert.That(outlines.Lines.Count(),Is.EqualTo(configlinesBefore.Count()+4), "Number of new lines incorrect");
 
         }
@@ -116,7 +116,7 @@ namespace IntegrationTest
             var sut = new RemoveOldNugetRestore(Command);
             var configlinesBefore = File.ReadAllLines(path + "/.nuget/nuget.config");
             var outlines = sut.CheckAndCopyNugetPaths(file);
-            Assert.IsNull(outlines);
+            Assert.That(outlines,Is.Null);
         }
 
 

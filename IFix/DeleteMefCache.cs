@@ -7,7 +7,7 @@ namespace IFix
 {
     public class DeleteMefCache
     {
-        private readonly List<Cache> caches=new List<Cache>();
+        private readonly List<Cache> caches=new();
 
         public MefCacheCommand MefCacheCommand { get; private set; }
 

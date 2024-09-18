@@ -1,25 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <AssemblyTitle>IFix</AssemblyTitle>
         <Product>IFix</Product>
         <PackageId>Hermit.IFix</PackageId>
-        <Copyright>Copyright Terje Sandstrom  2014-2021</Copyright>
-        <AssemblyVersion>3.0.0.0</AssemblyVersion>
-        <FileVersion>3.0.0.0</FileVersion>
-        <Version>3.0.0-beta.1</Version>
+        <Copyright>Copyright Terje Sandstrom  2014-2023</Copyright>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <FileVersion>4.0.0.0</FileVersion>
+        <Version>4.0.0-beta.1</Version>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>IFix</ToolCommandName>
         <PackageOutputPath>./nupkg</PackageOutputPath>
+        <PackageIcon>icon.png</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Authors>Terje Sandstrom</Authors>
         <Description>
             IFix is a dotnet tool for fixing different issues with Visual Studio, git, testing, solutions and more
             Install it using:  dotnet tool install --global Hermit.IFix
             and run it doing:  IFix --help , which will show the relevant options.
-            (To install the beta, use --version 3.0.0-beta.1 or whatever beta number there is)
+            (To install the beta, use --version 4.0.0-beta.1 or whatever beta number there is)
         </Description>
         <PackageProjectUrl>https://github.com/OsirisTerje/Ifix</PackageProjectUrl>
         <RepositoryUrl>https://github.com/OsirisTerje/Ifix</RepositoryUrl>
@@ -29,9 +30,10 @@
     </PropertyGroup>
     <ItemGroup>
         <EmbeddedResource Include=".gitattributes" />
+        <None Include="icon.png" Pack="true" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.8.0" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
         <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     </ItemGroup>
     <ItemGroup>
